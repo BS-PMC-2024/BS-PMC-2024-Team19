@@ -1,5 +1,7 @@
 import "./App.css";
 import Header from "./components/HomePage/Header/Header";
+import HeaderA from "./components/Admin/HeaderA/HeaderA";
+import NavbarA from "./components/Admin/NavbarA/NavbarA";
 import "./assets/js/script";
 import Services from "./components/HomePage/Services/Services";
 import About from "./components/HomePage/About/About";
@@ -13,11 +15,12 @@ import Footer from "./components/HomePage/Footer/Footer";
 function App() {
   return (
     <div className="App">
-      <Header />
+      {/* <Header />
       <Qualities />
       <Testimonials />
       <About />
-      <Footer />
+      <Footer /> */}
+      <HeaderA />
     </div>
   );
 }
