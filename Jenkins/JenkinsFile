@@ -17,6 +17,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
+                dir("frontend") {
                     if (fileExists('package-lock.json')) {
                         sh 'npm ci'
                     } else {
@@ -38,6 +39,7 @@ pipeline {
             steps {
                 script {
                     sh 'npm test'
+              
                 }
             }
         }
