@@ -1,21 +1,22 @@
-import "./App.css";
-import "./assets/js/script";
 import HomePage from "./features/HomePage/HomePage";
-import Header from "./common/components/Header/Header";
+import Navbar from "./common/components/Navbar/Navbar";
 import Footer from "./common/components/Footer/Footer";
-
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SignUp from "./features/Auth/SignUp/SignUp";
 
 function App() {
   return (
     <div>
-      <Header />
       <div className="App">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-        </Routes>
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/" element={<HomePage />} />
+          </Routes>
+          <Footer />
+        </Router>
       </div>
-      <Footer />
     </div>
   );
 }

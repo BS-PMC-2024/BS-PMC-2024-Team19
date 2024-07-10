@@ -1,13 +1,24 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
-import { FaTwitter, FaSkype, FaVimeoV } from "react-icons/fa";
 import { IoMdRocket } from "react-icons/io";
 
 const Navbar = () => {
   const [navToggle, setNavToggle] = useState(false);
+  const navigate = useNavigate();
+
   const navHandler = () => {
     setNavToggle((prevData) => !prevData);
+  };
+
+  const handleLoginClick = () => {
+    navigate("/signup?view=login");
+    setNavToggle(false); // Close the navbar after navigation
+  };
+
+  const handleSignUpClick = () => {
+    navigate("/signup?view=signup");
+    setNavToggle(false); // Close the navbar after navigation
   };
 
   return (
@@ -38,12 +49,20 @@ const Navbar = () => {
           >
             <div className="navbar-collapse-content">
               <div className="navbar-btns">
-                <button type="button" className="btn">
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={handleLoginClick}
+                >
                   <IoMdRocket /> <span>Log In</span>
                 </button>
               </div>
               <div className="navbar-btns">
-                <button type="button" className="btn">
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={handleSignUpClick}
+                >
                   <IoMdRocket /> <span>Sign Up</span>
                 </button>
               </div>
