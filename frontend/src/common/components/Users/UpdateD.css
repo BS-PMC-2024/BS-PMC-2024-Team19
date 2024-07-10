@@ -1,0 +1,94 @@
+body {
+  background: linear-gradient(#000000e6, rgba(0, 0, 0, 0.9)),
+    url("../../../assets/images/header_main_img.jpg") center/cover no-repeat;
+  overflow-y: hidden; /* מנע גלילה למטה */
+  font-weight: bold; /* טקסט מודגש */
+}
+
+.form-container {
+  background-image: url("../../../assets/images/passwor.png");
+  background-size: contain; /* או מידתי גימור */
+  background-repeat: no-repeat;
+  background-position: left;
+  max-width: 700px;
+  margin: 150px auto 0;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f8f8f8;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 14px;
+  margin-left: 350px;
+}
+
+.input-container {
+  position: relative;
+  width: 40%;
+  margin-left: 380px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.form-group input:focus {
+  border-color: #4caf50;
+  outline: none;
+}
+
+.change-password-button {
+  background-color: #000; /* צבע רקע שחור */
+  color: white;
+  padding: 10px 20px;
+  border: 3px solid var(--clr-robin-blue);
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 14px;
+  margin-left: 320px;
+}
+
+.change-password-button:hover {
+  background-color: var(--clr-robin-blue);
+}
+
+.button-and-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* יישור לאמצע */
+  gap: 10px; /* מרווח בין האלמנטים */
+  flex-direction: column; /* יישור האלמנטים בעמודה */
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  text-align: left;
+  margin-top: 5px;
+  margin-left: 370px;
+}
