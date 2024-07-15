@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import userEmail from "../../../assets/images/email.png";
 import userName from "../../../assets/images/person.png";
 import userPass from "../../../assets/images/password.png";
+import Checkbox from "@mui/material/Checkbox";
 import "./SignUp.css";
 import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 import { useLocation } from "react-router-dom";
@@ -19,6 +20,8 @@ const SignUp = () => {
     fullName: "",
     email: "",
     password: "",
+    isPrime: false,
+    isAdmin: false,
   });
 
   const [signUpErrors, setSignUpErrors] = useState([]);
@@ -27,6 +30,10 @@ const SignUp = () => {
 
   const handleChange = (e) => {
     setSignUpFormData({ ...signUpFormData, [e.target.name]: e.target.value });
+  };
+
+  const handleCheckboxChange = (e) => {
+    setSignUpFormData({ ...signUpFormData, isPrime: e.target.checked });
   };
 
   const togglePasswordVisibility = () => {
@@ -58,6 +65,8 @@ const SignUp = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
+        console.log("Sending user data:", signUpFormData);
+
         const response = await fetch(
           "http://localhost:6500/backend/auth/register",
           {
@@ -70,8 +79,8 @@ const SignUp = () => {
         );
 
         if (!response.ok) {
+          const responseData = await response.json();
           if (response.status === 409) {
-            const responseData = await response.json(); // Attempt to parse error response
             setAlertSeverity("error");
             setAlertMessage(
               responseData.error || "User with this email already exists"
@@ -90,10 +99,10 @@ const SignUp = () => {
           fullName: "",
           email: "",
           password: "",
+          isPrime: false,
+          isAdmin: false,
         });
         setSignUpErrors([]);
-
-        // Optionally, redirect or update UI after successful registration
       } catch (error) {
         console.error("Error:", error.message);
         setAlertSeverity("error");
@@ -149,6 +158,19 @@ const SignUp = () => {
               onClick={togglePasswordVisibility}
             />
           )}
+        </div>
+        <div className="premium-checkbox-container">
+          <label className="premium-label">
+            Want all the benefits? Join Now
+          </label>
+          <div className="premium-checkbox">
+            <Checkbox
+              size="large"
+              checked={signUpFormData.isPrime}
+              onChange={handleCheckboxChange}
+            />
+            <span className="premium-text">Premium User</span>
+          </div>
         </div>
         {signUpErrors.length > 0 && (
           <div className="signup-errors">
