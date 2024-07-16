@@ -1,28 +1,19 @@
 pipeline {
     agent any
-    //in the exmple from the moodle:
-    //agent none
-
-    environment {
-        NODE_ENV = 'production'
-    }
-
     stages {
-        stage('Checkout') {
+        stage('Clone repository') {
             steps {
-                checkout scm
+                git 'https://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@github.com/BS-PMC-2024/BS-PMC-2024-Team19.git'
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Install dependencies') {
             steps {
                 script {
-                dir("frontend") {
-                    if (fileExists('package-lock.json')) {
-                        sh 'npm ci'
-                    } else {
-                        sh 'npm install'
-                    }
+                    dockerImage = docker.build("node:latest")
+                }
+                dockerImage.inside {
+                    sh 'npm install'
                 }
             }
         }
@@ -30,7 +21,9 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'npm run build'
+                    dockerImage.inside {
+                        sh 'npm run build'
+                    }
                 }
             }
         }
@@ -38,8 +31,20 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    sh 'npm test'
-              
+                    dockerImage.inside {
+                        sh 'npm test'
+                    }
+                }
+            }
+        }
+
+        stage('Push Docker image') {
+            steps {
+                script {
+                    dockerImage.tag('talelzam/frontend:latest')
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
+                        dockerImage.push()
+                    }
                 }
             }
         }
@@ -47,23 +52,11 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // Your deployment script/commands go here
-                    sh 'npm run deploy'
+                    docker.image("talelzam/frontend:latest").inside {
+                        sh 'serve -s build'
+                    }
                 }
             }
-        }
-    }
-
-    post {
-        always {
-            echo 'Cleaning up...'
-            cleanWs()
-        }
-        success {
-            echo 'Pipeline succeeded!'
-        }
-        failure {
-            echo 'Pipeline failed!'
         }
     }
 }
