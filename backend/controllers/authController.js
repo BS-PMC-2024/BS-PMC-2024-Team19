@@ -84,7 +84,7 @@ export const logout = (req, res) => {
   res
     .clearCookie("accessToken", {
       secure: true,
-      sameSite: "none",
+      sameSite: "lex",
     })
     .status(200)
     .json("User has been logged out.");
