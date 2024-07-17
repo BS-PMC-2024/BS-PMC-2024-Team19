@@ -1,3 +1,12 @@
+:root {
+  --clr-black: #000;
+  --clr-white: #fff;
+  --clr-robin-blue: #00aaff;
+  --clr-dark: #333;
+  --clr-crazy-blue: #0055ff;
+  --transition: all 0.3s ease;
+}
+
 .navbar {
   position: fixed;
   top: 0;
@@ -6,10 +15,10 @@
   background-color: var(--clr-black);
   z-index: 999;
   display: flex;
-  justify-content: space-between; /* Align brand and buttons */
-  align-items: center; /* Center items vertically */
-  padding: 0 20px; /* Add horizontal padding */
-  width: 100%; /* Ensure full width */
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  width: 100%;
 }
 
 .navbar-brand {
@@ -48,14 +57,42 @@
   transform: rotate(-42deg);
 }
 
+.navbar-collapse {
+  position: fixed;
+  right: 0;
+  top: 78px; /* Offset to start below the navbar */
+  background-color: var(--clr-dark);
+  height: calc(100% - 78px);
+  width: 100%;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  transform: translateX(100%);
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.show-navbar-collapse {
+  transform: translateX(0);
+}
+
 .navbar-btns {
   display: flex;
-  gap: 10px; /* Space between buttons */
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
 }
 
 .navbar-btns button {
   border: 2px solid var(--clr-robin-blue);
   transition: var(--transition);
+  color: var(--clr-white);
+  background: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1.7rem;
+  width: 150px;
 }
 
 .navbar-btns button span {
@@ -73,6 +110,15 @@
 }
 
 @media screen and (min-width: 992px) {
+  .navbar {
+    justify-content: space-between;
+    padding: 0 40px;
+  }
+
+  .hamburger-menu {
+    display: none;
+  }
+
   .navbar-collapse {
     transform: translateX(0);
     position: relative;
@@ -80,14 +126,16 @@
     box-shadow: none;
     top: 0;
     height: auto;
-    width: 100%;
+    width: auto;
+    flex-direction: row;
   }
-  .navbar-collapse-content {
-    padding: 0;
-    display: flex;
-    align-items: center;
+
+  .navbar-btns {
+    flex-direction: row;
+    gap: 20px;
   }
-  .hamburger-menu {
-    display: none; /* Hide hamburger on larger screens */
+
+  .navbar-btns button {
+    width: auto;
   }
 }

@@ -5,7 +5,6 @@ import UpdateD from "./common/components/Users/UpdateD";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignUp from "./features/Auth/SignUp/SignUp";
 import Login from "./features/Auth/LogIn/Login";
-import DeleteByAdmin from "./features/Admin/DeleteByAdmin";
 
 function App() {
   return (
@@ -14,7 +13,7 @@ function App() {
         <Router>
           <Navbar />
           <Routes>
-            <Route path="/signup" element={<DeleteByAdmin />} />
+            <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/update" element={<UpdateD />} />
             <Route path="/" element={<HomePage />} />

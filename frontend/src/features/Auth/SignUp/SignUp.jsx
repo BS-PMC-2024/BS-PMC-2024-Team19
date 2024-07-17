@@ -7,11 +7,10 @@ import "./SignUp.css";
 import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const location = useLocation();
   const navigate = useNavigate();
   const [signUpFormData, setSignUpFormData] = useState({
     fullName: "",

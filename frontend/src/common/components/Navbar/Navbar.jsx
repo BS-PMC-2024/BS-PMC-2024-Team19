@@ -26,14 +26,6 @@ const Navbar = () => {
       <Link to="/" className="navbar-brand fs-26">
         BestInvest
       </Link>
-      <div className={`navbar-btns ${navToggle ? "show" : ""}`}>
-        <button type="button" className="btn" onClick={handleLoginClick}>
-          <IoMdRocket /> <span>Log In</span>
-        </button>
-        <button type="button" className="btn" onClick={handleSignUpClick}>
-          <IoMdRocket /> <span>Sign Up</span>
-        </button>
-      </div>
       <div
         className={`hamburger-menu ${navToggle ? "hamburger-menu-change" : ""}`}
         onClick={navHandler}
@@ -41,6 +33,18 @@ const Navbar = () => {
         <div className="bar-top"></div>
         <div className="bar-middle"></div>
         <div className="bar-bottom"></div>
+      </div>
+      <div
+        className={`navbar-collapse ${navToggle ? "show-navbar-collapse" : ""}`}
+      >
+        <div className="navbar-btns">
+          <button type="button" className="btn" onClick={handleLoginClick}>
+            <IoMdRocket /> <span>Log In</span>
+          </button>
+          <button type="button" className="btn" onClick={handleSignUpClick}>
+            <IoMdRocket /> <span>Sign Up</span>
+          </button>
+        </div>
       </div>
     </nav>
   );

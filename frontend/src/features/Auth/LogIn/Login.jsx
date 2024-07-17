@@ -5,10 +5,9 @@ import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import "./Login.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const location = useLocation();
   const navigate = useNavigate();
   const [loginFormData, setLoginFormData] = useState({
     email: "",
@@ -55,7 +54,7 @@ const Login = () => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify(loginFormData),
-            credentials: 'include',
+            credentials: "include",
           }
         );
 
