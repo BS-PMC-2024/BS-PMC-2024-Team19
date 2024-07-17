@@ -1,10 +1,8 @@
-import { getUser } from '../controllers/userControllers';
+import { getUser } from "../controllers/userControllers";
 
-const express  = require('express');
+const express = require("express");
 const router = express.Router();
 
-
-router.get('/find/:userId',getUser)
-
+router.get("/find/:userId", getUser);
 
 export default router;
