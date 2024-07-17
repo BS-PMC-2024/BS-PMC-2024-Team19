@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../Navbar/Navbar";
 import "./Header.css";
 import { FaPaperPlane } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -18,9 +19,9 @@ const Header = () => {
             management, and performance tracking to efficiently allocate your
             capital.
           </p>
-          <a href="/" className="btn header-btn btn-blue">
+          <Link to="/signup?view=signup" className="btn header-btn btn-blue">
             <FaPaperPlane /> <span>get started</span>
-          </a>
+          </Link>
         </div>
       </div>
     </header>
