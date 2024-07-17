@@ -55,6 +55,7 @@ const Login = () => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify(loginFormData),
+            credentials: 'include',
           }
         );
 
