@@ -113,3 +113,27 @@ export const deleteUserByAdmin = (req, res) => {
     return res.status(200).json({ message: "User deleted successfully" });
   });
 };
+
+//////////////////Admin/////////////////
+
+export const deleteUserByAdmin = (req, res) => {
+  const { email } = req.body;
+
+  console.log("Received request to delete user with email:", email);
+
+  const deleteUserQuery = "DELETE FROM users WHERE email = ?";
+  db.query(deleteUserQuery, [email], (err, result) => {
+    if (err) {
+      console.error("DB Delete User Error:", err);
+      return res.status(500).json({ error: "Failed to delete user" });
+    }
+
+    if (result.affectedRows === 0) {
+      console.log("User not found for deletion:", email);
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    console.log("User deleted successfully:", email);
+    return res.status(200).json({ message: "User deleted successfully" });
+  });
+};

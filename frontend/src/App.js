@@ -14,7 +14,7 @@ function App() {
         <Router>
           <Navbar />
           <Routes>
-            <Route path="/signup" element={<SignUp />} />
+            <Route path="/signup" element={<DeleteByAdmin />} />
             <Route path="/login" element={<Login />} />
             <Route path="/update" element={<UpdateD />} />
             <Route path="/" element={<HomePage />} />
