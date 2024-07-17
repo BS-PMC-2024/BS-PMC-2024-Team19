@@ -33,10 +33,10 @@ const UpdateD = () => {
     <div className="Update">
       <Navbar />
 
-      <div className="form-container">
-        <div className="form-group">
+      <div className="form-container-update">
+        <div className="form-group-update">
           <label htmlFor="oldPassword">Old Password:</label>
-          <div className="input-container">
+          <div className="input-container-update">
             <input
               type={showPassword ? "text" : "password"}
               id="oldPassword"
@@ -44,20 +44,20 @@ const UpdateD = () => {
             />
             {showPassword ? (
               <VisibilityOffIcon
-                className="toggle-password"
+                className="toggle-password-update"
                 onClick={toggleShowPassword}
               />
             ) : (
               <RemoveRedEyeIcon
-                className="toggle-password"
+                className="toggle-password-update"
                 onClick={toggleShowPassword}
               />
             )}
           </div>
         </div>
-        <div className="form-group">
+        <div className="form-group-update">
           <label htmlFor="newPassword">New Password:</label>
-          <div className="input-container">
+          <div className="input-container-update">
             <input
               type={showPassword ? "text" : "password"}
               id="newPassword"
@@ -67,20 +67,20 @@ const UpdateD = () => {
             />
             {showPassword ? (
               <VisibilityOffIcon
-                className="toggle-password"
+                className="toggle-password-update"
                 onClick={toggleShowPassword}
               />
             ) : (
               <RemoveRedEyeIcon
-                className="toggle-password"
+                className="toggle-password-update"
                 onClick={toggleShowPassword}
               />
             )}
           </div>
         </div>
-        <div className="form-group">
+        <div className="form-group-update">
           <label htmlFor="confirmPassword">Confirm Password:</label>
-          <div className="input-container">
+          <div className="input-container-update">
             <input
               type={showPassword ? "text" : "password"}
               id="confirmPassword"
@@ -90,12 +90,12 @@ const UpdateD = () => {
             />
             {showPassword ? (
               <VisibilityOffIcon
-                className="toggle-password"
+                className="toggle-password-update"
                 onClick={toggleShowPassword}
               />
             ) : (
               <RemoveRedEyeIcon
-                className="toggle-password"
+                className="toggle-password-update"
                 onClick={toggleShowPassword}
               />
             )}
@@ -103,7 +103,7 @@ const UpdateD = () => {
           {errorMessage && <p className="error-message">{errorMessage}</p>}
           {lengthError && <p className="error-message">{lengthError}</p>}
         </div>
-        <div className="button-and-checkbox">
+        <div className="button-and-checkbox-update">
           <button
             type="button"
             className="change-password-button"

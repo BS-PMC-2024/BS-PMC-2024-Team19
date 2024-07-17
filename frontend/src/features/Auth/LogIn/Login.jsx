@@ -5,8 +5,11 @@ import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import "./Login.css";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [loginFormData, setLoginFormData] = useState({
     email: "",
     password: "",
@@ -64,6 +67,7 @@ const Login = () => {
 
         setAlertSeverity("success");
         setAlertMessage("Login successful!");
+        navigate("/update");
         setLoginFormData({ email: "", password: "" });
         setLoginErrors([]);
       } catch (error) {
