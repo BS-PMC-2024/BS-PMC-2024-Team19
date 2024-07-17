@@ -5,29 +5,29 @@ import cors from "cors";
 import authRoutes from './routes/auth.js';
 
 const app = express();
-app.use(cookieParser());
-app.use(cors());
+
+// Middleware
 app.use(express.json()); // Parse JSON bodies
 
+// CORS configuration
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true, // Use your local frontend URL
+}));
+
+app.use(cookieParser());
+
+// Debugging route
 app.get('/', (req, res) => {
+    console.log("Root route hit");
     return res.json("from server side");
 });
 
+// Auth routes
 app.use('/backend/auth', authRoutes);
 
+// Port configuration
 const PORT = 6500;
-
-app.use(cookieParser());
-app.use(cors());
-app.use(express.json()); // Parse JSON bodies
-
-// Mount authRoutes under the '/backend/auth' path
-app.use("/backend/auth", authRoutes);
-
-// Sample root route for testing server connection
-app.get("/", (req, res) => {
-  return res.json("from server side");
-});
 
 // Start server
 app.listen(PORT, () => {
