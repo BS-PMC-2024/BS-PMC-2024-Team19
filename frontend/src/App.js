@@ -4,6 +4,7 @@ import Footer from "./common/components/Footer/Footer";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignUp from "./features/Auth/SignUp/SignUp";
 import Login from "./features/Auth/LogIn/Login";
+import DeleteByAdmin from "./features/Admin/DeleteByAdmin";
 
 function App() {
   return (
