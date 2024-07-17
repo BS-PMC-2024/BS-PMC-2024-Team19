@@ -1,0 +1,124 @@
+.signup-container {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  margin-top: 100px;
+  width: 400px;
+  background: #fff;
+  padding-bottom: 50px;
+}
+
+.signup-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  margin-top: 30px;
+  width: 100%;
+}
+
+.signup-text {
+  color: var(--clr-robin-blue);
+  font-size: 50px;
+  font-weight: 700;
+}
+
+.signup-underline {
+  width: 50px;
+  height: 4px;
+  background: var(--clr-robin-blue);
+  border-radius: 4px;
+}
+
+.signup-inputs {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.signup-input {
+  display: flex;
+  align-items: center;
+  margin: auto;
+  width: 100%;
+  height: 50px;
+  background: #f1f1f1;
+  border-radius: 6px;
+  padding: 0 10px;
+}
+
+.signup-input img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.signup-input input {
+  height: 50px;
+  width: calc(100% - 40px);
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #797979;
+  font-size: 19px;
+}
+
+.signup-forget-password {
+  padding-left: 90px;
+  margin-top: 27px;
+  color: #797979;
+  font-size: 18px;
+}
+
+.signup-forget-password span {
+  color: #4c00b4;
+  cursor: pointer;
+}
+
+.signup-submit-container {
+  display: flex;
+  gap: 30px;
+  margin: 20px auto;
+}
+
+.signup-submit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 59px;
+  color: #fff;
+  background: var(--clr-robin-blue);
+  border-radius: 50px;
+  font-size: 19px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.signup-submit:hover {
+  background-color: var(--clr-black);
+}
+
+.signup-gray {
+  background: #eaeaea;
+  color: #676767;
+}
+
+.premium-checkbox .MuiSvgIcon-root {
+  font-size: 28px;
+}
+
+.premium-checkbox .MuiTypography-root {
+  font-size: 18px;
+}
+
+.error-text {
+  color: red;
+  font-size: 15px;
+  margin-top: 5px;
+}
+
+.signup-errors {
+  margin-top: 10px;
+}

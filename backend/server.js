@@ -1,25 +1,35 @@
+import mysql from "mysql";
+import express from "express";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import authRoutes from './routes/auth.js';
 
-// Importing required modules
-const mongoose = require('mongoose'); // MongoDB object modeling tool
-const bodyParser = require('body-parser'); // Parse incoming request bodies
-const cors = require('cors'); // Enable Cross-Origin Resource Sharing
-const express = require('express'); // Fast, unopinionated, minimalist web framework for Node.js
+const app = express();
+app.use(cookieParser());
+app.use(cors());
+app.use(express.json()); // Parse JSON bodies
 
-const app = express(); // Create an instance of the express application
+app.get('/', (req, res) => {
+    return res.json("from server side");
+});
 
-app.use(bodyParser.json()); // Parse JSON bodies
-app.use(cors()); // Enable CORS for all routes
+app.use('/backend/auth', authRoutes);
 
-// Connect to MongoDB database
-mongoose.connect('server url', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => console.error('Error connecting to MongoDB:', err));
-
-// Start the server
 const PORT = 6500;
+
+app.use(cookieParser());
+app.use(cors());
+app.use(express.json()); // Parse JSON bodies
+
+// Mount authRoutes under the '/backend/auth' path
+app.use("/backend/auth", authRoutes);
+
+// Sample root route for testing server connection
+app.get("/", (req, res) => {
+  return res.json("from server side");
+});
+
+// Start server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
