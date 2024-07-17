@@ -57,7 +57,38 @@ export const register = (req, res) => {
 };
 
 export const login = (req, res) => {
-  // Your login logic here
+  const { email, password } = req.body;
+
+  console.log("Received login data:", req.body);
+
+  const getUserQuery = "SELECT * FROM users WHERE email = ?";
+  db.query(getUserQuery, [email], (err, results) => {
+    if (err) {
+      console.error("DB Get User Error:", err);
+      return res.status(500).json({ error: "Failed to get user" });
+    }
+
+    if (results.length === 0) {
+      console.log("User not found:", email);
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    const user = results[0];
+    console.log("Password to compare:", password);
+    console.log("Hashed password from DB:", user.password);
+
+    // Compare the input password with the stored hashed password
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
+    console.log("Is password valid:", isPasswordValid);
+
+    if (!isPasswordValid) {
+      console.log("Invalid password for user:", email);
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    console.log("User logged in successfully:", email);
+    return res.status(200).json({ message: "Login successful" });
+  });
 };
 
 export const logout = (req, res) => {

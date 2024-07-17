@@ -12,12 +12,12 @@ const Navbar = () => {
   };
 
   const handleLoginClick = () => {
-    navigate("/signup?view=login");
+    navigate("/login"); // Update to navigate to the login page
     setNavToggle(false); // Close the navbar after navigation
   };
 
   const handleSignUpClick = () => {
-    navigate("/signup?view=signup");
+    navigate("/signup"); // Navigate to the signup page
     setNavToggle(false); // Close the navbar after navigation
   };
 

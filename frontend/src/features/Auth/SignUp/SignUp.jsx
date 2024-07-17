@@ -5,15 +5,10 @@ import userPass from "../../../assets/images/password.png";
 import Checkbox from "@mui/material/Checkbox";
 import "./SignUp.css";
 import { IoMdEyeOff, IoMdEye } from "react-icons/io";
-import { useLocation } from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 
 const SignUp = () => {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const view = queryParams.get("view");
-  const [action, setAction] = useState(view === "login" ? "Login" : "Sign Up");
   const [showPassword, setShowPassword] = useState(false);
 
   const [signUpFormData, setSignUpFormData] = useState({
@@ -92,7 +87,6 @@ const SignUp = () => {
           return;
         }
 
-        const responseData = await response.json(); // Successful response
         setAlertSeverity("success");
         setAlertMessage("User registered successfully!");
         setSignUpFormData({
@@ -114,7 +108,7 @@ const SignUp = () => {
   return (
     <div className="signup-container">
       <div className="signup-header">
-        <div className="signup-text">{action}</div>
+        <div className="signup-text">Sign Up</div>
         <div className="signup-underline"></div>
       </div>
       <form className="signup-inputs" onSubmit={handleSubmit}>
@@ -190,7 +184,7 @@ const SignUp = () => {
         )}
         <div className="signup-submit-container">
           <button className="signup-submit" type="submit">
-            {action}
+            Sign Up
           </button>
         </div>
       </form>
