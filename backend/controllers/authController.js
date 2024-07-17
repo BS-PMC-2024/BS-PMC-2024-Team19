@@ -1,6 +1,6 @@
 import { db } from "../db/connect.js";
 import bcrypt from "bcryptjs";
-
+import jwt from "jsonwebtoken";
 export const register = (req, res) => {
   const { fullName, email, password, isPrime } = req.body;
 
@@ -56,41 +56,30 @@ export const register = (req, res) => {
   });
 };
 
-export const login = (req, res) => {
-  const { email, password } = req.body;
+export const login = (req,res)=>{
+  const q = "SELECT * FROM users WHERE email = ?";
+  db.query(q,[req.body.email],(err,data)=>{
+    if(err) return res.status(500).json(err);
 
-  console.log("Received login data:", req.body);
+    if(data.length === 0) return res.status(404).json("User not found!");
 
-  const getUserQuery = "SELECT * FROM users WHERE email = ?";
-  db.query(getUserQuery, [email], (err, results) => {
-    if (err) {
-      console.error("DB Get User Error:", err);
-      return res.status(500).json({ error: "Failed to get user" });
-    }
+    const checkPassword = bcrypt.compareSync(req.body.password,data[0].password);
 
-    if (results.length === 0) {
-      console.log("User not found:", email);
-      return res.status(401).json({ error: "Invalid email or password" });
-    }
+    if(!checkPassword) return res.status(404).json("Worng password or email");
+    const token = jwt.sign({ id: data[0].id },"secretkey");
 
-    const user = results[0];
-    console.log("Password to compare:", password);
-    console.log("Hashed password from DB:", user.password);
+    const { password, ...others } = data[0];
+    res.cookie("accessToken", token, { httpOnly: true }).status(200).json(others);
 
-    // Compare the input password with the stored hashed password
-    const isPasswordValid = bcrypt.compareSync(password, user.password);
-    console.log("Is password valid:", isPasswordValid);
-
-    if (!isPasswordValid) {
-      console.log("Invalid password for user:", email);
-      return res.status(401).json({ error: "Invalid email or password" });
-    }
-
-    console.log("User logged in successfully:", email);
-    return res.status(200).json({ message: "Login successful" });
   });
 };
 
+
 export const logout = (req, res) => {
-  // Your logout logic here
+  res.clearCookie("accessToken",{
+    secure:true,
+    sameSite:"none"
+  }).status(200).json("User has been logged out.")
 };
+
+
