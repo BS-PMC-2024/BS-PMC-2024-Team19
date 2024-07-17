@@ -5,10 +5,17 @@
   height: 78px;
   background-color: var(--clr-black);
   z-index: 999;
+  display: flex;
+  justify-content: space-between; /* Align brand and buttons */
+  align-items: center; /* Center items vertically */
+  padding: 0 20px; /* Add horizontal padding */
+  width: 100%; /* Ensure full width */
 }
+
 .navbar-brand {
   color: var(--clr-white);
 }
+
 .hamburger-menu {
   display: flex;
   flex-direction: column;
@@ -18,6 +25,7 @@
   cursor: pointer;
   z-index: 10;
 }
+
 .bar-top,
 .bar-middle,
 .bar-bottom {
@@ -26,60 +34,34 @@
   transform-origin: left;
   transition: var(--transition);
 }
+
 .hamburger-menu-change .bar-top {
   transform: rotate(42deg);
 }
+
 .hamburger-menu-change .bar-middle {
   transform: translateX(1rem);
   opacity: 0;
 }
+
 .hamburger-menu-change .bar-bottom {
   transform: rotate(-42deg);
 }
-.navbar-collapse {
-  position: fixed;
-  right: 0;
-  top: 0;
-  background-color: var(--clr-dark);
-  height: 100%;
-  width: 100%;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  transform: translateX(100%);
-  transition: var(--transition);
-}
-.show-navbar-collapse {
-  transform: translateX(0);
-}
-.navbar-collapse-content {
-  padding: 40px;
-}
-.navbar-nav {
-  margin-bottom: 30px;
-}
-.navbar-nav li {
-  margin: 20px 0;
-  font-size: 2rem;
-  transition: var(--transition);
-}
-.navbar-nav li:hover {
-  color: var(--clr-black);
-}
-.navbar-social li {
-  margin-right: 12px;
-  font-size: 2.4rem;
-}
+
 .navbar-btns {
   display: flex;
-  gap: 10px;
-  align-items: center;
+  gap: 10px; /* Space between buttons */
 }
+
 .navbar-btns button {
   border: 2px solid var(--clr-robin-blue);
   transition: var(--transition);
 }
+
 .navbar-btns button span {
   margin-left: 8px;
 }
+
 .navbar-btns button:hover {
   background-color: var(--clr-robin-blue);
 }
@@ -106,35 +88,6 @@
     align-items: center;
   }
   .hamburger-menu {
-    display: none;
-  }
-  .navbar-nav {
-    display: flex !important;
-    margin-bottom: 0;
-  }
-  .navbar-btns {
-    margin-top: 0;
-    margin-left: 28px;
-  }
-  .navbar-nav li {
-    margin: 0;
-    font-size: 1.9rem;
-    font-weight: 500;
-    margin-left: 36px;
-  }
-  .navbar-nav li:hover {
-    color: var(--clr-crazy-blue);
-  }
-  .navbar-social {
-    margin-left: 60px;
-  }
-  .navbar-social li {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--transition);
-  }
-  .navbar-social li:hover {
-    color: var(--clr-crazy-blue);
+    display: none; /* Hide hamburger on larger screens */
   }
 }
