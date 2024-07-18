@@ -83,13 +83,28 @@ export const login = (req, res) => {
 export const logout = (req, res) => {
   res
     .clearCookie("accessToken", {
-      secure: true,
-      sameSite: "lex",
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax",
     })
     .status(200)
     .json("User has been logged out.");
 };
 
+export const checkAuthStatus = (req, res) => {
+  const token = req.cookies.accessToken;
+  if (!token) {
+    return res.json({ loggedIn: false });
+  }
+
+  jwt.verify(token, "secretkey", (err, user) => {
+    if (err) {
+      return res.json({ loggedIn: false });
+    }
+
+    return res.json({ loggedIn: true });
+  });
+};
 //////////////////Admin/////////////////
 
 export const deleteUserByAdmin = (req, res) => {
