@@ -37,15 +37,14 @@
   transform: rotate(-42deg);
 }
 .navbar-collapse {
-  position: fixed;
-  right: 0;
+  transform: translateX(0);
+  left: 280px;
+  position: relative;
+  background-color: transparent;
+  box-shadow: none;
   top: 0;
-  background-color: var(--clr-dark);
-  height: 100%;
+  height: auto;
   width: 100%;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  transform: translateX(100%);
-  transition: var(--transition);
 }
 .show-navbar-collapse {
   transform: translateX(0);
