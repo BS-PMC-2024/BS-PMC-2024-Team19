@@ -10,12 +10,13 @@ const UpdateD = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [lengthError, setLengthError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleChangePassword = () => {
+  const handleChangePassword = async () => {
     if (newPassword.length < 6) {
       setLengthError("Password must be at least 6 characters long");
       setErrorMessage("");
@@ -25,7 +26,28 @@ const UpdateD = () => {
     } else {
       setErrorMessage("");
       setLengthError("");
-      // Handle password change logic here
+
+      try {
+        const response = await fetch(
+          "http://localhost:6500/backend/auth/changePassword",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ newPassword }), // Send newPassword as an object
+            credentials: "include",
+          }
+        );
+
+        if (response.ok) {
+          setSuccessMessage("Password updated successfully");
+        } else {
+          setErrorMessage("Failed to update password");
+        }
+      } catch (error) {
+        setErrorMessage("Failed to update password");
+      }
     }
   };
 
@@ -102,6 +124,9 @@ const UpdateD = () => {
           </div>
           {errorMessage && <p className="error-message">{errorMessage}</p>}
           {lengthError && <p className="error-message">{lengthError}</p>}
+          {successMessage && (
+            <p className="success-message">{successMessage}</p>
+          )}
         </div>
         <div className="button-and-checkbox-update">
           <button
