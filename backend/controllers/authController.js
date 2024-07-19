@@ -2,6 +2,10 @@ import { db } from "../db/connect.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+const JWT_SECRET =
+  "5e9ba789dad13b96a81107721f15dc563f879454b5368be1c798ecf852e49c63fe5d8a33b0fa3747f2bd243967640ff36e5969c3d223075c0acad4daa8473c22";
+
+// פונקציה לרישום משתמשים
 export const register = (req, res) => {
   const { fullName, email, password, isPrime } = req.body;
 
@@ -57,6 +61,7 @@ export const register = (req, res) => {
   });
 };
 
+// פונקציה להתחברות
 export const login = (req, res) => {
   const q = "SELECT * FROM users WHERE email = ?";
   db.query(q, [req.body.email], (err, data) => {
@@ -70,7 +75,11 @@ export const login = (req, res) => {
     );
 
     if (!checkPassword) return res.status(404).json("Wrong password or email");
-    const token = jwt.sign({ id: data[0].id }, "secretkey");
+
+    // השתמש ב-JWT_SECRET בעת יצירת הטוקן
+    const token = jwt.sign({ email: data[0].email }, JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
     const { password, ...others } = data[0];
     res
@@ -80,6 +89,7 @@ export const login = (req, res) => {
   });
 };
 
+// פונקציה ליציאה
 export const logout = (req, res) => {
   res
     .clearCookie("accessToken", {
@@ -91,13 +101,14 @@ export const logout = (req, res) => {
     .json("User has been logged out.");
 };
 
+// פונקציה לבדוק סטטוס התחברות
 export const checkAuthStatus = (req, res) => {
   const token = req.cookies.accessToken;
   if (!token) {
     return res.json({ loggedIn: false });
   }
 
-  jwt.verify(token, "secretkey", (err, user) => {
+  jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) {
       return res.json({ loggedIn: false });
     }
@@ -119,6 +130,7 @@ export const clearCookies = (req, res) => {
 
 //////////////////Admin/////////////////
 
+// פונקציה למחיקת משתמש על ידי מנהל
 export const deleteUserByAdmin = (req, res) => {
   const { email } = req.body;
 
@@ -139,4 +151,55 @@ export const deleteUserByAdmin = (req, res) => {
     console.log("User deleted successfully:", email);
     return res.status(200).json({ message: "User deleted successfully" });
   });
+};
+
+// פונקציה לשינוי סיסמא
+export const changePassword = async (req, res) => {
+  const { newPassword } = req.body;
+
+  // קרא את ה-token מהבקשה
+  const token = req.cookies.accessToken;
+
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized, no token provided" });
+  }
+
+  try {
+    // פענח את ה-token
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    if (!decoded.email) {
+      return res
+        .status(401)
+        .json({ error: "Unauthorized, email not found in token" });
+    }
+
+    // הצפן את הסיסמה החדשה עם bcrypt
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(newPassword, salt);
+
+    // אם ה-token תקין, בצע שינוי סיסמה
+    const updatePasswordQuery = "UPDATE users SET password = ? WHERE email = ?";
+    db.query(
+      updatePasswordQuery,
+      [hashedPassword, decoded.email],
+      (err, result) => {
+        if (err) {
+          console.error("DB Update Password Error:", err);
+          return res.status(500).json({ error: "Failed to update password" });
+        }
+
+        if (result.affectedRows === 0) {
+          return res.status(404).json({ error: "User not found" });
+        }
+
+        return res
+          .status(200)
+          .json({ message: "Password updated successfully" });
+      }
+    );
+  } catch (err) {
+    console.error("JWT verification error:", err);
+    return res.status(401).json({ error: "Unauthorized, invalid token" });
+  }
 };
