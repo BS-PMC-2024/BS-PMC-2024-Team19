@@ -60,7 +60,7 @@
 .navbar-collapse {
   position: fixed;
   right: 0;
-  top: 78px; /* Offset to start below the navbar */
+  top: 78px; 
   background-color: var(--clr-dark);
   height: calc(100% - 78px);
   width: 100%;

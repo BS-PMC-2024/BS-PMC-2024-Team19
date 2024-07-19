@@ -8,7 +8,7 @@
 
 .form-container-update {
   background-image: url("../../../assets/images/passwor.png");
-  background-size: contain; /* או מידתי גימור */
+  background-size: contain; 
   background-repeat: no-repeat;
   background-position: left;
   max-width: 700px;
@@ -63,7 +63,7 @@
 }
 
 .change-password-button {
-  background-color: #000; /* צבע רקע שחור */
+  background-color: #000; 
   color: white;
   padding: 10px 20px;
   border: 3px solid var(--clr-robin-blue);
@@ -81,9 +81,9 @@
 .button-and-checkbox-update {
   display: flex;
   align-items: center;
-  justify-content: center; /* יישור לאמצע */
-  gap: 10px; /* מרווח בין האלמנטים */
-  flex-direction: column; /* יישור האלמנטים בעמודה */
+  justify-content: center; 
+  gap: 10px; 
+  flex-direction: column; 
 }
 
 .error-message {

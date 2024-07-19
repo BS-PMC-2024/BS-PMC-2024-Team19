@@ -58,8 +58,9 @@ const Login = () => {
           }
         );
 
+        const responseData = await response.json();
+
         if (!response.ok) {
-          const responseData = await response.json();
           setAlertSeverity("error");
           setAlertMessage(responseData.error || "Login failed!");
           return;
@@ -67,7 +68,14 @@ const Login = () => {
 
         setAlertSeverity("success");
         setAlertMessage("Login successful!");
-        navigate("/update");
+
+        // Check if the user is an admin and navigate accordingly
+        if (responseData.isAdmin) {
+          navigate("/deletebyadmin");
+        } else {
+          navigate("/update");
+        }
+
         setLoginFormData({ email: "", password: "" });
         setLoginErrors([]);
       } catch (error) {

@@ -6,32 +6,26 @@ import authRoutes from "./routes/auth.js";
 
 const app = express();
 
-// Middleware
-app.use(express.json()); // Parse JSON bodies
+app.use(express.json());
 
-// CORS configuration
 app.use(
   cors({
     origin: "http://localhost:3000",
-    credentials: true, // Allow credentials (cookies) to be sent
+    credentials: true,
   })
 );
 
 app.use(cookieParser());
 
-// Debugging route
 app.get("/", (req, res) => {
   console.log("Root route hit");
   return res.json("from server side");
 });
 
-// Auth routes
 app.use("/backend/auth", authRoutes);
 
-// Port configuration
 const PORT = 6500;
 
-// Start server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

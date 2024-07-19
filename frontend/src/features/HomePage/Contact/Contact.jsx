@@ -58,7 +58,6 @@ const Contact = () => {
                 handleBlur,
                 handleSubmit,
                 isSubmitting,
-                /* and other goodies */
               }) => (
                 <form onSubmit={handleSubmit}>
                   <div className="form-elem">

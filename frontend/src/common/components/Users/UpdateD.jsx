@@ -35,7 +35,7 @@ const UpdateD = () => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ newPassword }), // Send newPassword as an object
+            body: JSON.stringify({ newPassword }), 
             credentials: "include",
           }
         );

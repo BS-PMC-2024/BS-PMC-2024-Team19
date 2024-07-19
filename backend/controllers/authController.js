@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 const JWT_SECRET =
   "5e9ba789dad13b96a81107721f15dc563f879454b5368be1c798ecf852e49c63fe5d8a33b0fa3747f2bd243967640ff36e5969c3d223075c0acad4daa8473c22";
 
-// פונקציה לרישום משתמשים
+// register function
 export const register = (req, res) => {
   const { fullName, email, password, isPrime } = req.body;
 
@@ -61,7 +61,7 @@ export const register = (req, res) => {
   });
 };
 
-// פונקציה להתחברות
+//connect function
 export const login = (req, res) => {
   const q = "SELECT * FROM users WHERE email = ?";
   db.query(q, [req.body.email], (err, data) => {
@@ -76,20 +76,21 @@ export const login = (req, res) => {
 
     if (!checkPassword) return res.status(404).json("Wrong password or email");
 
-    // השתמש ב-JWT_SECRET בעת יצירת הטוקן
-    const token = jwt.sign({ email: data[0].email }, JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { email: data[0].email, isAdmin: data[0].isAdmin },
+      JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
 
     const { password, ...others } = data[0];
     res
       .cookie("accessToken", token, { httpOnly: true })
       .status(200)
-      .json(others);
+      .json({ ...others, token });
   });
 };
-
-// פונקציה ליציאה
 export const logout = (req, res) => {
   res
     .clearCookie("accessToken", {
@@ -101,7 +102,6 @@ export const logout = (req, res) => {
     .json("User has been logged out.");
 };
 
-// פונקציה לבדוק סטטוס התחברות
 export const checkAuthStatus = (req, res) => {
   const token = req.cookies.accessToken;
   if (!token) {
@@ -130,7 +130,7 @@ export const clearCookies = (req, res) => {
 
 //////////////////Admin/////////////////
 
-// פונקציה למחיקת משתמש על ידי מנהל
+//delete user by admin
 export const deleteUserByAdmin = (req, res) => {
   const { email } = req.body;
 
@@ -142,7 +142,6 @@ export const deleteUserByAdmin = (req, res) => {
       console.error("DB Delete User Error:", err);
       return res.status(500).json({ error: "Failed to delete user" });
     }
-
     if (result.affectedRows === 0) {
       console.log("User not found for deletion:", email);
       return res.status(404).json({ error: "User not found" });
@@ -153,11 +152,10 @@ export const deleteUserByAdmin = (req, res) => {
   });
 };
 
-// פונקציה לשינוי סיסמא
+//change password function
 export const changePassword = async (req, res) => {
   const { newPassword } = req.body;
 
-  // קרא את ה-token מהבקשה
   const token = req.cookies.accessToken;
 
   if (!token) {
@@ -165,7 +163,6 @@ export const changePassword = async (req, res) => {
   }
 
   try {
-    // פענח את ה-token
     const decoded = jwt.verify(token, JWT_SECRET);
 
     if (!decoded.email) {
@@ -174,11 +171,9 @@ export const changePassword = async (req, res) => {
         .json({ error: "Unauthorized, email not found in token" });
     }
 
-    // הצפן את הסיסמה החדשה עם bcrypt
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(newPassword, salt);
 
-    // אם ה-token תקין, בצע שינוי סיסמה
     const updatePasswordQuery = "UPDATE users SET password = ? WHERE email = ?";
     db.query(
       updatePasswordQuery,

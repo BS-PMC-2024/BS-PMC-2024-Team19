@@ -6,7 +6,7 @@
   width: 400px;
   background: #fff;
   padding-bottom: 50px;
-  min-height: calc(100vh - 100px); /* Adjust based on footer height */
+  min-height: calc(100vh - 100px); 
 }
 
 .login-header {

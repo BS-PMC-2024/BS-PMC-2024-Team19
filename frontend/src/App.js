@@ -6,6 +6,7 @@ import Footer from "./common/components/Footer/Footer";
 import UpdateD from "./common/components/Users/UpdateD";
 import SignUp from "./features/Auth/SignUp/SignUp";
 import Login from "./features/Auth/LogIn/Login";
+import DeleteByAdmin from "./features/Admin/DeleteByAdmin";
 import axios from "axios";
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
           );
           console.log("Cookies cleared.");
           sessionStorage.setItem("hasClearedCookies", "true");
-          window.location.reload(); // Reload the page to ensure cookies are cleared
+          window.location.reload();
         } catch (err) {
           console.error("Failed to clear cookies:", err);
         }
@@ -42,6 +43,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/update" element={<UpdateD />} />
+            <Route path="/DeleteByAdmin" element={<DeleteByAdmin />} />
             <Route path="/" element={<HomePage />} />
           </Routes>
           <Footer />
