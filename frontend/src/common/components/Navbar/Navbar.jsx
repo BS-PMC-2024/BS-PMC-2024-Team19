@@ -3,29 +3,24 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import { IoMdRocket } from "react-icons/io";
 import axios from "axios";
+import clearCookies from "../../../utils/clearCookies";
 
 const Navbar = () => {
   const [navToggle, setNavToggle] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
- 
   useEffect(() => {
-    // Clear cookies when the component mounts
     clearCookies();
-
-    // Check login status after clearing cookies
     checkLoginStatus();
   }, []);
 
-  const clearCookies = () => {
-    // Clear the accessToken cookie
-    document.cookie = "accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-  };
-
   const checkLoginStatus = async () => {
     try {
-      const response = await axios.get("http://localhost:6500/backend/auth/status", { withCredentials: true });
+      const response = await axios.get(
+        "http://localhost:6500/backend/auth/status",
+        { withCredentials: true }
+      );
       setIsLoggedIn(response.data.loggedIn);
     } catch (err) {
       console.error("Failed to check login status:", err);
@@ -51,10 +46,14 @@ const Navbar = () => {
 
   const handleLogoutClick = async () => {
     try {
-      await axios.post("http://localhost:6500/backend/auth/logout", {}, { withCredentials: true });
+      await axios.post(
+        "http://localhost:6500/backend/auth/logout",
+        {},
+        { withCredentials: true }
+      );
       setIsLoggedIn(false);
       clearCookies();
-      navigate("/"); // Redirect to the home page after logout
+      navigate("/");
     } catch (err) {
       console.error("Failed to logout:", err);
     }
@@ -87,26 +86,34 @@ const Navbar = () => {
             }`}
           >
             <div className="navbar-collapse-content">
-              {isLoggedIn ? (
-                <div className="navbar-btns">
-                  <button type="button" className="btn" onClick={handleLogoutClick}>
+              <div className="navbar-btns">
+                {isLoggedIn ? (
+                  <button
+                    type="button"
+                    className="btn"
+                    onClick={handleLogoutClick}
+                  >
                     <IoMdRocket /> <span>Logout</span>
                   </button>
-                </div>
-              ) : (
-                <>
-                  <div className="navbar-btns">
-                    <button type="button" className="btn" onClick={handleLoginClick}>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      className="btn"
+                      onClick={handleLoginClick}
+                    >
                       <IoMdRocket /> <span>Log In</span>
                     </button>
-                  </div>
-                  <div className="navbar-btns">
-                    <button type="button" className="btn" onClick={handleSignUpClick}>
+                    <button
+                      type="button"
+                      className="btn"
+                      onClick={handleSignUpClick}
+                    >
                       <IoMdRocket /> <span>Sign Up</span>
                     </button>
-                  </div>
-                </>
-              )}
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>

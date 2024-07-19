@@ -1,17 +1,18 @@
 import express from "express";
-const router = express.Router();
 import {
-  login,
   register,
+  login,
   logout,
-  deleteUserByAdmin,
   checkAuthStatus,
+  clearCookies,
 } from "../controllers/authController.js";
 
-router.post("/login", login);
+const router = express.Router();
+
 router.post("/register", register);
+router.post("/login", login);
 router.post("/logout", logout);
-router.post("/deleteUserByAdmin", deleteUserByAdmin);
 router.get("/status", checkAuthStatus);
+router.post("/clear-cookies", clearCookies); // New route for clearing cookies
 
 export default router;

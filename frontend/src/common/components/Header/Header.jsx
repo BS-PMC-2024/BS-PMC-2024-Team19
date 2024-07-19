@@ -1,9 +1,6 @@
 import React from "react";
 import Navbar from "../Navbar/Navbar";
 import "./Header.css";
-import { FaPaperPlane } from "react-icons/fa";
-import { Link } from "react-router-dom";
-
 const Header = () => {
   return (
     <header className="header flex flex-center flex-column">
@@ -19,9 +16,6 @@ const Header = () => {
             management, and performance tracking to efficiently allocate your
             capital.
           </p>
-          <Link to="/signup?view=signup" className="btn header-btn btn-blue">
-            <FaPaperPlane /> <span>get started</span>
-          </Link>
         </div>
       </div>
     </header>

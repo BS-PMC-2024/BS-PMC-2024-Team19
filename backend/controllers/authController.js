@@ -105,6 +105,18 @@ export const checkAuthStatus = (req, res) => {
     return res.json({ loggedIn: true });
   });
 };
+
+export const clearCookies = (req, res) => {
+  res
+    .clearCookie("accessToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax",
+    })
+    .status(200)
+    .json("Cookies cleared.");
+};
+
 //////////////////Admin/////////////////
 
 export const deleteUserByAdmin = (req, res) => {
