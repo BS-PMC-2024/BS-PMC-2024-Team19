@@ -8,7 +8,7 @@
 
 .form-container-update {
   background-image: url("../../../assets/images/passwor.png");
-  background-size: contain; 
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: left;
   max-width: 700px;
@@ -63,7 +63,7 @@
 }
 
 .change-password-button {
-  background-color: #000; 
+  background-color: #000;
   color: white;
   padding: 10px 20px;
   border: 3px solid var(--clr-robin-blue);
@@ -71,7 +71,8 @@
   cursor: pointer;
   margin-top: 10px;
   font-size: 14px;
-  margin-left: 320px;
+  margin-left: 360px;
+  font-weight: bold;
 }
 
 .change-password-button:hover {
@@ -81,9 +82,9 @@
 .button-and-checkbox-update {
   display: flex;
   align-items: center;
-  justify-content: center; 
-  gap: 10px; 
-  flex-direction: column; 
+  justify-content: center;
+  gap: 10px;
+  flex-direction: column;
 }
 
 .error-message {
@@ -92,4 +93,71 @@
   text-align: left;
   margin-top: 5px;
   margin-left: 370px;
+}
+
+.success-message {
+  color: rgb(1, 89, 19);
+  font-size: 14px;
+  text-align: left;
+  margin-top: 5px;
+  margin-left: 400px;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+  .form-container-update {
+    max-width: 90%;
+    margin: 100px auto 0;
+    padding: 15px;
+  }
+
+  .form-group-update {
+    font-size: 12px;
+  }
+
+  .form-group-update label {
+    margin-left: 0;
+  }
+
+  .input-container-update {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .change-password-button {
+    font-size: 12px;
+    padding: 8px 16px;
+    margin-left: 0;
+  }
+
+  .error-message,
+  .success-message {
+    font-size: 12px;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-container-update {
+    margin: 50px auto 0;
+    padding: 10px;
+  }
+
+  .form-group-update {
+    font-size: 10px;
+  }
+
+  .input-container-update {
+    width: 100%;
+  }
+
+  .change-password-button {
+    font-size: 10px;
+    padding: 6px 12px;
+  }
+
+  .error-message,
+  .success-message {
+    font-size: 10px;
+  }
 }

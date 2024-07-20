@@ -154,7 +154,7 @@ export const deleteUserByAdmin = (req, res) => {
 
 //change password function
 export const changePassword = async (req, res) => {
-  const { newPassword } = req.body;
+  const { oldPassword, newPassword } = req.body;
 
   const token = req.cookies.accessToken;
 
@@ -171,28 +171,51 @@ export const changePassword = async (req, res) => {
         .json({ error: "Unauthorized, email not found in token" });
     }
 
-    const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(newPassword, salt);
-
-    const updatePasswordQuery = "UPDATE users SET password = ? WHERE email = ?";
-    db.query(
-      updatePasswordQuery,
-      [hashedPassword, decoded.email],
-      (err, result) => {
-        if (err) {
-          console.error("DB Update Password Error:", err);
-          return res.status(500).json({ error: "Failed to update password" });
-        }
-
-        if (result.affectedRows === 0) {
-          return res.status(404).json({ error: "User not found" });
-        }
-
-        return res
-          .status(200)
-          .json({ message: "Password updated successfully" });
+    const getUserQuery = "SELECT password FROM users WHERE email = ?";
+    db.query(getUserQuery, [decoded.email], (err, results) => {
+      if (err) {
+        console.error("DB Get User Error:", err);
+        return res.status(500).json({ error: "Failed to retrieve user data" });
       }
-    );
+
+      if (results.length === 0) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      const hashedOldPassword = results[0].password;
+
+      const isPasswordMatch = bcrypt.compareSync(
+        oldPassword,
+        hashedOldPassword
+      );
+      if (!isPasswordMatch) {
+        return res.status(400).json({ error: "Old password is incorrect" });
+      }
+
+      const salt = bcrypt.genSaltSync(10);
+      const hashedNewPassword = bcrypt.hashSync(newPassword, salt);
+
+      const updatePasswordQuery =
+        "UPDATE users SET password = ? WHERE email = ?";
+      db.query(
+        updatePasswordQuery,
+        [hashedNewPassword, decoded.email],
+        (err, result) => {
+          if (err) {
+            console.error("DB Update Password Error:", err);
+            return res.status(500).json({ error: "Failed to update password" });
+          }
+
+          if (result.affectedRows === 0) {
+            return res.status(404).json({ error: "User not found" });
+          }
+
+          return res
+            .status(200)
+            .json({ message: "Password updated successfully" });
+        }
+      );
+    });
   } catch (err) {
     console.error("JWT verification error:", err);
     return res.status(401).json({ error: "Unauthorized, invalid token" });
