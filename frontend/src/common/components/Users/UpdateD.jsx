@@ -6,6 +6,7 @@ import "../Users/UpdateD.css";
 
 const UpdateD = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -16,17 +17,22 @@ const UpdateD = () => {
     setShowPassword(!showPassword);
   };
 
+  const clearMessages = () => {
+    setErrorMessage("");
+    setLengthError("");
+    setSuccessMessage("");
+  };
+
   const handleChangePassword = async () => {
+    clearMessages();
+
     if (newPassword.length < 6) {
       setLengthError("Password must be at least 6 characters long");
-      setErrorMessage("");
+    } else if (newPassword === oldPassword) {
+      setErrorMessage("New password cannot be the same as the old password");
     } else if (newPassword !== confirmPassword) {
       setErrorMessage("Passwords do not match");
-      setLengthError("");
     } else {
-      setErrorMessage("");
-      setLengthError("");
-
       try {
         const response = await fetch(
           "http://localhost:6500/backend/auth/changePassword",
@@ -35,7 +41,7 @@ const UpdateD = () => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ newPassword }), 
+            body: JSON.stringify({ oldPassword, newPassword }),
             credentials: "include",
           }
         );
@@ -43,7 +49,8 @@ const UpdateD = () => {
         if (response.ok) {
           setSuccessMessage("Password updated successfully");
         } else {
-          setErrorMessage("Failed to update password");
+          const result = await response.json();
+          setErrorMessage(result.error || "Failed to update password");
         }
       } catch (error) {
         setErrorMessage("Failed to update password");
@@ -63,6 +70,8 @@ const UpdateD = () => {
               type={showPassword ? "text" : "password"}
               id="oldPassword"
               name="oldPassword"
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
             />
             {showPassword ? (
               <VisibilityOffIcon
