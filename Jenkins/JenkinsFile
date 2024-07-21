@@ -10,10 +10,13 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 script {
+                    // הגדרת הדוקר אימג'
                     dockerImage = docker.build("node:latest")
-                }
-                dockerImage.inside {
-                    sh 'npm install'
+
+                    // שימוש ב-dockerImage בתוך בלוק script
+                    dockerImage.inside {
+                        sh 'npm install'
+                    }
                 }
             }
         }
