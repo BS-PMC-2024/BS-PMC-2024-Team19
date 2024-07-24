@@ -64,12 +64,23 @@ pipeline {
             }
         }
 
-        stage('Build Frontend') {
+        stage('Start Backend') {
             steps {
                 script {
-                    // Run the build command inside the Docker container for the frontend
+                    // Run the start command inside the Docker container for the backend
+                    dockerImageBackend.inside {
+                        sh 'npm start'
+                    }
+                }
+            }
+        }
+
+        stage('Start Frontend') {
+            steps {
+                script {
+                    // Run the start command inside the Docker container for the frontend
                     dockerImageFrontend.inside {
-                        sh 'npm run build'
+                        sh 'npm start'
                     }
                 }
             }
@@ -120,28 +131,6 @@ pipeline {
                     // Log in to Docker Hub and push the image
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
                         dockerImageFrontend.push()
-                    }
-                }
-            }
-        }
-
-        stage('Deploy Backend') {
-            steps {
-                script {
-                    // Deploy the backend application using the pushed Docker image
-                    docker.image("talelzam/backend:latest").inside {
-                        sh 'npm start'
-                    }
-                }
-            }
-        }
-
-        stage('Deploy Frontend') {
-            steps {
-                script {
-                    // Deploy the frontend application using the pushed Docker image
-                    docker.image("talelzam/frontend:latest").inside {
-                        sh 'serve -s build'
                     }
                 }
             }
