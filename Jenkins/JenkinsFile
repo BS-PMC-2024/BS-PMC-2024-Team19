@@ -20,9 +20,12 @@ pipeline {
             steps {
                 script {
                     dockerImageBackend.inside {
-                        // Install dependencies and run tests
-                        sh 'npm install'
-                        sh 'npm test'
+                        // Navigate to the backend directory
+                        dir('backend') {
+                            // Install dependencies and run tests
+                            sh 'npm install'
+                            sh 'npm test'
+                        }
                     }
                 }
             }
