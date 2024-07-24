@@ -19,6 +19,17 @@ pipeline {
             }
         }
 
+        stage('Show package.json') {
+            steps {
+                script {
+                    // Navigate to the frontend directory and display the package.json file
+                    dir('frontend') {
+                        sh 'cat package.json'
+                    }
+                }
+            }
+        }
+
         stage('Build Backend Image') {
             steps {
                 script {
