@@ -7,23 +7,56 @@ pipeline {
             }
         }
 
-        stage('Install dependencies') {
+        stage('Verify Dockerfile and Docker Compose') {
             steps {
                 script {
-                    // Build the Docker image for the backend
-                    dockerImageBackend = docker.build("backend-image", "-f backend/Dockerfile .")
+                    sh 'pwd'
+                    sh 'ls -la'
                 }
             }
         }
 
-        stage('Run Tests') {
+        stage('Show package.json') {
             steps {
                 script {
-                    dockerImageBackend.inside {
-                        // Navigate to the backend directory
-                        dir('backend') {
-                            // Install dependencies and run tests
-                            sh 'npm install'
+                    dir('frontend') {
+                        sh 'cat package.json'
+                    }
+                }
+            }
+        }
+
+        stage('Start Backend') {
+            steps {
+                script {
+                    dir('backend') {
+                        dockerImageBackend = docker.build("backend:latest", '.')
+                        dockerImageBackend.inside {
+                            sh 'npm start'
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Start Frontend') {
+            steps {
+                script {
+                    dir('frontend') {
+                        dockerImageFrontend = docker.build("frontend:latest", '.')
+                        dockerImageFrontend.inside {
+                            sh 'npm start'
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Test Backend') {
+            steps {
+                script {
+                    dir('backend') {
+                        dockerImageBackend.inside {
                             sh 'npm test'
                         }
                     }
@@ -31,7 +64,19 @@ pipeline {
             }
         }
 
-        stage('Push Docker image') {
+        stage('Test Frontend') {
+            steps {
+                script {
+                    dir('frontend') {
+                        dockerImageFrontend.inside {
+                            sh 'npm test'
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Push Backend Docker image') {
             steps {
                 script {
                     dockerImageBackend.tag('talelzam/backend:latest')
@@ -42,11 +87,12 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Push Frontend Docker image') {
             steps {
                 script {
-                    docker.image("talelzam/backend:latest").inside {
-                        sh 'node index.js' // or whatever the command is to start the application
+                    dockerImageFrontend.tag('talelzam/frontend:latest')
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
+                        dockerImageFrontend.push()
                     }
                 }
             }
