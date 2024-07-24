@@ -3,6 +3,7 @@ pipeline {
     stages {
         stage('Clone repository') {
             steps {
+                // Clone the repository from GitHub
                 git 'https://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@github.com/BS-PMC-2024/BS-PMC-2024-Team19.git'
             }
         }
@@ -10,7 +11,9 @@ pipeline {
         stage('Verify Dockerfile and Docker Compose') {
             steps {
                 script {
+                    // Print the current directory
                     sh 'pwd'
+                    // Verify the contents of the directory to ensure Dockerfile and docker-compose.yml exist
                     sh 'ls -la'
                 }
             }
@@ -19,8 +22,43 @@ pipeline {
         stage('Show package.json') {
             steps {
                 script {
+                    // Navigate to the frontend directory and display the package.json file
                     dir('frontend') {
                         sh 'cat package.json'
+                    }
+                }
+            }
+        }
+
+        stage('Build Backend Image') {
+            steps {
+                script {
+                    // Navigate to the backend directory
+                    dir('backend') {
+                        // Build the Docker image using the Dockerfile in the backend directory
+                        dockerImageBackend = docker.build("backend:latest", '.')
+
+                        // Run 'npm install' inside the Docker container
+                        dockerImageBackend.inside {
+                            sh 'npm install'
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Build Frontend Image') {
+            steps {
+                script {
+                    // Navigate to the frontend directory
+                    dir('frontend') {
+                        // Build the Docker image using the Dockerfile in the frontend directory
+                        dockerImageFrontend = docker.build("frontend:latest", '.')
+
+                        // Run 'npm install' inside the Docker container
+                        dockerImageFrontend.inside {
+                            sh 'npm install'
+                        }
                     }
                 }
             }
@@ -29,11 +67,9 @@ pipeline {
         stage('Start Backend') {
             steps {
                 script {
-                    dir('backend') {
-                        dockerImageBackend = docker.build("backend:latest", '.')
-                        dockerImageBackend.inside {
-                            sh 'npm start'
-                        }
+                    // Run the start command inside the Docker container for the backend
+                    dockerImageBackend.inside {
+                        sh 'npm start'
                     }
                 }
             }
@@ -42,11 +78,9 @@ pipeline {
         stage('Start Frontend') {
             steps {
                 script {
-                    dir('frontend') {
-                        dockerImageFrontend = docker.build("frontend:latest", '.')
-                        dockerImageFrontend.inside {
-                            sh 'npm start'
-                        }
+                    // Run the start command inside the Docker container for the frontend
+                    dockerImageFrontend.inside {
+                        sh 'npm start'
                     }
                 }
             }
@@ -55,10 +89,9 @@ pipeline {
         stage('Test Backend') {
             steps {
                 script {
-                    dir('backend') {
-                        dockerImageBackend.inside {
-                            sh 'npm test'
-                        }
+                    // Run tests inside the Docker container for the backend
+                    dockerImageBackend.inside {
+                        sh 'npm test'
                     }
                 }
             }
@@ -67,10 +100,9 @@ pipeline {
         stage('Test Frontend') {
             steps {
                 script {
-                    dir('frontend') {
-                        dockerImageFrontend.inside {
-                            sh 'npm test'
-                        }
+                    // Run tests inside the Docker container for the frontend
+                    dockerImageFrontend.inside {
+                        sh 'npm test'
                     }
                 }
             }
@@ -79,7 +111,10 @@ pipeline {
         stage('Push Backend Docker image') {
             steps {
                 script {
+                    // Tag the Docker image
                     dockerImageBackend.tag('talelzam/backend:latest')
+
+                    // Log in to Docker Hub and push the image
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
                         dockerImageBackend.push()
                     }
@@ -90,7 +125,10 @@ pipeline {
         stage('Push Frontend Docker image') {
             steps {
                 script {
+                    // Tag the Docker image
                     dockerImageFrontend.tag('talelzam/frontend:latest')
+
+                    // Log in to Docker Hub and push the image
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
                         dockerImageFrontend.push()
                     }
