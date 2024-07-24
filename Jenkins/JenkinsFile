@@ -7,28 +7,11 @@ pipeline {
             }
         }
 
-        stage('Verify Dockerfile and package.json') {
+        stage('Install dependencies') {
             steps {
                 script {
-                    // Display current directory and files after cloning
-                    sh 'pwd'
-                    sh 'ls -la'
-                    dir('backend') {
-                        sh 'cat package.json'
-                        sh 'ls -la'
-                        sh 'cat Dockerfile'
-                    }
-                }
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    dir('backend') {
-                        // Build Docker image
-                        dockerImageBackend = docker.build("backend-image", '.')
-                    }
+                    // Build the Docker image for the backend
+                    dockerImageBackend = docker.build("backend-image", "-f backend/Dockerfile .")
                 }
             }
         }
@@ -36,18 +19,16 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    dir('backend') {
-                        dockerImageBackend.inside {
-                            // Run tests
-                            sh 'npm install'
-                            sh 'npm test'
-                        }
+                    dockerImageBackend.inside {
+                        // Install dependencies and run tests
+                        sh 'npm install'
+                        sh 'npm test'
                     }
                 }
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Push Docker image') {
             steps {
                 script {
                     dockerImageBackend.tag('talelzam/backend:latest')
@@ -62,8 +43,7 @@ pipeline {
             steps {
                 script {
                     docker.image("talelzam/backend:latest").inside {
-                        // Run the application
-                        sh 'node server.js'
+                        sh 'node index.js' // or whatever the command is to start the application
                     }
                 }
             }
