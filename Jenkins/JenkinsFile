@@ -10,19 +10,19 @@ pipeline {
         stage('Verify Dockerfile and package.json') {
             steps {
                 script {
-                    // Display the contents of the root and backend directories to verify the presence of Dockerfile and package.json
+                    // Display current directory and files after cloning
                     sh 'pwd'
                     sh 'ls -la'
                     dir('backend') {
                         sh 'cat package.json'
                         sh 'ls -la'
-                        sh 'cat Dockerfile'  // Ensure Dockerfile is present and view its contents
+                        sh 'cat Dockerfile'
                     }
                 }
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Build Docker Image') {
             steps {
                 script {
                     dir('backend') {
@@ -33,11 +33,13 @@ pipeline {
             }
         }
 
-        stage('Test Backend') {
+        stage('Run Tests') {
             steps {
                 script {
                     dir('backend') {
                         dockerImageBackend.inside {
+                            // Run tests
+                            sh 'npm install'
                             sh 'npm test'
                         }
                     }
@@ -45,7 +47,7 @@ pipeline {
             }
         }
 
-        stage('Push Docker image') {
+        stage('Push Docker Image') {
             steps {
                 script {
                     dockerImageBackend.tag('talelzam/backend:latest')
@@ -60,11 +62,11 @@ pipeline {
             steps {
                 script {
                     docker.image("talelzam/backend:latest").inside {
-                        sh 'node index.js'
+                        // Run the application
+                        sh 'node server.js'
                     }
                 }
             }
         }
     }
 }
-
