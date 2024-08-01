@@ -1,0 +1,103 @@
+.user-stat-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+  text-align: center;
+  padding-bottom: 50px;
+}
+
+h2 {
+  margin-top: 100px;
+  color: #6a1b9a;
+}
+
+.user-table {
+  border-collapse: collapse;
+  width: 80%;
+  margin: 40px auto;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+.user-table th,
+.user-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.user-table th {
+  background-color: #6a1b9a;
+  color: white;
+}
+
+.user-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.user-table tr:hover {
+  background-color: #ddd;
+}
+
+.user-table a {
+  color: #6a1b9a;
+  text-decoration: none;
+}
+
+.user-table a:hover {
+  text-decoration: underline;
+}
+
+.user-table button {
+  background-color: #000000;
+  color: white;
+  border: 2px solid #6a1b9a;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-left: 0;
+  display: block;
+  margin: 0 auto;
+}
+
+.user-table button:hover {
+  background-color: #ff0000;
+  border-color: #ff0000;
+}
+
+.custom-title {
+  font-size: 30px !important;
+}
+
+.custom-content {
+  font-size: 35px !important;
+}
+
+.custom-confirm-button,
+.custom-cancel-button {
+  font-size: 16px !important;
+}
+
+.user-table select {
+  padding: 5px;
+  border: 2px solid #6a1b9a;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #000000;
+  color: white;
+  margin-left: 0;
+  display: block;
+  margin: 0 auto;
+}
+
+.react-select__control {
+  border-color: #6a1b9a;
+  box-shadow: none;
+  &:hover {
+    border-color: #6a1b9a;
+  }
+}
