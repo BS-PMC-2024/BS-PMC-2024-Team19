@@ -71,7 +71,7 @@ const Login = () => {
 
         // Check if the user is an admin and navigate accordingly
         if (responseData.isAdmin) {
-          navigate("/deletebyadmin");
+          navigate("/UserStatByAdmin");
         } else {
           navigate("/update");
         }

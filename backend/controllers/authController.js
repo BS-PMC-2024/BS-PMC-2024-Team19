@@ -221,3 +221,44 @@ export const changePassword = async (req, res) => {
     return res.status(401).json({ error: "Unauthorized, invalid token" });
   }
 };
+
+export const getAllUsers = (req, res) => {
+  const getUsersQuery = "SELECT  fullName, email, isPrime FROM users";
+
+  db.query(getUsersQuery, (err, results) => {
+    if (err) {
+      console.error("DB Get Users Error:", err);
+      return res.status(500).json({ error: "Failed to retrieve users" });
+    }
+
+    return res.status(200).json({ users: results });
+  });
+};
+
+export const updateUserStatus = (req, res) => {
+  const { email, isPrime } = req.body;
+
+  console.log(
+    "Received request to update user status with email:",
+    email,
+    "to isPrime:",
+    isPrime
+  );
+
+  const updateStatusQuery = "UPDATE users SET isPrime = ? WHERE email = ?";
+  db.query(updateStatusQuery, [isPrime, email], (err, result) => {
+    if (err) {
+      console.error("DB Update User Status Error:", err);
+      return res.status(500).json({ error: "Failed to update user status" });
+    }
+    if (result.affectedRows === 0) {
+      console.log("User not found for status update:", email);
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    console.log("User status updated successfully:", email);
+    return res
+      .status(200)
+      .json({ message: "User status updated successfully" });
+  });
+};
