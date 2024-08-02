@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./Navbar.css";
 import { IoMdRocket } from "react-icons/io";
 import axios from "axios";
-import clearCookies from "../../../utils/clearCookies";
 
 const Navbar = () => {
   const [navToggle, setNavToggle] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    clearCookies();
     checkLoginStatus();
-  }, []);
+  }, [location]); // Run the effect whenever the location changes
 
   const checkLoginStatus = async () => {
     try {
@@ -34,13 +33,11 @@ const Navbar = () => {
 
   const handleLoginClick = () => {
     navigate("/login");
-    clearCookies();
     setNavToggle(false);
   };
 
   const handleSignUpClick = () => {
     navigate("/signup");
-    clearCookies();
     setNavToggle(false);
   };
 
@@ -52,7 +49,6 @@ const Navbar = () => {
         { withCredentials: true }
       );
       setIsLoggedIn(false);
-      clearCookies();
       navigate("/");
     } catch (err) {
       console.error("Failed to logout:", err);

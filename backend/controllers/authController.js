@@ -152,7 +152,7 @@ export const deleteUserByAdmin = (req, res) => {
   });
 };
 
-//change password function
+//change password function for user
 export const changePassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
 
@@ -261,4 +261,72 @@ export const updateUserStatus = (req, res) => {
       .status(200)
       .json({ message: "User status updated successfully" });
   });
+};
+
+//Sumbit Questionnaire
+export const submitQuestionnaire = async (req, res) => {
+  const { answers } = req.body; // answers should be an object with Q1 to Q10 properties
+  const token = req.cookies.accessToken;
+
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized, no token provided" });
+  }
+
+  try {
+    // Verify the JWT token and extract the user's email
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    if (!decoded.email) {
+      return res
+        .status(401)
+        .json({ error: "Unauthorized, email not found in token" });
+    }
+
+    // Destructure answers object
+    const { Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10 } = answers;
+
+    // Validate that all questions have been answered
+    if (!Q1 || !Q2 || !Q3 || !Q4 || !Q5 || !Q6 || !Q7 || !Q8 || !Q9 || !Q10) {
+      return res.status(400).json({ error: "All questions must be answered" });
+    }
+
+    // First, count the number of existing records for this user's email
+    const countQuery =
+      "SELECT COUNT(*) AS count FROM QUESTIONNAIRE WHERE Email = ?";
+    db.query(countQuery, [decoded.email], (countErr, countResult) => {
+      if (countErr) {
+        console.error("DB Count Error:", countErr);
+        return res
+          .status(500)
+          .json({ error: "Failed to count previous entries" });
+      }
+
+      const num = countResult[0].count + 1; // Increment by 1 to get the current submission number
+
+      // Insert or update the questionnaire record
+      const insertQuery = `
+        INSERT INTO QUESTIONNAIRE (Email, Num, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
+      db.query(
+        insertQuery,
+        [decoded.email, num, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10],
+        (insertErr, result) => {
+          if (insertErr) {
+            console.error("DB Insert Error:", insertErr);
+            return res
+              .status(500)
+              .json({ error: "Failed to save questionnaire data" });
+          }
+
+          return res
+            .status(200)
+            .json({ message: "Questionnaire submitted successfully" });
+        }
+      );
+    });
+  } catch (err) {
+    console.error("JWT verification error:", err);
+    return res.status(401).json({ error: "Unauthorized, invalid token" });
+  }
 };

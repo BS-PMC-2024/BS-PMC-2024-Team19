@@ -9,6 +9,7 @@ import {
   deleteUserByAdmin,
   getAllUsers,
   updateUserStatus,
+  submitQuestionnaire,
 } from "../controllers/authController.js";
 
 const router = express.Router();
@@ -21,5 +22,6 @@ router.get("/status", checkAuthStatus);
 router.post("/clear-cookies", clearCookies);
 router.get("/getAllUsers", getAllUsers);
 router.post("/updateUserStatus", updateUserStatus);
+router.post("/submit-questionnaire", submitQuestionnaire);
 
 export default router;
