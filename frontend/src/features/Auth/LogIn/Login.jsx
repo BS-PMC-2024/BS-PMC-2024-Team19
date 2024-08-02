@@ -73,7 +73,7 @@ const Login = () => {
         if (responseData.isAdmin) {
           navigate("/deletebyadmin");
         } else {
-          navigate("/update");
+          navigate("/questionnaire");
         }
 
         setLoginFormData({ email: "", password: "" });

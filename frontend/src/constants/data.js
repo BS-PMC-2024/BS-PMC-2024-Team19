@@ -15,6 +15,85 @@ import { AiOutlineReload } from "react-icons/ai";
 
 const gradient = "url(#blue-gradient)";
 
+const questions = [
+  {
+    question: "1. How do you typically react to market volatility?",
+    options: [
+      "I see it as an opportunity to buy low and sell high.",
+      "I prefer to stay out of the market until it stabilizes.",
+      "I get anxious and often sell my holdings to avoid further loss.",
+    ],
+  },
+  {
+    question: "2. What is your investment horizon?",
+    options: ["Less than 1 year", "1-3 years", "More than 3 years"],
+  },
+  {
+    question:
+      "3. How much time do you spend researching and \n    monitoring your investments?",
+    options: [
+      "Several hours a week",
+      "A few hours a month",
+      "I rarely monitor my investments",
+    ],
+  },
+  {
+    question: "4. What is your primary goal in investing?",
+    options: ["Rapid growth", "Steady income", "Preservation of capital"],
+  },
+  {
+    question:
+      "5. How do you feel about high-risk, high-reward \n    investments?",
+    options: [
+      "Excited and willing to take the chance",
+      "Cautious but open to a small percentage in my portfolio",
+      "Uncomfortable and avoid them",
+    ],
+  },
+  {
+    question: "6. How diversified is your current investment \n    portfolio?",
+    options: [
+      "Heavily diversified across sectors and asset classes",
+      "Somewhat diversified",
+      "Focused on a few sectors or types of investments",
+    ],
+  },
+  {
+    question:
+      "7. Which of the following best describes your \n    knowledge of financial markets?",
+    options: [
+      "Advanced, I follow market news and trends closely",
+      "Intermediate, I have a good understanding of the basics",
+      "Beginner, I’m still learning the fundamentals",
+    ],
+  },
+  {
+    question: "8. How do you typically make investment\n    decisions?",
+    options: [
+      "Based on in-depth research and analysis",
+      "Following advice from financial advisors or trusted sources",
+      "Going with my gut feeling or tips from friends/family",
+    ],
+  },
+  {
+    question: "9. How important is liquidity to you in your \n    investments?",
+    options: [
+      "Very important, I need to be able to sell quickly if needed",
+      "Somewhat important, but I can wait if necessary",
+      "Not important, I’m in it for the long term",
+    ],
+  },
+  {
+    question:
+      "10. What is your response to a significant market\n      downturn?",
+    options: [
+      "I buy more shares to take advantage of lower prices",
+      "I hold my current investments and wait for recovery",
+      "I sell my investments to avoid further losses",
+    ],
+  },
+];
+
 const services = [
   {
     id: 1,
@@ -204,6 +283,7 @@ const sections = {
   portfolio,
   testimonials,
   contact,
+  questions,
 };
 
 export default sections;

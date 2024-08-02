@@ -7,6 +7,7 @@ import {
   clearCookies,
   changePassword,
   deleteUserByAdmin,
+  submitQuestionnaire,
 } from "../controllers/authController.js";
 
 const router = express.Router();
@@ -16,6 +17,7 @@ router.post("/logout", logout);
 router.post("/deleteUserByAdmin", deleteUserByAdmin);
 router.post("/changePassword", changePassword);
 router.get("/status", checkAuthStatus);
-router.post("/clear-cookies", clearCookies); // New route for clearing cookies
+router.post("/clear-cookies", clearCookies);
+router.post("/submit-questionnaire", submitQuestionnaire);
 
 export default router;
