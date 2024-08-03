@@ -2,13 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./Navbar.css";
 import { IoMdRocket } from "react-icons/io";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import axios from "axios";
 
 const Navbar = () => {
   const [navToggle, setNavToggle] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName,setUserName] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
 
   useEffect(() => {
     checkLoginStatus();
@@ -26,11 +31,30 @@ const Navbar = () => {
       setIsLoggedIn(false);
     }
   };
-
+  const getUserName = async ()=>{
+    try{
+      const response = await axios.get(
+        "http://localhost:6500/backend/user/getUser",
+        { withCredentials: true }
+      );
+      setUserName(response.data.fullName);
+    } catch (err){
+      console.log("failed to get userName status:",err)
+      setUserName(null);
+    }
+  };
+  useEffect(() => {
+    getUserName();
+  }, []);
   const navHandler = () => {
     setNavToggle((prevData) => !prevData);
   };
-
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   const handleLoginClick = () => {
     navigate("/login");
     setNavToggle(false);
@@ -84,13 +108,32 @@ const Navbar = () => {
             <div className="navbar-collapse-content">
               <div className="navbar-btns">
                 {isLoggedIn ? (
-                  <button
-                    type="button"
-                    className="btn"
-                    onClick={handleLogoutClick}
-                  >
-                    <IoMdRocket /> <span>Logout</span>
-                  </button>
+                  <>
+                    <button
+                      id="basic-button"
+                      type="button"
+                      className="btn"
+                      aria-controls={open ? 'basic-menu' : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open ? 'true' : undefined}
+                      onClick={handleClick}
+                    >
+                      <IoMdRocket /> <span>Hello {userName} </span>
+                    </button>
+                    <Menu
+                      id="basic-menu"
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                      }}
+                    >
+                      <MenuItem onClick={handleClose}>Profile</MenuItem>
+                      <MenuItem onClick={handleClose}>My account</MenuItem>
+                      <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
+                    </Menu>
+                  </>
                 ) : (
                   <>
                     <button
