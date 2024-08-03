@@ -11,43 +11,6 @@ global.fetch = jest.fn(() =>
   })
 );
 
-// describe("UpdateD Component", () => {
-//   test("renders form elements correctly", () => {
-//     render(
-//       <MemoryRouter>
-//         <UpdateD />
-//       </MemoryRouter>
-//     );
-
-//     // Check if the form elements are rendered
-//     expect(screen.getByLabelText(/Old Password:/i)).toBeInTheDocument();
-//     expect(screen.getByLabelText(/New Password:/i)).toBeInTheDocument();
-//     expect(screen.getByLabelText(/Confirm Password:/i)).toBeInTheDocument();
-//     expect(
-//       screen.getByRole("button", { name: /Change Password/i })
-//     ).toBeInTheDocument();
-//   });
-
-// test("handles password visibility toggle", () => {
-//   render(
-//     <MemoryRouter>
-//       <UpdateD />
-//     </MemoryRouter>
-//   );
-
-//   // Select visibility toggle icons by alt text or test ID
-//   const visibilityIcons = screen.getAllByAltText(/password visibility toggle/i);
-
-//   // Check initial state
-//   expect(screen.getByLabelText(/Old Password:/i).type).toBe("password");
-
-//   // Simulate clicking the visibility icon to toggle visibility
-//   fireEvent.click(visibilityIcons[0]);
-
-//   // Check if the password field type has changed
-//   expect(screen.getByLabelText(/Old Password:/i).type).toBe("text");
-// });
-
 test("displays error messages for invalid inputs", async () => {
   render(
     <MemoryRouter>
