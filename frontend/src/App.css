@@ -19,6 +19,7 @@
     rgba(85, 179, 213, 1) 100%
   );
   --transition: all 300ms linear;
+  
 }
 
 /* global styles */
@@ -32,12 +33,34 @@
 }
 html {
   font-size: 10px;
+  height: 100%;
 }
 body {
   font-size: 1.9rem;
+  height: 100%;
   line-height: 1.6;
   font-family: var(--fnt-base);
   color: var(--clr-black);
+  margin: 0;
+}
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Main container to take full height */
+}
+
+.App {
+  flex: 1;
+  display: flex;
+  flex-direction: column; /* Ensure App takes full height */
+}
+
+footer {
+  background-color: var(--clr-black);
+  color: var(--clr-white);
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: auto; /* This pushes footer to the bottom if there's little content */
 }
 ul {
   list-style-type: none;

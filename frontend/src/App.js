@@ -6,10 +6,12 @@ import Footer from "./common/components/Footer/Footer";
 import UpdateD from "./common/components/Users/UpdateD";
 import SignUp from "./features/Auth/SignUp/SignUp";
 import Login from "./features/Auth/LogIn/Login";
+import Profile from "./common/components/Users/Profile/Profile";
 import DeleteByAdmin from "./features/Admin/DeleteByAdmin";
 import Questionnaire from "./common/components/Users/formQuestionnaire/Questionnaire";
 import UserStatByAdmin from "./features/Admin/UserStatByAdmin";
 import axios from "axios";
+import './App.css'; // Ensure you import your global CSS
 
 function App() {
   useEffect(() => {
@@ -37,7 +39,7 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <div id="root">
       <div className="App">
         <Router>
           <Navbar />
@@ -45,6 +47,8 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/update" element={<UpdateD />} />
+            <Route path="/Profile" element={<Profile />} />
+            <Route path="/DeleteByAdmin" element={<DeleteByAdmin />} />
             <Route path="/questionnaire" element={<Questionnaire />} />
             <Route path="/UserStatByAdmin" element={<UserStatByAdmin />} />
             <Route path="/" element={<HomePage />} />
