@@ -1,0 +1,92 @@
+import React from "react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
+import UserStatByAdmin from "../features/Admin/UserStatByAdmin";
+
+// Mock the fetch function
+global.fetch = jest.fn();
+
+describe("UserStatByAdmin", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  test("renders loading state initially", () => {
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ users: [] }),
+    });
+
+    render(<UserStatByAdmin />);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
+  });
+
+  test("renders user table correctly", async () => {
+    const users = [
+      { fullName: "John Doe", email: "john@example.com", isPrime: true },
+      { fullName: "Jane Doe", email: "jane@example.com", isPrime: false },
+    ];
+
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ users }),
+    });
+
+    render(<UserStatByAdmin />);
+
+    await waitFor(() => {
+      expect(screen.getByText("John Doe")).toBeInTheDocument();
+      expect(screen.getByText("john@example.com")).toBeInTheDocument();
+      expect(screen.getByText("Jane Doe")).toBeInTheDocument();
+      expect(screen.getByText("jane@example.com")).toBeInTheDocument();
+    });
+  });
+
+  test("handles user removal correctly", async () => {
+    const users = [
+      { fullName: "John Doe", email: "john@example.com", isPrime: true },
+    ];
+  });
+
+  test("handles status change correctly", async () => {
+    const users = [
+      { fullName: "John Doe", email: "john@example.com", isPrime: true },
+    ];
+
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ users }),
+    });
+
+    render(<UserStatByAdmin />);
+
+    await waitFor(() => {
+      expect(screen.getByText("John Doe")).toBeInTheDocument();
+    });
+
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ message: "User status updated successfully" }),
+    });
+
+    fireEvent.change(screen.getByDisplayValue("Prime"), {
+      target: { value: "Not Prime" },
+    });
+
+    await waitFor(() => {
+      expect(screen.getByDisplayValue("Not Prime")).toBeInTheDocument();
+    });
+  });
+
+  test("displays error message on fetch failure", async () => {
+    fetch.mockRejectedValueOnce(new Error("Network response was not ok"));
+
+    render(<UserStatByAdmin />);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText("Error: Network response was not ok")
+      ).toBeInTheDocument();
+    });
+  });
+});
