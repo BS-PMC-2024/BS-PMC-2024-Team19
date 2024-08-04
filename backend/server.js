@@ -3,7 +3,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import authRoutes from "./routes/auth.js";
-
+import userRoutes from './routes/userRoutes.js'
 const app = express();
 
 app.use(express.json());
@@ -23,6 +23,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/backend/auth", authRoutes);
+app.use("/backend/user", userRoutes);
+
 
 const PORT = 6500;
 
