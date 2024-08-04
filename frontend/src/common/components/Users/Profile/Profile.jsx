@@ -1,13 +1,26 @@
 import React, { useState } from 'react';
-import { Container, Box, Card, CardContent, CardActions, Button, Typography, TextField, Switch, FormControlLabel, IconButton } from '@mui/material';
+import { Container, Box, Card, CardContent, CardActions, Button, Typography, TextField, Switch, FormControlLabel, IconButton,Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
-
+import { useNavigate } from "react-router-dom";
 const Profile = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isPremium, setIsPremium] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState('');
+  const navigate = useNavigate();
 
+
+
+  const handleOpenDialog = () => {
+    setOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpen(false);
+    setDeleteConfirmation('');
+  };
   const handleUpdateEmail = async () => {
     try {
       await axios.post('http://localhost:6500/backend/user/updateEmail', { email }, { withCredentials: true });
@@ -30,19 +43,27 @@ const Profile = () => {
     try {
       await axios.post('http://localhost:6500/backend/user/togglePremium', { isPremium }, { withCredentials: true });
       alert('User status updated successfully');
+      console.log("user isPrime updtae");
     } catch (error) {
       console.error('Error updating user status:', error);
     }
   };
 
   const handleDeleteUser = async () => {
+    if (deleteConfirmation !== 'DELETE') {
+      alert('You must type DELETE to confirm');
+      return;
+    }
+
     try {
       await axios.post('http://localhost:6500/backend/user/deleteUser', {}, { withCredentials: true });
       alert('User deleted successfully');
+      navigate('/');
     } catch (error) {
       console.error('Error deleting user:', error);
     }
   };
+
 
   return (
     <Container>
@@ -88,9 +109,35 @@ const Profile = () => {
             </Box>
           </CardContent>
           <CardActions>
-            <IconButton aria-label="delete" color="error" onClick={handleDeleteUser}>
+            <IconButton aria-label="delete" color="error" onClick={handleOpenDialog}>
               <DeleteIcon />
+                Delete Account
             </IconButton>
+            <Dialog open={open} onClose={handleCloseDialog}>
+              <DialogTitle>Delete Account</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Are you sure you want to delete your account? This action cannot be undone. Please type DELETE to confirm.
+                </DialogContentText>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  label="Type DELETE to confirm"
+                  fullWidth
+                  variant="standard"
+                  value={deleteConfirmation}
+                  onChange={(e) => setDeleteConfirmation(e.target.value)}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseDialog} color="primary">
+                  Cancel
+                </Button>
+                <Button onClick={handleDeleteUser} color="error">
+                  Delete
+                </Button>
+              </DialogActions>
+            </Dialog>
           </CardActions>
         </Card>
       </Box>
