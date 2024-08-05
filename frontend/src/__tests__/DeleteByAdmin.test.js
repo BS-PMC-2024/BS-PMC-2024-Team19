@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import DeleteByAdmin from "../features/Admin/DeleteByAdmin"; // Adjust the path as necessary
+import DeleteByAdmin from "../features/Admin/DeleteByAdmin";
 
 test("handles input change", () => {
   render(
