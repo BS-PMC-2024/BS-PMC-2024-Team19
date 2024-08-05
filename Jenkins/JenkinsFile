@@ -70,7 +70,7 @@ pipeline {
                 script {
                     // Run tests inside the Docker container for the frontend
                     dockerImageFrontend.inside {
-                        sh 'npm run test -- --clearCache'
+                        sh 'npm run test'
                     }
                 }
             }
