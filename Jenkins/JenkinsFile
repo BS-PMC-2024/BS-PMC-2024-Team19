@@ -1,10 +1,5 @@
 pipeline {
-    agent{
-        docker{
-            image 'docker:latest'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+    agent any
 
     environment {
         FRONTEND_DOCKER_IMAGE = 'talelzam/frontend:latest'
@@ -32,11 +27,23 @@ pipeline {
             }
         }
 
+        stage('Fix Permissions') {
+            steps {
+                script {
+                    // Fix potential permission issues
+                    sh 'sudo chmod -R 777 /var/run/docker.sock'
+                    sh 'sudo chmod -R 777 /var/jenkins_home'
+                }
+            }
+        }
+
         stage('Build Docker Images') {
             steps {
                 script {
+                    // Check if docker-compose.yml is present
+                    sh 'ls -la'
                     // Build Docker images using docker-compose
-                    sh 'docker-compose -f docker-compose.yml build'
+                    sh 'sudo docker-compose -f docker-compose.yml build'
                 }
             }
         }
@@ -45,7 +52,7 @@ pipeline {
             steps {
                 script {
                     // Run tests inside the Docker container using docker-compose
-                    sh 'docker-compose -f docker-compose.yml run --rm frontend npm run test'
+                    sh 'sudo docker-compose -f docker-compose.yml run --rm frontend npm run test'
                 }
             }
         }
@@ -55,13 +62,13 @@ pipeline {
                 script {
                     // Tag and push the backend Docker image
                     docker.withRegistry('https://index.docker.io/v1/', "${REGISTRY_CREDENTIALS}") {
-                        sh "docker tag ${BACKEND_DOCKER_IMAGE} ${REGISTRY}/${BACKEND_DOCKER_IMAGE}"
-                        sh "docker push ${REGISTRY}/${BACKEND_DOCKER_IMAGE}"
+                        sh "sudo docker tag ${BACKEND_DOCKER_IMAGE} ${REGISTRY}/${BACKEND_DOCKER_IMAGE}"
+                        sh "sudo docker push ${REGISTRY}/${BACKEND_DOCKER_IMAGE}"
                     }
                     // Tag and push the frontend Docker image
                     docker.withRegistry('https://index.docker.io/v1/', "${REGISTRY_CREDENTIALS}") {
-                        sh "docker tag ${FRONTEND_DOCKER_IMAGE} ${REGISTRY}/${FRONTEND_DOCKER_IMAGE}"
-                        sh "docker push ${REGISTRY}/${FRONTEND_DOCKER_IMAGE}"
+                        sh "sudo docker tag ${FRONTEND_DOCKER_IMAGE} ${REGISTRY}/${FRONTEND_DOCKER_IMAGE}"
+                        sh "sudo docker push ${REGISTRY}/${FRONTEND_DOCKER_IMAGE}"
                     }
                 }
             }
@@ -72,8 +79,8 @@ pipeline {
         always {
             script {
                 // Clean up Docker images and containers
-                sh 'docker-compose down'
-                sh 'docker system prune -af || true'
+                sh 'sudo docker-compose down'
+                sh 'sudo docker system prune -af || true'
             }
         }
     }
