@@ -65,14 +65,16 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
+       stage('Run Tests') {
             steps {
                 script {
-                    // Run tests inside the Docker container for frontend
-                    sh 'docker run --rm ${FRONTEND_DOCKER_IMAGE} npm run test'
+                    // Run tests inside the Docker container for the frontend
+                    dockerImageFrontend.inside {
+                        sh 'npm run test -- --clearCache'
+                    }
                 }
             }
-        }
+}
 
         stage('Push Backend Docker Image') {
             steps {
