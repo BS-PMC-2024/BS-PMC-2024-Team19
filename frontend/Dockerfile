@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Command to run tests
-CMD ["npm", "run", "test", "--", "--clearCache"]
+CMD ["npm", "run", "test"]
