@@ -6,8 +6,6 @@ pipeline {
         BACKEND_DOCKER_IMAGE = 'talelzam/backend:latest'
         REGISTRY = 'docker.io'
         REGISTRY_CREDENTIALS = 'dockerhub'
-        FRONTEND_DOCKERFILE_PATH = 'frontend/Dockerfile'
-        BACKEND_DOCKERFILE_PATH = 'backend/Dockerfile'
     }
 
     stages {
@@ -29,54 +27,25 @@ pipeline {
             }
         }
 
-        stage('Build Backend Docker Image') {
+        stage('Build Docker Images') {
             steps {
                 script {
-                    // Build Docker image for the backend
-                    docker.build("${BACKEND_DOCKER_IMAGE}", "-f backend/Dockerfile .")
+                    // Build Docker images using docker-compose
+                    sh 'docker-compose -f docker-compose.yml build'
                 }
             }
         }
 
-        stage('Build Frontend Docker Image') {
+        stage('Run Tests') {
             steps {
                 script {
-                    // Build Docker image for the frontend
-                    docker.build("${FRONTEND_DOCKER_IMAGE}", "-f frontend/Dockerfile .")
+                    // Run tests inside the Docker container using docker-compose
+                    sh 'docker-compose -f docker-compose.yml run --rm frontend npm run test'
                 }
             }
         }
 
-        stage('Run Frontend') {
-            steps {
-                script {
-                    // Run the frontend application inside the Docker container
-                    sh 'docker run --rm -d -p 3000:3000 ${FRONTEND_DOCKER_IMAGE} npm run start'
-                }
-            }
-        }
-
-        stage('Run Backend') {
-            steps {
-                script {
-                    // Run the backend application inside the Docker container
-                    sh 'docker run --rm -d -p 6500:6500 ${BACKEND_DOCKER_IMAGE} npm run'
-                }
-            }
-        }
-
-       stage('Run Tests') {
-            steps {
-                script {
-                    // Run tests inside the Docker container for the frontend
-                    dockerImageFrontend.inside {
-                        sh 'npm run test'
-                    }
-                }
-            }
-}
-
-        stage('Push Backend Docker Image') {
+        stage('Push Docker Images') {
             steps {
                 script {
                     // Tag and push the backend Docker image
@@ -84,13 +53,6 @@ pipeline {
                         sh "docker tag ${BACKEND_DOCKER_IMAGE} ${REGISTRY}/${BACKEND_DOCKER_IMAGE}"
                         sh "docker push ${REGISTRY}/${BACKEND_DOCKER_IMAGE}"
                     }
-                }
-            }
-        }
-
-        stage('Push Frontend Docker Image') {
-            steps {
-                script {
                     // Tag and push the frontend Docker image
                     docker.withRegistry('https://index.docker.io/v1/', "${REGISTRY_CREDENTIALS}") {
                         sh "docker tag ${FRONTEND_DOCKER_IMAGE} ${REGISTRY}/${FRONTEND_DOCKER_IMAGE}"
@@ -105,6 +67,7 @@ pipeline {
         always {
             script {
                 // Clean up Docker images and containers
+                sh 'docker-compose down'
                 sh 'docker system prune -af || true'
             }
         }
