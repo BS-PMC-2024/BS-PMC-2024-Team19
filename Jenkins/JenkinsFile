@@ -1,5 +1,13 @@
 pipeline {
     agent any
+
+    environment {
+        DOCKER_IMAGE_FRONTEND = 'talelzam/frontend:latest'
+        DOCKER_IMAGE_BACKEND = 'talelzam/backend:latest'
+        REGISTRY = 'docker.io'
+        REGISTRY_CREDENTIALS = 'dockerhub'
+    }
+
     stages {
         stage('Clone repository') {
             steps {
@@ -22,8 +30,12 @@ pipeline {
         stage('Show package.json') {
             steps {
                 script {
-                    // Navigate to the frontend directory and display the package.json file
+                    // Display the package.json file for frontend
                     dir('frontend') {
+                        sh 'cat package.json'
+                    }
+                    // Display the package.json file for backend
+                    dir('backend') {
                         sh 'cat package.json'
                     }
                 }
@@ -33,16 +45,8 @@ pipeline {
         stage('Build Backend Image') {
             steps {
                 script {
-                    // Navigate to the backend directory
-                    dir('backend') {
-                        // Build the Docker image using the Dockerfile in the backend directory
-                        dockerImageBackend = docker.build("backend:latest", '.')
-
-                        // Run 'npm install' inside the Docker container
-                        dockerImageBackend.inside {
-                            sh 'npm i'
-                        }
-                    }
+                    // Build the Docker image using the Dockerfile in the backend directory
+                    docker.build(DOCKER_IMAGE_BACKEND, 'backend/')
                 }
             }
         }
@@ -50,79 +54,62 @@ pipeline {
         stage('Build Frontend Image') {
             steps {
                 script {
-                    // Navigate to the frontend directory
-                    dir('frontend') {
-                        // Build the Docker image using the Dockerfile in the frontend directory
-                        dockerImageFrontend = docker.build("frontend:latest", '.')
+                    // Build the Docker image using the Dockerfile in the frontend directory
+                    docker.build(DOCKER_IMAGE_FRONTEND, 'frontend/')
+                }
+            }
+        }
 
-                        // Run 'npm install' inside the Docker container
-                        dockerImageFrontend.inside {
-                            sh 'npm i'
-                        }
+        stage('Run Backend Tests') {
+            steps {
+                script {
+                    // Run tests for the backend inside the Docker container
+                    docker.image(DOCKER_IMAGE_BACKEND).inside {
+                        sh 'npm test'
                     }
                 }
             }
         }
 
-        stage('Start Backend') {
+        stage('Run Frontend Tests') {
             steps {
                 script {
-                    // Run the start command inside the Docker container for the backend
-                    dockerImageBackend.inside {
-                        sh 'npm start'
+                    // Run tests for the frontend inside the Docker container
+                    docker.image(DOCKER_IMAGE_FRONTEND).inside {
+                        sh 'npm test'
                     }
                 }
             }
         }
 
-        stage('Start Frontend') {
+        stage('Push Backend Docker Image') {
             steps {
                 script {
-                    // Run the start command inside the Docker container for the frontend
-                    dockerImageFrontend.inside {
-                        sh 'npm run start'
+                    // Log in to Docker Hub and push the backend image
+                    docker.withRegistry('https://index.docker.io/v1/', REGISTRY_CREDENTIALS) {
+                        docker.image(DOCKER_IMAGE_BACKEND).push('latest')
                     }
                 }
             }
         }
 
-        stage('Test') {
+        stage('Push Frontend Docker Image') {
             steps {
                 script {
-                    dockerImageBackend.inside {
-                        sh 'npm run test'
+                    // Log in to Docker Hub and push the frontend image
+                    docker.withRegistry('https://index.docker.io/v1/', REGISTRY_CREDENTIALS) {
+                        docker.image(DOCKER_IMAGE_FRONTEND).push('latest')
                     }
                 }
             }
         }
+    }
 
-        
-
-        stage('Push Backend Docker image') {
-            steps {
-                script {
-                    // Tag the Docker image
-                    dockerImageBackend.tag('talelzam/backend:latest')
-
-                    // Log in to Docker Hub and push the image
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
-                        dockerImageBackend.push()
-                    }
-                }
-            }
-        }
-
-        stage('Push Frontend Docker image') {
-            steps {
-                script {
-                    // Tag the Docker image
-                    dockerImageFrontend.tag('talelzam/frontend:latest')
-
-                    // Log in to Docker Hub and push the image
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
-                        dockerImageFrontend.push()
-                    }
-                }
+    post {
+        always {
+            script {
+                // Clean up Docker images and containers
+                sh 'docker system prune -f'
             }
         }
     }
