@@ -5,16 +5,16 @@ FROM node:16.20.2
 WORKDIR /app
 
 # Copy package.json and package-lock.json to the working directory
-COPY backend/package*.json ./
+COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
 # Copy the rest of the application code
-COPY backend/ .
+COPY . .
 
 # Expose the port your app runs on
 EXPOSE 6500
 
 # Command to run your application
-CMD ["node", "index.js"]
+CMD ["npm", "start"]

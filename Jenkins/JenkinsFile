@@ -33,7 +33,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image for the backend
-                    docker.build("${BACKEND_DOCKER_IMAGE}", "-f ${BACKEND_DOCKERFILE_PATH} backend/")
+                    docker.build("${BACKEND_DOCKER_IMAGE}", "-f backend/Dockerfile .")
                 }
             }
         }
@@ -42,7 +42,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image for the frontend
-                    docker.build("${FRONTEND_DOCKER_IMAGE}", "-f ${FRONTEND_DOCKERFILE_PATH} frontend/")
+                    docker.build("${FRONTEND_DOCKER_IMAGE}", "-f frontend/Dockerfile .")
                 }
             }
         }
