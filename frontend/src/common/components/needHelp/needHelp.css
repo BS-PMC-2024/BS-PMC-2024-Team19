@@ -1,0 +1,61 @@
+/* Styles for the chat icon */
+.chat-icon {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  cursor: pointer;
+  background-color: var(--clr-robin-blue);
+  color: #fff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+/* Styles for the help request form */
+.help-request-form {
+  position: fixed;
+  bottom: 80px;
+  left: 20px;
+  width: 300px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  border-radius: 8px;
+  z-index: 1000;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+button {
+  background-color: var(--clr-robin-blue);
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+button.close {
+  background-color: #ccc;
+}

@@ -4,6 +4,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import sections from "../../../../constants/data";
+import NeedHelp from '../../needHelp/needHelp'; 
 
 const { questions } = sections;
 
@@ -256,6 +257,7 @@ const Questionnaire = () => {
           </Button>
         </Grid>
       </Grid>
+      <NeedHelp />
     </Container>
   );
 };

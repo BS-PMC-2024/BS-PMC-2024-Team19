@@ -11,7 +11,7 @@ import DeleteByAdmin from "./features/Admin/DeleteByAdmin";
 import Questionnaire from "./common/components/Users/formQuestionnaire/Questionnaire";
 import UserStatByAdmin from "./features/Admin/UserStatByAdmin";
 import axios from "axios";
-import './App.css'; // Ensure you import your global CSS
+import "./App.css"; // Ensure you import your global CSS
 
 function App() {
   useEffect(() => {

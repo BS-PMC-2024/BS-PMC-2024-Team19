@@ -331,3 +331,43 @@ export const submitQuestionnaire = async (req, res) => {
     return res.status(401).json({ error: "Unauthorized, invalid token" });
   }
 };
+export const getUserEmail = (req, res) => {
+  try {
+    const token = req.cookies.accessToken; // Assuming the token is in cookies
+
+    if (!token) {
+      console.log("No token provided");
+      return res.status(401).json({ error: "No token provided" });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    if (!decoded.email) {
+      console.log("Unauthorized, email not found in token");
+      return res
+        .status(401)
+        .json({ error: "Unauthorized, email not found in token" });
+    }
+
+    res.json({ email: decoded.email });
+  } catch (error) {
+    console.error("Error fetching user email:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+export const submitHelpRequest = async (req, res) => {
+  try {
+    const { email, details } = req.body;
+
+    if (!email || !details) {
+      return res.status(400).json({ error: "Email and details are required" });
+    }
+
+    const query = "INSERT INTO HELP_REQUEST (email, details) VALUES (?, ?)";
+    await db.query(query, [email, details]);
+    res.status(200).json({ message: "Help request submitted successfully" });
+  } catch (error) {
+    console.error("Failed to submit help request:", error);
+    res.status(500).json({ error: "Failed to submit help request" });
+  }
+};
