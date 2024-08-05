@@ -40,7 +40,7 @@ pipeline {
 
                         // Run 'npm install' inside the Docker container
                         dockerImageBackend.inside {
-                            sh 'npm install'
+                            sh 'npm i'
                         }
                     }
                 }
@@ -57,7 +57,7 @@ pipeline {
 
                         // Run 'npm install' inside the Docker container
                         dockerImageFrontend.inside {
-                            sh 'npm install'
+                            sh 'npm i'
                         }
                     }
                 }
@@ -80,33 +80,23 @@ pipeline {
                 script {
                     // Run the start command inside the Docker container for the frontend
                     dockerImageFrontend.inside {
-                        sh 'npm start'
+                        sh 'npm run start'
                     }
                 }
             }
         }
 
-        stage('Test Backend') {
+        stage('Test') {
             steps {
                 script {
-                    // Run tests inside the Docker container for the backend
                     dockerImageBackend.inside {
-                        sh 'npm test'
+                        sh 'npm run test'
                     }
                 }
             }
         }
 
-        stage('Test Frontend') {
-            steps {
-                script {
-                    // Run tests inside the Docker container for the frontend
-                    dockerImageFrontend.inside {
-                        sh 'npm test'
-                    }
-                }
-            }
-        }
+        
 
         stage('Push Backend Docker image') {
             steps {

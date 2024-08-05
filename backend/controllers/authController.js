@@ -100,7 +100,7 @@ export const logout = (req, res) => {
     })
     .status(200)
     .json("User has been logged out.");
-    console.log("test1");
+  console.log("test1");
 };
 
 export const checkAuthStatus = (req, res) => {
@@ -264,7 +264,6 @@ export const updateUserStatus = (req, res) => {
   });
 };
 
-//Sumbit Questionnaire
 export const submitQuestionnaire = async (req, res) => {
   const { answers } = req.body; // answers should be an object with Q1 to Q10 properties
   const token = req.cookies.accessToken;

@@ -8,7 +8,7 @@ WORKDIR /app/vls
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm i
 
 # Copy the rest of the application code
 COPY . .
@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Command to run your application
-CMD ["npm", "start"]
+CMD ["npm","run","start"]

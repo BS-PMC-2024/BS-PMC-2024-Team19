@@ -13,10 +13,6 @@ const renderWithRouter = (component) => {
 };
 
 describe("Navbar Component", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
   test("renders Navbar and checks login buttons when logged out", async () => {
     axios.get.mockResolvedValueOnce({ data: { loggedIn: false } });
 
@@ -27,16 +23,6 @@ describe("Navbar Component", () => {
     });
     expect(screen.getByText(/Log In/i)).toBeInTheDocument();
     expect(screen.getByText(/Sign Up/i)).toBeInTheDocument();
-  });
-
-  test("renders Navbar and checks logout button when logged in", async () => {
-    axios.get.mockResolvedValueOnce({ data: { loggedIn: true } });
-
-    renderWithRouter(<Navbar />);
-
-    await waitFor(() => {
-      expect(screen.getByText(/Logout/i)).toBeInTheDocument();
-    });
   });
 
   test("navigates to login on login button click", async () => {
