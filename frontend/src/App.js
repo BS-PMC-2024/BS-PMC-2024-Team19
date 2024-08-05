@@ -6,7 +6,6 @@ import Footer from "./common/components/Footer/Footer";
 import UpdateD from "./common/components/Users/UpdateD";
 import SignUp from "./features/Auth/SignUp/SignUp";
 import Login from "./features/Auth/LogIn/Login";
-import DeleteByAdmin from "./features/Admin/DeleteByAdmin";
 import Questionnaire from "./common/components/Users/formQuestionnaire/Questionnaire";
 import UserStatByAdmin from "./features/Admin/UserStatByAdmin";
 import axios from "axios";
