@@ -1,0 +1,18 @@
+.stock-indicators {
+  padding: 20px;
+  width: 100%;
+}
+
+.stock-indicators h1 {
+  text-align: center;
+}
+
+.stock-indicators ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.stock-indicators li {
+  margin: 10px 0;
+  text-align: center;
+}

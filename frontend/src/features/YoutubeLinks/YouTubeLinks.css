@@ -1,0 +1,20 @@
+.youtube-links {
+    width: 100%;
+  }
+  
+  .video-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .video-item {
+    width: 70%;
+    box-sizing: border-box;
+  }
+  
+  .video-item h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
