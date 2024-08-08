@@ -1,23 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./Navbar.css";
-import { IoMdRocket } from "react-icons/io";
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import axios from "axios";
 
-const Navbar = () => {
+const Navbar = ({ onLogout }) => {
   const [navToggle, setNavToggle] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userName,setUserName] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
 
   useEffect(() => {
     checkLoginStatus();
-  }, [location]); // Run the effect whenever the location changes
+  }, [location]);
 
   const checkLoginStatus = async () => {
     try {
@@ -31,38 +25,16 @@ const Navbar = () => {
       setIsLoggedIn(false);
     }
   };
-  const getUserName = async ()=>{
-    try{
-      const response = await axios.get(
-        "http://localhost:6500/backend/user/getUser",
-        { withCredentials: true }
-      );
-      setUserName(response.data.fullName);
-    } catch (err){
-      console.log("failed to get userName status:",err)
-      setUserName(null);
-    }
-  };
-  useEffect(() => {
-    getUserName();
-  }, []);
+
   const navHandler = () => {
     setNavToggle((prevData) => !prevData);
   };
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+
   const handleLoginClick = () => {
     navigate("/login");
     setNavToggle(false);
   };
-  const handleProfileClick = () => {
-    navigate("/Profile");
-    setNavToggle(false);
-  };
+
   const handleSignUpClick = () => {
     navigate("/signup");
     setNavToggle(false);
@@ -75,7 +47,7 @@ const Navbar = () => {
         {},
         { withCredentials: true }
       );
-      setIsLoggedIn(false);
+      onLogout(); // Notify parent about logout
       navigate("/");
     } catch (err) {
       console.error("Failed to logout:", err);
@@ -111,32 +83,13 @@ const Navbar = () => {
             <div className="navbar-collapse-content">
               <div className="navbar-btns">
                 {isLoggedIn ? (
-                  <>
-                    <button
-                      id="basic-button"
-                      type="button"
-                      className="btn"
-                      aria-controls={open ? 'basic-menu' : undefined}
-                      aria-haspopup="true"
-                      aria-expanded={open ? 'true' : undefined}
-                      onClick={handleClick}
-                    >
-                      <IoMdRocket /> <span>Hello {userName} </span>
-                    </button>
-                    <Menu
-                      id="basic-menu"
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleClose}
-                      MenuListProps={{
-                        'aria-labelledby': 'basic-button',
-                      }}
-                    >
-                      <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
-                      <MenuItem onClick={handleClose}>My account</MenuItem>
-                      <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
-                    </Menu>
-                  </>
+                  <button
+                    type="button"
+                    className="btn"
+                    onClick={handleLogoutClick}
+                  >
+                    Logout
+                  </button>
                 ) : (
                   <>
                     <button
@@ -144,14 +97,14 @@ const Navbar = () => {
                       className="btn"
                       onClick={handleLoginClick}
                     >
-                      <IoMdRocket /> <span>Log In</span>
+                      Log In
                     </button>
                     <button
                       type="button"
                       className="btn"
                       onClick={handleSignUpClick}
                     >
-                      <IoMdRocket /> <span>Sign Up</span>
+                      Sign Up
                     </button>
                   </>
                 )}

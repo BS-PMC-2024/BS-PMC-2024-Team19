@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./features/HomePage/HomePage";
 import Navbar from "./common/components/Navbar/Navbar";
@@ -10,47 +10,61 @@ import Profile from "./common/components/Users/Profile/Profile";
 import DeleteByAdmin from "./features/Admin/DeleteByAdmin";
 import Questionnaire from "./common/components/Users/formQuestionnaire/Questionnaire";
 import UserStatByAdmin from "./features/Admin/UserStatByAdmin";
+import UserNavbar from "./common/components/Navbar/UserNavbar";
 import axios from "axios";
-import "./App.css"; // Ensure you import your global CSS
+import "./App.css";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   useEffect(() => {
-    const initializeApp = async () => {
-      // Check if cookies have been cleared in this session
-      const hasClearedCookies = sessionStorage.getItem("hasClearedCookies");
-
-      if (!hasClearedCookies) {
-        try {
-          await axios.post(
-            "http://localhost:6500/backend/auth/clear-cookies",
-            {},
-            { withCredentials: true }
-          );
-          console.log("Cookies cleared.");
-          sessionStorage.setItem("hasClearedCookies", "true");
-          window.location.reload();
-        } catch (err) {
-          console.error("Failed to clear cookies:", err);
-        }
-      }
-    };
-
-    initializeApp();
+    checkLoginStatus(); // Check login status on component mount
   }, []);
+
+  const checkLoginStatus = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:6500/backend/auth/status",
+        { withCredentials: true }
+      );
+      setIsLoggedIn(response.data.loggedIn);
+    } catch (err) {
+      console.error("Failed to check login status:", err);
+      setIsLoggedIn(false);
+    }
+  };
+
+  const handleLogin = async () => {
+    await checkLoginStatus(); // Update login status after login
+  };
+
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        "http://localhost:6500/backend/auth/logout",
+        {},
+        { withCredentials: true }
+      );
+      setIsLoggedIn(false); // Update state on logout
+    } catch (err) {
+      console.error("Failed to logout:", err);
+    }
+  };
 
   return (
     <div id="root">
       <div className="App">
         <Router>
-          <Navbar />
+          <Navbar onLogout={handleLogout} />
+          {isLoggedIn && <UserNavbar />} {/* Conditionally render UserNavbar */}
           <Routes>
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp onLogin={handleLogin} />} />
+            <Route path="/login" element={<Login onLogin={handleLogin} />} />
             <Route path="/update" element={<UpdateD />} />
-            <Route path="/Profile" element={<Profile />} />
-            <Route path="/DeleteByAdmin" element={<DeleteByAdmin />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/deleteByAdmin" element={<DeleteByAdmin />} />
             <Route path="/questionnaire" element={<Questionnaire />} />
-            <Route path="/UserStatByAdmin" element={<UserStatByAdmin />} />
+            <Route path="/userStatByAdmin" element={<UserStatByAdmin />} />
             <Route path="/" element={<HomePage />} />
           </Routes>
           <Footer />
