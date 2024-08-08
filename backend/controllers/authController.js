@@ -131,7 +131,32 @@ export const checkAuthStatus = (req, res) => {
     });
   });
 };
+// Check if email exists in the database
+export const checkEmailExists = (req, res) => {
+  const { email } = req.body;
 
+  console.log("Checking if email exists:", email);
+
+  // SQL query to check if the email exists in the database
+  const checkEmailQuery = "SELECT * FROM users WHERE email = ?";
+  db.query(checkEmailQuery, [email], (err, results) => {
+    if (err) {
+      console.error("DB Check Email Error:", err);
+      // Respond with a 500 status code and error message if there is a database error
+      return res.status(500).json({ error: "Failed to check email" });
+    }
+
+    // Check if the results contain any records with the specified email
+    if (results.length > 0) {
+      // Email exists in the database
+      return res.status(409).json({ error: "Email already exists" });
+    }
+
+    // Email does not exist in the database
+    console.log("Email is available");
+    return res.status(200).json({ message: "Email is available" });
+  });
+};
 export const clearCookies = (req, res) => {
   res
     .clearCookie("accessToken", {
@@ -383,4 +408,35 @@ export const submitHelpRequest = async (req, res) => {
     console.error("Failed to submit help request:", error);
     res.status(500).json({ error: "Failed to submit help request" });
   }
+};
+
+export const getUserProfile = (req, res) => {
+  const token = req.cookies.accessToken;
+
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized, no token provided" });
+  }
+
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ error: "Unauthorized, invalid token" });
+    }
+
+    const email = decoded.email;
+
+    const getUserQuery =
+      "SELECT fullName, email, isPrime FROM users WHERE email = ?";
+    db.query(getUserQuery, [email], (err, results) => {
+      if (err) {
+        console.error("DB Get User Error:", err);
+        return res.status(500).json({ error: "Failed to retrieve user data" });
+      }
+
+      if (results.length === 0) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      return res.status(200).json({ user: results[0] });
+    });
+  });
 };
