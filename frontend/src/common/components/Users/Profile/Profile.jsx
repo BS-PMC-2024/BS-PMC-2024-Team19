@@ -23,6 +23,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import { useNavigate } from "react-router-dom";
 import PriceList from "../Props/PriceList";
+import NeedHelp from "../../needHelp/needHelp";
 import "./Profile.css";
 
 const Profile = () => {
@@ -280,6 +281,7 @@ const Profile = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <NeedHelp />
     </Container>
   );
 };
