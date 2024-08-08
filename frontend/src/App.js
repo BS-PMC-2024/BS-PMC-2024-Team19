@@ -10,6 +10,7 @@ import Profile from "./common/components/Users/Profile/Profile";
 import DeleteByAdmin from "./features/Admin/DeleteByAdmin";
 import Questionnaire from "./common/components/Users/formQuestionnaire/Questionnaire";
 import UserStatByAdmin from "./features/Admin/UserStatByAdmin";
+import UserNavbar from "./common/components/Navbar/UserNavbar";
 import axios from "axios";
 import "./App.css";
 
@@ -63,7 +64,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/deleteByAdmin" element={<DeleteByAdmin />} />
             <Route path="/questionnaire" element={<Questionnaire />} />
-            <Route path="/UserStatByAdmin" element={<UserStatByAdmin />} />
+            <Route path="/userStatByAdmin" element={<UserStatByAdmin />} />
             <Route path="/" element={<HomePage />} />
           </Routes>
           <Footer />
