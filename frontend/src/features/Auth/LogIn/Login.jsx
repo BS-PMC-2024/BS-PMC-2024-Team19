@@ -1,3 +1,4 @@
+// Login.jsx
 import React, { useState } from "react";
 import userEmail from "../../../assets/images/email.png";
 import userPass from "../../../assets/images/password.png";
@@ -7,7 +8,7 @@ import Stack from "@mui/material/Stack";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ onLogin }) => {
   const navigate = useNavigate();
   const [loginFormData, setLoginFormData] = useState({
     email: "",
@@ -68,6 +69,9 @@ const Login = () => {
 
         setAlertSeverity("success");
         setAlertMessage("Login successful!");
+
+        // Call onLogin to update the login state in App
+        onLogin();
 
         // Check if the user is an admin and navigate accordingly
         if (responseData.isAdmin) {

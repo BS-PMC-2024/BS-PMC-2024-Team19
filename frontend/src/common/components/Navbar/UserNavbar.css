@@ -1,0 +1,75 @@
+:root {
+  --clr-black: #000;
+  --clr-white: #fff;
+  --clr-robin-blue: #00aaff;
+  --clr-dark: #333;
+  --clr-crazy-blue: #0055ff;
+  --clr-hover-blue: #00aaff;
+  --transition: all 0.3s ease;
+}
+
+.user-navbar {
+  background-color: var(--clr-dark); /* Keeping the navbar dark */
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 10px;
+  margin-top: 78px; /* Push below the main Navbar */
+  z-index: 998;
+}
+
+.user-navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 20px; /* Space between buttons */
+  padding: 0;
+  margin: 0;
+}
+
+.user-navbar li {
+  display: inline;
+}
+
+.user-navbar-btn {
+  color: var(--clr-white);
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  transition: var(--transition);
+  text-align: center;
+  border: none; /* Remove button border */
+  background: none; /* Remove background color */
+  cursor: pointer;
+  position: relative;
+}
+
+.user-navbar-btn::before {
+  content: "";
+  position: absolute;
+  bottom: -2px; /* Move underline closer to text */
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--clr-robin-blue);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: var(--transition);
+}
+
+.user-navbar-btn:hover::before,
+.user-navbar-btn.active::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.user-navbar-btn:hover {
+  background-color: none; /* Ensure no background color on hover */
+  border-color: none; /* Ensure no border color on hover */
+  color: var(--clr-robin-blue); /* Change text color on hover */
+}
+
+/* Additional styles to highlight active button */
+.user-navbar-btn.active {
+  color: var(--clr-robin-blue); /* Change text color for active button */
+}
