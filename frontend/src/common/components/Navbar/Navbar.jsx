@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Avatar, Menu, MenuItem } from "@mui/material";
+import { blue } from "@mui/material/colors";
 import "./Navbar.css";
 import axios from "axios";
 
 const Navbar = ({ onLogout }) => {
   const [navToggle, setNavToggle] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [userInitial, setUserInitial] = useState("");
+  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -20,24 +25,22 @@ const Navbar = ({ onLogout }) => {
         { withCredentials: true }
       );
       setIsLoggedIn(response.data.loggedIn);
+      if (response.data.loggedIn && response.data.name) {
+        setUserInitial(response.data.name.charAt(0).toUpperCase()); // Set the user's initial
+        setUserName(response.data.name); // Set the user's full name
+      }
     } catch (err) {
       console.error("Failed to check login status:", err);
       setIsLoggedIn(false);
     }
   };
 
-  const navHandler = () => {
-    setNavToggle((prevData) => !prevData);
+  const handleAvatarClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  const handleLoginClick = () => {
-    navigate("/login");
-    setNavToggle(false);
-  };
-
-  const handleSignUpClick = () => {
-    navigate("/signup");
-    setNavToggle(false);
+  const handleMenuClose = () => {
+    setAnchorEl(null);
   };
 
   const handleLogoutClick = async () => {
@@ -52,6 +55,12 @@ const Navbar = ({ onLogout }) => {
     } catch (err) {
       console.error("Failed to logout:", err);
     }
+    handleMenuClose();
+  };
+
+  const handleAccountClick = () => {
+    navigate("/profile");
+    handleMenuClose();
   };
 
   return (
@@ -67,7 +76,7 @@ const Navbar = ({ onLogout }) => {
               className={`hamburger-menu ${
                 navToggle ? "hamburger-menu-change" : ""
               }`}
-              onClick={navHandler}
+              onClick={() => setNavToggle((prev) => !prev)}
             >
               <div className="bar-top"></div>
               <div className="bar-middle"></div>
@@ -83,26 +92,42 @@ const Navbar = ({ onLogout }) => {
             <div className="navbar-collapse-content">
               <div className="navbar-btns">
                 {isLoggedIn ? (
-                  <button
-                    type="button"
-                    className="btn"
-                    onClick={handleLogoutClick}
-                  >
-                    Logout
-                  </button>
+                  <>
+                    <Avatar
+                      sx={{
+                        bgcolor: blue[500],
+                        cursor: "pointer",
+                        width: 50, // Adjust the width
+                        height: 50, // Adjust the height
+                        fontSize: "1.8rem", // Adjust the font size to fit the circle
+                      }}
+                      alt="User Avatar"
+                      onClick={handleAvatarClick}
+                    >
+                      {userInitial}
+                    </Avatar>
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={handleMenuClose}
+                    >
+                      <MenuItem onClick={handleAccountClick}>Account</MenuItem>
+                      <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
+                    </Menu>
+                  </>
                 ) : (
                   <>
                     <button
                       type="button"
                       className="btn"
-                      onClick={handleLoginClick}
+                      onClick={() => navigate("/login")}
                     >
                       Log In
                     </button>
                     <button
                       type="button"
                       className="btn"
-                      onClick={handleSignUpClick}
+                      onClick={() => navigate("/signup")}
                     >
                       Sign Up
                     </button>

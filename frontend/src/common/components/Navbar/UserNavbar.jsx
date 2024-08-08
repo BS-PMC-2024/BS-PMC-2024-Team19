@@ -17,29 +17,11 @@ function UserNavbar() {
         <li>
           <button
             className={`user-navbar-btn ${
-              path === "/questionnaire" ? "active" : ""
-            }`}
-            onClick={() => handleClick("/questionnaire")}
-          >
-            <span>Questionnaire</span>
-          </button>
-        </li>
-        <li>
-          <button
-            className={`user-navbar-btn ${
               path === "/portfolio" ? "active" : ""
             }`}
             onClick={() => handleClick("/portfolio")}
           >
             <span>Portfolio</span>
-          </button>
-        </li>
-        <li>
-          <button
-            className={`user-navbar-btn ${path === "/profile" ? "active" : ""}`}
-            onClick={() => handleClick("/profile")}
-          >
-            <span>Account</span>
           </button>
         </li>
         <li>

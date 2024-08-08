@@ -114,7 +114,22 @@ export const checkAuthStatus = (req, res) => {
       return res.json({ loggedIn: false });
     }
 
-    return res.json({ loggedIn: true });
+    const email = user.email;
+    const getUserQuery = "SELECT fullName FROM users WHERE email = ?";
+    db.query(getUserQuery, [email], (dbErr, results) => {
+      if (dbErr) {
+        console.error("DB Get User Error:", dbErr);
+        return res.json({ loggedIn: false });
+      }
+
+      if (results.length === 0) {
+        return res.json({ loggedIn: false });
+      }
+
+      const userName = results[0].fullName;
+
+      return res.json({ loggedIn: true, name: userName });
+    });
   });
 };
 
