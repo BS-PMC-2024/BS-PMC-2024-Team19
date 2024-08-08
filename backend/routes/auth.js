@@ -12,6 +12,7 @@ import {
   submitQuestionnaire,
   getUserEmail,
   submitHelpRequest,
+  getUserProfile,
 } from "../controllers/authController.js";
 
 const router = express.Router();
@@ -27,5 +28,6 @@ router.post("/updateUserStatus", updateUserStatus);
 router.post("/submit-questionnaire", submitQuestionnaire);
 router.get("/getUserEmail", getUserEmail);
 router.post("/helpRequest", submitHelpRequest);
+router.get("/getUserProfile", getUserProfile);
 
 export default router;
