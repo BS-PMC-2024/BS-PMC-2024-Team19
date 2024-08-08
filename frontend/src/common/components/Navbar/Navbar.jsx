@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Avatar, Menu, MenuItem } from "@mui/material";
 import { blue } from "@mui/material/colors";
+import Swal from "sweetalert2";
 import "./Navbar.css";
 import axios from "axios";
 import { useAuth } from "../../../utils/AuthContext";
@@ -45,14 +46,33 @@ const Navbar = () => {
 
   const handleLogoutClick = async () => {
     try {
-      await axios.post(
-        "http://localhost:6500/backend/auth/logout",
-        {},
-        { withCredentials: true }
-      );
-      logout(); // Call the context logout
-      setUserInitial("");
-      navigate("/");
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        html: `<span style="font-size: 15px;">You will be logged out of your account.</span>`, // Apply custom font size here
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, logout!",
+        cancelButtonText: "No, cancel",
+        customClass: {
+          title: "swal-title",
+          content: "swal-content",
+          confirmButton: "swal-confirm-button",
+          cancelButton: "swal-cancel-button",
+        },
+      });
+
+      if (result.isConfirmed) {
+        await axios.post(
+          "http://localhost:6500/backend/auth/logout",
+          {},
+          { withCredentials: true }
+        );
+        logout(); // Call the context logout
+        setUserInitial("");
+        navigate("/");
+      }
     } catch (err) {
       console.error("Failed to logout:", err);
     }

@@ -138,4 +138,35 @@
   .navbar-btns button {
     width: auto;
   }
+
+  .swal-title {
+    font-size: 34px; /* Adjust title size */
+    font-weight: bold; /* Optional: make the title bold */
+  }
+
+  .swal-content {
+    font-size: 30px; /* Adjust content size */
+  }
+
+  .swal-text {
+    font-size: 15px; /* Adjust content size */
+  }
+
+  .swal-confirm-button,
+  .swal-cancel-button {
+    padding: 10px 20px; /* Adjust padding to increase button size */
+    font-size: 16px; /* Adjust font size for button text */
+    border-radius: 5px; /* Optional: rounded corners */
+    border: none; /* Remove default border */
+  }
+
+  .swal-confirm-button {
+    background-color: #3085d6; /* Button color */
+    color: #fff; /* Text color */
+  }
+
+  .swal-cancel-button {
+    background-color: #d33; /* Button color */
+    color: #fff; /* Text color */
+  }
 }
