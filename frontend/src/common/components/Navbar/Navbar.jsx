@@ -1,39 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Avatar, Menu, MenuItem } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import "./Navbar.css";
 import axios from "axios";
+import { useAuth } from "../../../utils/AuthContext";
 
-const Navbar = ({ onLogout }) => {
+const Navbar = () => {
+  const { logout } = useAuth();
   const [navToggle, setNavToggle] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [userInitial, setUserInitial] = useState("");
-  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    checkLoginStatus();
-  }, [location]);
-
-  const checkLoginStatus = async () => {
+  const checkLoginStatus = useCallback(async () => {
     try {
       const response = await axios.get(
         "http://localhost:6500/backend/auth/status",
         { withCredentials: true }
       );
-      setIsLoggedIn(response.data.loggedIn);
       if (response.data.loggedIn && response.data.name) {
-        setUserInitial(response.data.name.charAt(0).toUpperCase()); // Set the user's initial
-        setUserName(response.data.name); // Set the user's full name
+        setUserInitial(response.data.name.charAt(0).toUpperCase());
+      } else {
+        setUserInitial("");
       }
     } catch (err) {
       console.error("Failed to check login status:", err);
-      setIsLoggedIn(false);
+      setUserInitial("");
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    checkLoginStatus();
+  }, [checkLoginStatus, location]);
 
   const handleAvatarClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -50,7 +50,8 @@ const Navbar = ({ onLogout }) => {
         {},
         { withCredentials: true }
       );
-      onLogout(); // Notify parent about logout
+      logout(); // Call the context logout
+      setUserInitial("");
       navigate("/");
     } catch (err) {
       console.error("Failed to logout:", err);
@@ -60,6 +61,16 @@ const Navbar = ({ onLogout }) => {
 
   const handleAccountClick = () => {
     navigate("/profile");
+    handleMenuClose();
+  };
+
+  const handlePortfolioClick = () => {
+    navigate("/portfolio");
+    handleMenuClose();
+  };
+
+  const handleInvestInfoClick = () => {
+    navigate("/invest-info");
     handleMenuClose();
   };
 
@@ -91,15 +102,15 @@ const Navbar = ({ onLogout }) => {
           >
             <div className="navbar-collapse-content">
               <div className="navbar-btns">
-                {isLoggedIn ? (
+                {userInitial ? (
                   <>
                     <Avatar
                       sx={{
                         bgcolor: blue[500],
                         cursor: "pointer",
-                        width: 50, // Adjust the width
-                        height: 50, // Adjust the height
-                        fontSize: "1.8rem", // Adjust the font size to fit the circle
+                        width: 50,
+                        height: 50,
+                        fontSize: "1.8rem",
                       }}
                       alt="User Avatar"
                       onClick={handleAvatarClick}
@@ -112,6 +123,12 @@ const Navbar = ({ onLogout }) => {
                       onClose={handleMenuClose}
                     >
                       <MenuItem onClick={handleAccountClick}>Account</MenuItem>
+                      <MenuItem onClick={handlePortfolioClick}>
+                        Portfolio
+                      </MenuItem>
+                      <MenuItem onClick={handleInvestInfoClick}>
+                        Invest Info
+                      </MenuItem>
                       <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
                     </Menu>
                   </>

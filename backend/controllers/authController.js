@@ -100,7 +100,6 @@ export const logout = (req, res) => {
     })
     .status(200)
     .json("User has been logged out.");
-  console.log("test1");
 };
 
 export const checkAuthStatus = (req, res) => {
