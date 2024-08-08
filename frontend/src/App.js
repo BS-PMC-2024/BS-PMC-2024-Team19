@@ -1,5 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useEffect, useCallback } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import HomePage from "./features/HomePage/HomePage";
 import Navbar from "./common/components/Navbar/Navbar";
 import Footer from "./common/components/Footer/Footer";
@@ -11,63 +16,63 @@ import DeleteByAdmin from "./features/Admin/DeleteByAdmin";
 import Questionnaire from "./common/components/Users/formQuestionnaire/Questionnaire";
 import UserStatByAdmin from "./features/Admin/UserStatByAdmin";
 import UserNavbar from "./common/components/Navbar/UserNavbar";
+import { AuthProvider, useAuth } from "./utils/AuthContext";
 import axios from "axios";
 import "./App.css";
 
-function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+function AppContent() {
+  const { user, setUser, logout } = useAuth(); // Ensure setUser is available
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
 
-  useEffect(() => {
-    checkLoginStatus(); // Check login status on component mount
-  }, []);
-
-  const checkLoginStatus = async () => {
+  const checkLoginStatus = useCallback(async () => {
     try {
       const response = await axios.get(
         "http://localhost:6500/backend/auth/status",
         { withCredentials: true }
       );
-      setIsLoggedIn(response.data.loggedIn);
+      setUser(response.data.loggedIn ? { name: response.data.name } : null);
     } catch (err) {
       console.error("Failed to check login status:", err);
-      setIsLoggedIn(false);
+      setUser(null);
     }
-  };
+  }, [setUser]);
 
   const handleLogin = async () => {
-    await checkLoginStatus(); // Update login status after login
+    await checkLoginStatus(); // Ensure status is updated after login
   };
 
-  const handleLogout = async () => {
-    try {
-      await axios.post(
-        "http://localhost:6500/backend/auth/logout",
-        {},
-        { withCredentials: true }
-      );
-      setIsLoggedIn(false); // Update state on logout
-    } catch (err) {
-      console.error("Failed to logout:", err);
-    }
-  };
+  useEffect(() => {
+    checkLoginStatus(); // Check login status on component mount
+  }, [checkLoginStatus]);
 
+  return (
+    <>
+      <Navbar onLogout={logout} />
+      {user && !isHomePage && <UserNavbar />}
+      <Routes>
+        <Route path="/signup" element={<SignUp onLogin={handleLogin} />} />
+        <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/update" element={<UpdateD />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/deleteByAdmin" element={<DeleteByAdmin />} />
+        <Route path="/questionnaire" element={<Questionnaire />} />
+        <Route path="/userStatByAdmin" element={<UserStatByAdmin />} />
+        <Route path="/" element={<HomePage />} />
+      </Routes>
+      <Footer />
+    </>
+  );
+}
+
+function App() {
   return (
     <div id="root">
       <div className="App">
         <Router>
-          <Navbar onLogout={handleLogout} />
-          {isLoggedIn && <UserNavbar />} {/* Conditionally render UserNavbar */}
-          <Routes>
-            <Route path="/signup" element={<SignUp onLogin={handleLogin} />} />
-            <Route path="/login" element={<Login onLogin={handleLogin} />} />
-            <Route path="/update" element={<UpdateD />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/deleteByAdmin" element={<DeleteByAdmin />} />
-            <Route path="/questionnaire" element={<Questionnaire />} />
-            <Route path="/userStatByAdmin" element={<UserStatByAdmin />} />
-            <Route path="/" element={<HomePage />} />
-          </Routes>
-          <Footer />
+          <AuthProvider>
+            <AppContent />
+          </AuthProvider>
         </Router>
       </div>
     </div>

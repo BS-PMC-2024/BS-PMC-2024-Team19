@@ -9,12 +9,11 @@
 }
 
 .user-navbar {
-  background-color: var(--clr-dark); /* Keeping the navbar dark */
+  background-color: transparent;
   padding: 10px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 10px;
   margin-top: 78px; /* Push below the main Navbar */
   z-index: 998;
 }
@@ -32,9 +31,10 @@
 }
 
 .user-navbar-btn {
-  color: var(--clr-white);
+  color: var(--clr-black);
   text-transform: uppercase;
-  font-size: 1.2rem;
+  font-weight: bold;
+  font-size: 1.4rem;
   padding: 10px 20px;
   transition: var(--transition);
   text-align: center;
