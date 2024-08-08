@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Avatar, Menu, MenuItem } from "@mui/material";
+import { Avatar, Menu, MenuItem, Typography } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import Swal from "sweetalert2";
 import "./Navbar.css";
@@ -8,7 +8,7 @@ import axios from "axios";
 import { useAuth } from "../../../utils/AuthContext";
 
 const Navbar = () => {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const [navToggle, setNavToggle] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [userInitial, setUserInitial] = useState("");
@@ -48,7 +48,7 @@ const Navbar = () => {
     try {
       const result = await Swal.fire({
         title: "Are you sure?",
-        html: `<span style="font-size: 15px;">You will be logged out of your account.</span>`, // Apply custom font size here
+        html: `<span style="font-size: 15px;">You will be logged out of your account.</span>`,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -79,18 +79,8 @@ const Navbar = () => {
     handleMenuClose();
   };
 
-  const handleAccountClick = () => {
-    navigate("/profile");
-    handleMenuClose();
-  };
-
-  const handlePortfolioClick = () => {
-    navigate("/portfolio");
-    handleMenuClose();
-  };
-
-  const handleInvestInfoClick = () => {
-    navigate("/invest-info");
+  const handleStatisticsClick = () => {
+    navigate("/userStatByAdmin");
     handleMenuClose();
   };
 
@@ -142,14 +132,35 @@ const Navbar = () => {
                       open={Boolean(anchorEl)}
                       onClose={handleMenuClose}
                     >
-                      <MenuItem onClick={handleAccountClick}>Account</MenuItem>
-                      <MenuItem onClick={handlePortfolioClick}>
-                        Portfolio
-                      </MenuItem>
-                      <MenuItem onClick={handleInvestInfoClick}>
-                        Invest Info
-                      </MenuItem>
-                      <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
+                      {user.isAdmin ? (
+                        <>
+                          <MenuItem onClick={handleStatisticsClick}>
+                            <Typography fontSize="1.4rem">
+                              Statistics
+                            </Typography>
+                          </MenuItem>
+                          <MenuItem onClick={handleLogoutClick}>
+                            <Typography fontSize="1.4rem">Logout</Typography>
+                          </MenuItem>
+                        </>
+                      ) : (
+                        <>
+                          <MenuItem onClick={() => navigate("/profile")}>
+                            <Typography fontSize="1.4rem">Account</Typography>
+                          </MenuItem>
+                          <MenuItem onClick={() => navigate("/portfolio")}>
+                            <Typography fontSize="1.4rem">Portfolio</Typography>
+                          </MenuItem>
+                          <MenuItem onClick={() => navigate("/invest-info")}>
+                            <Typography fontSize="1.4rem">
+                              Invest Info
+                            </Typography>
+                          </MenuItem>
+                          <MenuItem onClick={handleLogoutClick}>
+                            <Typography fontSize="1.4rem">Logout</Typography>
+                          </MenuItem>
+                        </>
+                      )}
                     </Menu>
                   </>
                 ) : (

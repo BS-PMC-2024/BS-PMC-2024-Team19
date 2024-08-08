@@ -21,7 +21,7 @@ import axios from "axios";
 import "./App.css";
 
 function AppContent() {
-  const { user, setUser, logout } = useAuth(); // Ensure setUser is available
+  const { user, setUser, logout } = useAuth();
   const location = useLocation();
   const isHomePage = location.pathname === "/";
 
@@ -31,7 +31,23 @@ function AppContent() {
         "http://localhost:6500/backend/auth/status",
         { withCredentials: true }
       );
-      setUser(response.data.loggedIn ? { name: response.data.name } : null);
+
+      // Log the full response to see what data we're getting
+      console.log("Login status response:", response.data);
+
+      if (response.data.loggedIn) {
+        // Set the user state with the retrieved data and log it
+        const userInfo = {
+          name: response.data.name,
+          isAdmin: response.data.isAdmin,
+          isPrime: response.data.isPrime,
+        };
+        console.log("Setting user info:", userInfo);
+        setUser(userInfo);
+      } else {
+        console.log("User not logged in, setting user to null");
+        setUser(null);
+      }
     } catch (err) {
       console.error("Failed to check login status:", err);
       setUser(null);
@@ -49,7 +65,8 @@ function AppContent() {
   return (
     <>
       <Navbar onLogout={logout} />
-      {user && !isHomePage && <UserNavbar />}
+      {/* Show UserNavbar only if the user is logged in, not on the home page, and is not an admin */}
+      {user && !isHomePage && !user.isAdmin && <UserNavbar />}
       <Routes>
         <Route path="/signup" element={<SignUp onLogin={handleLogin} />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
