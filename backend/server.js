@@ -4,6 +4,8 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import authRoutes from "./routes/auth.js";
 import userRoutes from './routes/userRoutes.js'
+import youtubeRoutes from './routes/youtubeRoutes.js';
+import nyInvestBorsaRoutes from './routes/nyInvestBorsaRoutes.js';
 const app = express();
 
 app.use(express.json());
@@ -24,8 +26,8 @@ app.get("/", (req, res) => {
 
 app.use("/backend/auth", authRoutes);
 app.use("/backend/user", userRoutes);
-
-
+app.use("/backend/youtube",youtubeRoutes);
+app.use("/backend/nyinvestborsa",nyInvestBorsaRoutes);
 const PORT = 6500;
 
 app.listen(PORT, () => {

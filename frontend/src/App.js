@@ -10,6 +10,7 @@ import Profile from "./common/components/Users/Profile/Profile";
 import DeleteByAdmin from "./features/Admin/DeleteByAdmin";
 import Questionnaire from "./common/components/Users/formQuestionnaire/Questionnaire";
 import UserStatByAdmin from "./features/Admin/UserStatByAdmin";
+import PremiumPage from './features/PremiumPage/PremiumPage';
 import axios from "axios";
 import "./App.css"; // Ensure you import your global CSS
 
@@ -51,6 +52,7 @@ function App() {
             <Route path="/DeleteByAdmin" element={<DeleteByAdmin />} />
             <Route path="/questionnaire" element={<Questionnaire />} />
             <Route path="/UserStatByAdmin" element={<UserStatByAdmin />} />
+            <Route path="/premium" element={<PremiumPage />} />
             <Route path="/" element={<HomePage />} />
           </Routes>
           <Footer />
