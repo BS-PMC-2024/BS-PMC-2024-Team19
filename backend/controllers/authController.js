@@ -141,7 +141,32 @@ export const checkAuthStatus = (req, res) => {
     });
   });
 };
+// Check if email exists in the database
+export const checkEmailExists = (req, res) => {
+  const { email } = req.body;
 
+  console.log("Checking if email exists:", email);
+
+  // SQL query to check if the email exists in the database
+  const checkEmailQuery = "SELECT * FROM users WHERE email = ?";
+  db.query(checkEmailQuery, [email], (err, results) => {
+    if (err) {
+      console.error("DB Check Email Error:", err);
+      // Respond with a 500 status code and error message if there is a database error
+      return res.status(500).json({ error: "Failed to check email" });
+    }
+
+    // Check if the results contain any records with the specified email
+    if (results.length > 0) {
+      // Email exists in the database
+      return res.status(409).json({ error: "Email already exists" });
+    }
+
+    // Email does not exist in the database
+    console.log("Email is available");
+    return res.status(200).json({ message: "Email is available" });
+  });
+};
 export const clearCookies = (req, res) => {
   res
     .clearCookie("accessToken", {

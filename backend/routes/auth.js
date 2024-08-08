@@ -13,6 +13,7 @@ import {
   getUserEmail,
   submitHelpRequest,
   getUserProfile,
+  checkEmailExists,
 } from "../controllers/authController.js";
 
 const router = express.Router();
@@ -23,6 +24,7 @@ router.post("/deleteUserByAdmin", deleteUserByAdmin);
 router.post("/changePassword", changePassword);
 router.get("/status", checkAuthStatus);
 router.post("/clear-cookies", clearCookies);
+router.post("/check-email", checkEmailExists);
 router.get("/getAllUsers", getAllUsers);
 router.post("/updateUserStatus", updateUserStatus);
 router.post("/submit-questionnaire", submitQuestionnaire);
