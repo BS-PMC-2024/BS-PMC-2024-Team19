@@ -1,0 +1,12 @@
+.swal2-confirm-custom {
+  font-size: 15px !important; /* Adjust the font size */
+  padding: 0.5rem 1rem !important; /* Adjust padding if needed */
+  background-color: #3085d6 !important; /* Adjust background color if needed */
+  color: #fff !important; /* Adjust text color if needed */
+  border-radius: 4px !important; /* Adjust border radius if needed */
+  border: none !important; /* Remove border if needed */
+}
+
+.swal2-confirm-custom:hover {
+  background-color: #2a6eb3 !important; /* Adjust hover background color if needed */
+}

@@ -114,7 +114,9 @@ export const checkAuthStatus = (req, res) => {
     }
 
     const email = user.email;
-    const getUserQuery = "SELECT fullName FROM users WHERE email = ?";
+    // Modify the query to select `isAdmin` and `isPrime` fields
+    const getUserQuery =
+      "SELECT fullName, isAdmin, isPrime FROM users WHERE email = ?";
     db.query(getUserQuery, [email], (dbErr, results) => {
       if (dbErr) {
         console.error("DB Get User Error:", dbErr);
@@ -126,8 +128,16 @@ export const checkAuthStatus = (req, res) => {
       }
 
       const userName = results[0].fullName;
+      const isAdmin = results[0].isAdmin;
+      const isPrime = results[0].isPrime;
 
-      return res.json({ loggedIn: true, name: userName });
+      // Include `isAdmin` and `isPrime` in the response
+      return res.json({
+        loggedIn: true,
+        name: userName,
+        isAdmin: isAdmin, // true or false
+        isPrime: isPrime, // true or false
+      });
     });
   });
 };

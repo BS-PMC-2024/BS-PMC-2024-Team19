@@ -4,7 +4,9 @@ import CircularProgress from "@mui/material/CircularProgress";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import sections from "../../../../constants/data";
-import NeedHelp from '../../needHelp/needHelp'; 
+import NeedHelp from "../../needHelp/needHelp";
+import Swal from "sweetalert2";
+import "./Questionnaire.css";
 
 const { questions } = sections;
 
@@ -67,7 +69,6 @@ const Questionnaire = () => {
       setCurrentQuestion((prev) => prev + 1);
     } else {
       try {
-        // Prepare the mapped answers for submission
         const mappedAnswers = {
           Q1: answers[0],
           Q2: answers[1],
@@ -81,7 +82,6 @@ const Questionnaire = () => {
           Q10: answers[9],
         };
 
-        // Submit the questionnaire
         const response = await fetch(
           "http://localhost:6500/backend/auth/submit-questionnaire",
           {
@@ -89,13 +89,12 @@ const Questionnaire = () => {
             headers: {
               "Content-Type": "application/json",
             },
-            credentials: "include", // Include cookies in the request if needed
-            body: JSON.stringify({ answers: mappedAnswers }), // Send mapped answers
+            credentials: "include",
+            body: JSON.stringify({ answers: mappedAnswers }),
           }
         );
 
         if (!response.ok) {
-          // If the response is not ok, throw an error with the status and response text
           const errorText = await response.text();
           throw new Error(`Error: ${response.status} - ${errorText}`);
         }
@@ -103,13 +102,24 @@ const Questionnaire = () => {
         const data = await response.json();
         console.log("Response from server:", data);
 
-        // Redirect to the update page
-        navigate("/update"); // Adjust this path to your update page
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          html: `<span style="font-size: 15px;">The form has been sent!</span>`,
+          confirmButtonText: "OK",
+          customClass: {
+            confirmButton: "swal2-confirm-custom", // Add a custom class to the confirm button
+          },
+        }).then(() => {
+          navigate("/profile");
+        });
       } catch (error) {
         console.error("Error submitting questionnaire:", error);
-        alert(
-          "An error occurred while submitting the questionnaire. Please try again."
-        );
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "An error occurred while submitting the questionnaire. Please try again.",
+        });
       }
     }
   };
