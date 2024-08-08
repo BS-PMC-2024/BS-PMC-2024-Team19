@@ -384,3 +384,34 @@ export const submitHelpRequest = async (req, res) => {
     res.status(500).json({ error: "Failed to submit help request" });
   }
 };
+
+export const getUserProfile = (req, res) => {
+  const token = req.cookies.accessToken;
+
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized, no token provided" });
+  }
+
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ error: "Unauthorized, invalid token" });
+    }
+
+    const email = decoded.email;
+
+    const getUserQuery =
+      "SELECT fullName, email, isPrime FROM users WHERE email = ?";
+    db.query(getUserQuery, [email], (err, results) => {
+      if (err) {
+        console.error("DB Get User Error:", err);
+        return res.status(500).json({ error: "Failed to retrieve user data" });
+      }
+
+      if (results.length === 0) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      return res.status(200).json({ user: results[0] });
+    });
+  });
+};
