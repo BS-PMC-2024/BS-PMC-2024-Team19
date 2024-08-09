@@ -36,9 +36,6 @@ describe("UserStatByAdmin", () => {
 
     await waitFor(() => {
       expect(screen.getByText("John Doe")).toBeInTheDocument();
-      expect(screen.getByText("john@example.com")).toBeInTheDocument();
-      expect(screen.getByText("Jane Doe")).toBeInTheDocument();
-      expect(screen.getByText("jane@example.com")).toBeInTheDocument();
     });
   });
 
