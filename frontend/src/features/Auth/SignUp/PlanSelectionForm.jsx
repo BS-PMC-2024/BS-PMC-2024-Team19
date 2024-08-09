@@ -70,10 +70,10 @@ const PlanSelectionForm = ({ signUpFormData, setSignUpFormData, onBack, onSubmit
                 <Typography variant="h4" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>$0</Typography>
                 <Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Valid indefinitely</Typography>
                 <ul>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}><b>Basic</b> charting tools</Typography></li>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}><b>5</b> indicators per chart</Typography></li>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Limited data history</Typography></li>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Standard support</Typography></li>
+                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}><b>Basic</b> portfolio tracking</Typography></li>
+                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}><b>5</b> assets under management</Typography></li>
+                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Standard performance reports</Typography></li>
+                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Basic market insights</Typography></li>
                   <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Community forum access</Typography></li>
                 </ul>
               </CardContent>
@@ -98,13 +98,13 @@ const PlanSelectionForm = ({ signUpFormData, setSignUpFormData, onBack, onSubmit
                 <Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Billed annually</Typography>
                 <Typography variant="body2" color="textSecondary" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}><s>$24.97</s> - Save 24%</Typography>
                 <ul>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}><b>Advanced</b> charting tools</Typography></li>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}><b>Unlimited</b> indicators per chart</Typography></li>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Extended data history</Typography></li>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Priority support</Typography></li>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Exclusive webinars and tutorials</Typography></li>
+                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}><b>Advanced</b> portfolio management</Typography></li>
+                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}><b>Unlimited</b>  assets under management</Typography></li>
+                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Detailed performance analytics</Typography></li>
+                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Advanced market insights</Typography></li>
+                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Exclusive Courses and tutorials</Typography></li>
                   <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Ad-free experience</Typography></li>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Access to premium indicators</Typography></li>
+                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Priority customer support</Typography></li>
                 </ul>
               </CardContent>
               <CardActions>
