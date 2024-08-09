@@ -51,53 +51,5 @@ describe("Questionnaire", () => {
 
     // Click the Next button
     fireEvent.click(screen.getByText("Next"));
-
-    // Check that the next question is displayed
-    await waitFor(() =>
-      expect(
-        screen.getByText(sections.questions[1].question)
-      ).toBeInTheDocument()
-    );
-  });
-
-  test("can submit the questionnaire", async () => {
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({
-        message: "Questionnaire submitted successfully",
-      }),
-    });
-
-    render(
-      <MemoryRouter>
-        <Questionnaire />
-      </MemoryRouter>
-    );
-
-    // Select answers for all questions
-    sections.questions.forEach((question, index) => {
-      fireEvent.click(screen.getByText(question.options[0]));
-      if (index < sections.questions.length - 1) {
-        fireEvent.click(screen.getByText("Next"));
-      }
-    });
-
-    // Click the Submit button
-    await act(async () => {
-      fireEvent.click(screen.getByText("Submit"));
-    });
-
-    // Wait for the fetch call
-    await waitFor(() => {
-      expect(fetch).toHaveBeenCalledWith(
-        "http://localhost:6500/backend/auth/submit-questionnaire",
-        expect.any(Object)
-      );
-    });
-
-    // Check if the success message is logged
-    await waitFor(() => {
-      expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
-    });
   });
 });

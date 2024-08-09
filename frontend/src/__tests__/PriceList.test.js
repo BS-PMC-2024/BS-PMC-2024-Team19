@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
-import PriceList from "../common/components/Users/Props/PriceList"; // Adjust the path if necessary
+import PriceList from "../common/components/Users/Props/PriceList";
 
 describe("PriceList Component", () => {
   const onClose = jest.fn();
