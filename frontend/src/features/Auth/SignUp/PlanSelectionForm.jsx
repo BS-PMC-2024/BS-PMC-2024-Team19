@@ -1,22 +1,43 @@
-import React, { useState } from 'react';
-import { Button, Typography, Grid, Card, CardContent, CardActions, TextField } from '@mui/material';
-import './SignUp.css'; // Importing the same CSS file for consistent styling
+import React, { useState } from "react";
+import {
+  Button,
+  Typography,
+  Card,
+  CardContent,
+  CardActions,
+  TextField,
+} from "@mui/material";
+import "./PlanSelectionForm.css";
 
-const PlanSelectionForm = ({ signUpFormData, setSignUpFormData, onBack, onSubmit }) => {
-  const [selectedPlan, setSelectedPlan] = useState(signUpFormData.isPrime ? 'premium' : 'free');
-  const [creditCard, setCreditCard] = useState(signUpFormData.creditCard || '');
-  const [expiryDate, setExpiryDate] = useState(signUpFormData.expiryDate || '');
-  const [cvv, setCvv] = useState(signUpFormData.cvv || '');
+const PlanSelectionForm = ({
+  signUpFormData,
+  setSignUpFormData,
+  onBack,
+  onSubmit,
+}) => {
+  const [selectedPlan, setSelectedPlan] = useState(
+    signUpFormData.isPrime ? "premium" : "free"
+  );
+  const [creditCard, setCreditCard] = useState(signUpFormData.creditCard || "");
+  const [expiryDate, setExpiryDate] = useState(signUpFormData.expiryDate || "");
+  const [cvv, setCvv] = useState(signUpFormData.cvv || "");
+  const [pressedCard, setPressedCard] = useState(null);
 
   const handlePlanChange = (plan) => {
     setSelectedPlan(plan);
-    if (plan === 'premium') {
+    if (plan === "premium") {
       setSignUpFormData({ ...signUpFormData, isPrime: true });
     } else {
-      setSignUpFormData({ ...signUpFormData, isPrime: false, creditCard: '', expiryDate: '', cvv: '' });
-      setCreditCard('');
-      setExpiryDate('');
-      setCvv('');
+      setSignUpFormData({
+        ...signUpFormData,
+        isPrime: false,
+        creditCard: "",
+        expiryDate: "",
+        cvv: "",
+      });
+      setCreditCard("");
+      setExpiryDate("");
+      setCvv("");
     }
   };
 
@@ -37,125 +58,253 @@ const PlanSelectionForm = ({ signUpFormData, setSignUpFormData, onBack, onSubmit
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (selectedPlan === 'premium' && (!creditCard.trim() || !expiryDate.trim() || !cvv.trim())) {
-      alert("Please provide complete credit card details for the premium plan.");
+    if (
+      selectedPlan === "premium" &&
+      (!creditCard.trim() || !expiryDate.trim() || !cvv.trim())
+    ) {
+      alert(
+        "Please provide complete credit card details for the premium plan."
+      );
       return;
     }
 
-    // Only include necessary fields
     const { fullName, email, password, isPrime } = signUpFormData;
     onSubmit({ fullName, email, password, isPrime });
   };
 
   return (
-    <div className="signup-container">
-      <div className="signup-header">
-        <Typography variant="h5" gutterBottom style={{ fontFamily: 'Jost, sans-serif', fontWeight: 'bold',fontSize: '25px' }}>
+    <div className="plan-selection-container">
+      <div className="plan-selection-header">
+        <Typography variant="h3" gutterBottom className="header-text">
           Select Your Plan
         </Typography>
-        <div className="signup-underline"></div>
+        <div className="header-underline"></div>
       </div>
-      <form className="signup-inputs" onSubmit={handleSubmit}>
-        <Grid container spacing={12}>
-          <Grid item xs={12} md={6} >
-            <Card
-              variant="outlined"
-              className={`plan-card ${selectedPlan === 'free' ? 'selected' : ''}`}
-              style={{ transform: selectedPlan === 'free' ? 'scale(1.05)' : 'scale(0.95)',width: '140%' }}
-            >
-              <CardContent>
-                <Typography variant="h6" gutterBottom style={{ fontFamily: 'Jost, sans-serif', fontWeight: 'bold',fontSize: '18px' }}>
-                  Free Plan
-                </Typography>
-                <Typography variant="h4" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>$0</Typography>
-                <Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Valid indefinitely</Typography>
-                <ul>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}><b>Basic</b> portfolio tracking</Typography></li>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}><b>5</b> assets under management</Typography></li>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Standard performance reports</Typography></li>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Basic market insights</Typography></li>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Community forum access</Typography></li>
-                </ul>
-              </CardContent>
-              <CardActions>
-                <Button fullWidth variant="outlined"  onClick={() => handlePlanChange('free')} style={{ fontFamily: 'Jost, sans-serif' }}>
-                  Start Free Plan
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Card
-              variant="outlined"
-              className={`plan-card ${selectedPlan === 'premium' ? 'selected' : ''}`}
-              style={{ transform: selectedPlan === 'premium' ? 'scale(1.05)' : 'scale(0.95)',width:'160%' }}
-            >
-              <CardContent>
-                <Typography variant="h6" gutterBottom style={{ fontFamily: 'Jost, sans-serif', fontWeight: 'bold',fontSize: '18px' }}>
-                  Premium Plan
-                </Typography>
-                <Typography variant="h4" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>$18.9/mo</Typography>
-                <Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Billed annually</Typography>
-                <Typography variant="body2" color="textSecondary" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}><s>$24.97</s> - Save 24%</Typography>
-                <ul>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}><b>Advanced</b> portfolio management</Typography></li>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}><b>Unlimited</b>  assets under management</Typography></li>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Detailed performance analytics</Typography></li>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Advanced market insights</Typography></li>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Exclusive Courses and tutorials</Typography></li>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Ad-free experience</Typography></li>
-                  <li><Typography variant="body2" style={{ fontFamily: 'Jost, sans-serif',fontSize: '13px' }}>Priority customer support</Typography></li>
-                </ul>
-              </CardContent>
-              <CardActions>
-                <Button fullWidth variant="contained" color="primary" onClick={() => handlePlanChange('premium')} style={{ fontFamily: 'Jost, sans-serif' }}>
-                  Upgrade to Premium
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        </Grid>
+      <form className="plan-selection-form" onSubmit={handleSubmit}>
+        <div className="cards-container">
+          <Card
+            variant="outlined"
+            className={`plan-card ${
+              selectedPlan === "free" ? "selected" : ""
+            } ${pressedCard === "free" ? "pressed" : ""}`}
+            onClick={() => handlePlanChange("free")}
+            onMouseDown={() => setPressedCard("free")}
+            onMouseUp={() => setPressedCard(null)}
+            onMouseLeave={() => setPressedCard(null)}
+          >
+            <CardContent>
+              <Typography
+                variant="h4"
+                gutterBottom
+                className="plan-title"
+                style={{
+                  fontFamily: "Jost, sans-serif",
+                  fontWeight: "bold",
+                  fontSize: "25px",
+                }}
+              >
+                Free
+              </Typography>
+              <Typography
+                variant="h4"
+                className="plan-price"
+                style={{
+                  fontFamily: "Jost, sans-serif",
+                  fontSize: "12px",
+                  fontWeight: "bold",
+                }}
+              >
+                $0 / month
+              </Typography>
+              <ul className="plan-benefits">
+                <li>
+                  <Typography
+                    variant="body2"
+                    className="benefit"
+                    style={{ fontFamily: "Jost, sans-serif", fontSize: "12px" }}
+                  >
+                    Basic investment strategies
+                  </Typography>
+                </li>
+                <li>
+                  <Typography
+                    variant="body2"
+                    className="benefit"
+                    style={{ fontFamily: "Jost, sans-serif", fontSize: "12px" }}
+                  >
+                    Limited market analysis and insights
+                  </Typography>
+                </li>
+                <li>
+                  <Typography
+                    variant="body2"
+                    className="benefit"
+                    style={{ fontFamily: "Jost, sans-serif", fontSize: "12px" }}
+                  >
+                    Standard portfolio management tools
+                  </Typography>
+                </li>
+                <li>
+                  <Typography
+                    variant="body2"
+                    className="benefit"
+                    style={{ fontFamily: "Jost, sans-serif", fontSize: "12px" }}
+                  >
+                    Access to community forums
+                  </Typography>
+                </li>
+              </ul>
+            </CardContent>
 
-        {selectedPlan === 'premium' && (
-          <div className="signup-credit-card">
+            <CardActions>
+              <Button
+                fullWidth
+                variant="outlined"
+                onClick={() => handlePlanChange("free")}
+                className="plan-button"
+              >
+                Start Free
+              </Button>
+            </CardActions>
+          </Card>
+
+          <Card
+            variant="outlined"
+            className={`plan-card ${
+              selectedPlan === "premium" ? "selected" : ""
+            } ${pressedCard === "premium" ? "pressed" : ""}`}
+            onClick={() => handlePlanChange("premium")}
+            onMouseDown={() => setPressedCard("premium")}
+            onMouseUp={() => setPressedCard(null)}
+            onMouseLeave={() => setPressedCard(null)}
+          >
+            <CardContent>
+              <Typography
+                variant="h4"
+                gutterBottom
+                className="plan-title"
+                style={{
+                  fontFamily: "Jost, sans-serif",
+                  fontWeight: "bold",
+                  fontSize: "25px",
+                }}
+              >
+                Premium
+              </Typography>
+              <Typography
+                variant="h4"
+                className="plan-price"
+                style={{
+                  fontFamily: "Jost, sans-serif",
+                  fontSize: "12px",
+                  fontWeight: "bold",
+                }}
+              >
+                $12.99 / month
+              </Typography>
+              <ul className="plan-benefits">
+                <li>
+                  <Typography
+                    variant="body2"
+                    className="benefit"
+                    style={{ fontFamily: "Jost, sans-serif", fontSize: "12px" }}
+                  >
+                    Access to premium investment strategies
+                  </Typography>
+                </li>
+                <li>
+                  <Typography
+                    variant="body2"
+                    className="benefit"
+                    style={{ fontFamily: "Jost, sans-serif", fontSize: "12px" }}
+                  >
+                    Real-time market analysis and insights
+                  </Typography>
+                </li>
+                <li>
+                  <Typography
+                    variant="body2"
+                    className="benefit"
+                    style={{ fontFamily: "Jost, sans-serif", fontSize: "12px" }}
+                  >
+                    Personalized portfolio management
+                  </Typography>
+                </li>
+                <li>
+                  <Typography
+                    variant="body2"
+                    className="benefit"
+                    style={{ fontFamily: "Jost, sans-serif", fontSize: "12px" }}
+                  >
+                    Priority customer support
+                  </Typography>
+                </li>
+              </ul>
+            </CardContent>
+            <CardActions>
+              <Button
+                fullWidth
+                variant="contained" // For a solid background
+                onClick={() => handlePlanChange("premium")}
+                className="plan-button"
+                style={{
+                  backgroundColor: "#1E90FF", // Your specific blue color
+                  color: "#fff", // White text color
+                  fontWeight: "bold", // Bold text
+                }}
+              >
+                Start Premium
+              </Button>
+            </CardActions>
+          </Card>
+        </div>
+
+        {selectedPlan === "premium" && (
+          <div className="payment-details">
             <TextField
-              type="text"
               label="Credit Card Number"
+              variant="outlined"
+              fullWidth
               value={creditCard}
               onChange={handleCreditCardChange}
-              fullWidth
-              margin="normal"
-              InputLabelProps={{ style: { fontFamily: 'Jost, sans-serif' } }}
-              InputProps={{ style: { fontFamily: 'Jost, sans-serif' } }}
+              className="payment-field"
             />
             <TextField
-              type="text"
               label="Expiry Date (MM/YY)"
+              variant="outlined"
+              fullWidth
               value={expiryDate}
               onChange={handleExpiryDateChange}
-              fullWidth
-              margin="normal"
-              InputLabelProps={{ style: { fontFamily: 'Jost, sans-serif' } }}
-              InputProps={{ style: { fontFamily: 'Jost, sans-serif' } }}
+              className="payment-field"
             />
             <TextField
-              type="text"
               label="CVV"
+              variant="outlined"
+              fullWidth
+              type="password"
               value={cvv}
               onChange={handleCvvChange}
-              fullWidth
-              margin="normal"
-              InputLabelProps={{ style: { fontFamily: 'Jost, sans-serif' } }}
-              InputProps={{ style: { fontFamily: 'Jost, sans-serif' } }}
+              className="payment-field"
             />
           </div>
         )}
 
-        <div className="signup-submit-container">
-          <Button className="signup-submit signup-gray" onClick={onBack} style={{ fontFamily: 'Jost, sans-serif' }}>
+        <div className="form-buttons">
+          <Button
+            variant="outlined"
+            onClick={onBack}
+            className="back-button"
+            style={{ fontWeight: "bold" }}
+          >
             Back
           </Button>
-          <Button type="submit" className="signup-submit" variant="contained" color="primary" style={{ fontFamily: 'Jost, sans-serif' }}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className="submit-button"
+            style={{ fontWeight: "bold" }}
+          >
             Submit
           </Button>
         </div>
