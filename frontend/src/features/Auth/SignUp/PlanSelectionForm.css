@@ -1,0 +1,142 @@
+.plan-selection-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px; /* Ensure the form width fits the layout */
+  padding: 0 20px; /* Add some padding to prevent cards from touching edges */
+}
+
+.plan-selection-header {
+  text-align: center;
+  margin: 40px 0 20px; /* Add top margin and bottom margin */
+}
+
+.header-text {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.header-underline {
+  width: 60%;
+  height: 4px;
+  background-color: #000;
+  margin: 10px auto;
+}
+
+.cards-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.plan-card {
+  cursor: pointer;
+  transition: box-shadow 0.3s ease, transform 0.3s ease,
+    background-color 0.3s ease, border-color 0.3s ease;
+  width: calc(
+    50% - 20px
+  ); /* Adjust width to fit two cards per row with a gap */
+  max-width: 500px; /* Increase max-width for even wider cards */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px; /* Add padding inside the card */
+  box-sizing: border-box; /* Include padding and border in width calculation */
+}
+
+/* Hover effect */
+.plan-card:hover {
+  background-color: #e3f2fd;
+  border-color: #007bff; /* Blue border on hover */
+}
+
+/* Active state for the pressed card */
+.plan-card:active {
+  background-color: #bbdefb; /* Lighter blue on press */
+}
+
+/* Selected state to show which card is active */
+.plan-card.selected {
+  border-color: #007bff; /* Blue border when selected */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+.plan-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #007bff;
+  text-align: center; /* Center horizontally */
+}
+
+.plan-price {
+  color: #007bff;
+  margin: 10px 0;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically if needed */
+}
+
+.plan-validity {
+  margin: 10px 0;
+  color: #666;
+  text-align: center; /* Center horizontally */
+}
+
+.plan-benefits {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.benefit {
+  margin-bottom: 10px;
+  font-size: 1.25rem; /* Increased font size for benefits */
+  color: #333;
+}
+
+.payment-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px; /* Add margin to separate from cards */
+  width: 100%;
+  max-width: 600px; /* Align with card width */
+}
+
+.payment-field {
+  margin-bottom: 10px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 600px; /* Align with the width of other sections */
+  margin-top: 20px; /* Add margin to separate from payment details */
+}
+
+.back-button {
+  width: 48%; /* Adjust width for alignment */
+}
+
+.submit-button {
+  width: 48%; /* Adjust width for alignment */
+}
+
+/* Ensure responsiveness on smaller screens */
+@media (max-width: 768px) {
+  .plan-card {
+    width: calc(100% - 20px); /* Full width minus gap on smaller screens */
+  }
+}
