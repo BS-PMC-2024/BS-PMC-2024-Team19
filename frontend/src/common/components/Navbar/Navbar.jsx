@@ -70,8 +70,10 @@ const Navbar = () => {
           { withCredentials: true }
         );
         logout(); // Call the context logout
-        setUserInitial("");
-        navigate("/");
+        setUserInitial(""); // Clear the user initial
+        localStorage.clear(); // Clear local storage if used
+        sessionStorage.clear(); // Clear session storage if used
+        window.location.href = "/"; // Set the URL to the homepage
       }
     } catch (err) {
       console.error("Failed to logout:", err);
@@ -81,6 +83,11 @@ const Navbar = () => {
 
   const handleStatisticsClick = () => {
     navigate("/userStatByAdmin");
+    handleMenuClose();
+  };
+
+  const handleChangePasswordClick = () => {
+    navigate("/update");
     handleMenuClose();
   };
 
@@ -137,6 +144,11 @@ const Navbar = () => {
                           <MenuItem onClick={handleStatisticsClick}>
                             <Typography fontSize="1.4rem">
                               Statistics
+                            </Typography>
+                          </MenuItem>
+                          <MenuItem onClick={handleChangePasswordClick}>
+                            <Typography fontSize="1.4rem">
+                              Change_Password
                             </Typography>
                           </MenuItem>
                           <MenuItem onClick={handleLogoutClick}>
