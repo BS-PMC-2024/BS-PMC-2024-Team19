@@ -24,7 +24,6 @@ import {
 
 const router = express.Router();
 
-// פעולות משתמש
 router.post("/register", register);
 router.post("/login", login);
 router.post("/logout", logout);

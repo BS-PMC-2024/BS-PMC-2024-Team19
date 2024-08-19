@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
-import Swal from "sweetalert2"; // ייבוא SweetAlert2
-import "./UpdateQ.css"; // ייבוא קובץ ה-CSS
+import Swal from "sweetalert2";
+import "./UpdateQ.css";
 
 const UpdateQ = () => {
-  const [questions, setQuestions] = useState({}); // מצב לשמירת השאלות כאובייקט
-  const [selectedQuestionId, setSelectedQuestionId] = useState(null); // מצב לשמירת מזהה השאלה שנבחרה
-  const [text, setText] = useState(""); // מצב לשמירת הטקסט של השאלה הנבחרת
+  const [questions, setQuestions] = useState({});
+  const [selectedQuestionId, setSelectedQuestionId] = useState(null);
+  const [text, setText] = useState("");
 
   useEffect(() => {
-    // פשט את השאלות מה-API
     const fetchQuestions = async () => {
       try {
         const response = await fetch(
@@ -17,15 +16,13 @@ const UpdateQ = () => {
         if (response.ok) {
           const data = await response.json();
 
-          // הנחה שהנתונים הם אובייקט עם מזהים כשמות מפתחות
           if (data.questions && Array.isArray(data.questions)) {
-            // המרת התשובות לאובייקט
             const questionsObject = data.questions.reduce((acc, question) => {
               acc[question.id] = question;
               return acc;
             }, {});
             setQuestions(questionsObject);
-            const firstQuestionId = data.questions[0].id; // קח את המפתח הראשון
+            const firstQuestionId = data.questions[0].id;
             setSelectedQuestionId(firstQuestionId);
             setText(questionsObject[firstQuestionId]?.question_text || "");
           } else {
@@ -40,10 +37,9 @@ const UpdateQ = () => {
     };
 
     fetchQuestions();
-  }, []); // נטען פעם אחת כשהקומפוננטה נטענת
+  }, []);
 
   useEffect(() => {
-    // עדכן את הטקסט של השאלה הנבחרת
     if (selectedQuestionId) {
       setText(questions[selectedQuestionId]?.question_text || "");
     }
@@ -59,7 +55,6 @@ const UpdateQ = () => {
   };
 
   const handleUpdate = async () => {
-    // הצגת חלון אישור
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "Do you want to update this question?",
