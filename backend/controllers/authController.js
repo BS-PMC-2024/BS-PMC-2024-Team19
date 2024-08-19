@@ -381,7 +381,8 @@ export const submitQuestionnaire = async (req, res) => {
 };
 export const getUserEmail = (req, res) => {
   try {
-    const token = req.cookies.accessToken; // Assuming the token is in cookies
+    const { answers } = req.body; // answers should be an object with Q1 to Q10 properties
+    const token = req.cookies.accessToken;
 
     if (!token) {
       console.log("No token provided");
@@ -448,5 +449,330 @@ export const getUserProfile = (req, res) => {
 
       return res.status(200).json({ user: results[0] });
     });
+  });
+};
+
+// Portfolio
+const chooseStocksBasedOnAnswers = (answers) => {
+  let riskScore = 0;
+
+  answers.forEach((answer) => {
+    switch (answer.response) {
+      case "A":
+        riskScore += 1;
+        break;
+      case "B":
+        riskScore += 2;
+        break;
+      case "C":
+        riskScore += 3;
+        break;
+      default:
+        break;
+    }
+  });
+
+  let riskLevel;
+  if (riskScore <= 6) riskLevel = "Low";
+  else if (riskScore <= 12) riskLevel = "Medium";
+  else riskLevel = "High";
+
+  const stocksByRiskLevel = {
+    Low: ["IBM", "KO", "T", "WMT", "MCD", "CSCO", "PFE", "MRK"],
+    Medium: [
+      "AAPL",
+      "MSFT",
+      "GOOGL",
+      "BRK.B",
+      "UNH",
+      "V",
+      "JPM",
+      "MA",
+      "HD",
+      "DIS",
+      "PYPL",
+      "CRM",
+      "BA",
+    ],
+    High: ["AMZN", "TSLA", "META", "NVDA", "NFLX", "ADBE", "INTC", "BABA"],
+  };
+
+  const stocks = stocksByRiskLevel[riskLevel] || [];
+  return stocks.sort(() => 0.5 - Math.random()).slice(0, 5); // Shuffle and pick 5 stocks
+};
+
+const fetchStockPrices = async (stocks) => {
+  try {
+    // Construct the query with correct formatting
+    const query = `
+      SELECT symbol, latest_price
+      FROM stocks
+      WHERE symbol IN (${stocks.map((stock) => `'${stock}'`).join(",")})
+    `;
+
+    return new Promise((resolve, reject) => {
+      db.query(query, (err, results) => {
+        if (err) {
+          console.error("DB Fetch Stock Prices Error:", err);
+          return reject(new Error("Failed to fetch stock prices"));
+        }
+
+        // Convert results into a map for easier lookup
+        const prices = {};
+        results.forEach((row) => {
+          prices[row.symbol] = parseFloat(row.latest_price);
+        });
+        resolve(prices);
+      });
+    });
+  } catch (error) {
+    console.error("Error fetching stock prices:", error);
+    throw new Error("Error fetching stock prices");
+  }
+};
+
+export const generatePortfolio = async (req, res) => {
+  console.log("generatePortfolio function called");
+
+  const { email, investmentAmount, questionnaireAnswers } = req.body;
+
+  if (!email || !investmentAmount || !questionnaireAnswers) {
+    return res.status(400).json({
+      error: "Email, investment amount, and questionnaire answers are required",
+    });
+  }
+
+  // Validate investmentAmount
+  const investmentAmountNumber = parseFloat(investmentAmount);
+  if (isNaN(investmentAmountNumber) || investmentAmountNumber <= 0) {
+    return res.status(400).json({
+      error: "Invalid investment amount",
+    });
+  }
+
+  // Transform questionnaireAnswers into an array of objects
+  const answersArray = Object.keys(questionnaireAnswers).map((key) => ({
+    question: key,
+    response: questionnaireAnswers[key],
+  }));
+
+  const stocks = chooseStocksBasedOnAnswers(answersArray);
+
+  try {
+    const prices = await fetchStockPrices(stocks);
+
+    const portfolioEntries = stocks
+      .map((stock) => {
+        const price = prices[stock];
+        if (isNaN(price)) {
+          console.error(`Invalid price for stock ${stock}: ${price}`);
+          return null; // Skip invalid stocks
+        }
+        const qnty = Math.floor(investmentAmountNumber / stocks.length / price);
+        if (isNaN(qnty) || qnty <= 0) {
+          console.error(`Invalid quantity for stock ${stock}: ${qnty}`);
+          return null; // Skip invalid stocks
+        }
+        return {
+          email,
+          symbol: stock,
+          entryPrice: price,
+          qnty,
+          markPrice: price, // Initially set markPrice to the entryPrice
+          pnlPercentage: 0.0, // Initial PnL percentage
+          pnlDollar: 0.0, // Initial PnL dollar
+        };
+      })
+      .filter((entry) => entry !== null); // Remove invalid entries
+
+    if (portfolioEntries.length === 0) {
+      return res
+        .status(400)
+        .json({ error: "No valid stocks to add to portfolio" });
+    }
+
+    const insertQuery = `
+      INSERT INTO portfolios (email, symbol, entryPrice, qnty, markPrice, pnlPercentage, pnlDollar)
+      VALUES ?
+      ON DUPLICATE KEY UPDATE 
+        entryPrice = VALUES(entryPrice), 
+        qnty = VALUES(qnty), 
+        markPrice = VALUES(markPrice), 
+        pnlPercentage = VALUES(pnlPercentage), 
+        pnlDollar = VALUES(pnlDollar)
+    `;
+    const values = portfolioEntries.map((entry) => [
+      entry.email,
+      entry.symbol,
+      entry.entryPrice,
+      entry.qnty,
+      entry.markPrice,
+      entry.pnlPercentage,
+      entry.pnlDollar,
+    ]);
+
+    db.query(insertQuery, [values], (err, result) => {
+      if (err) {
+        console.error("DB Insert Error:", err);
+        return res.status(500).json({ error: "Failed to generate portfolio" });
+      }
+      return res.status(200).json({
+        message: "Portfolio generated successfully",
+        portfolio: portfolioEntries,
+      });
+    });
+  } catch (error) {
+    console.error("Fetch Stock Prices Error:", error);
+    return res.status(500).json({ error: "Failed to fetch stock prices" });
+  }
+};
+
+export const getPortfolioDetails = (req, res) => {
+  const token = req.cookies.accessToken;
+
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized, no token provided" });
+  }
+
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ error: "Unauthorized, invalid token" });
+    }
+
+    const email = decoded.email;
+
+    // Query user profile
+    const getUserQuery =
+      "SELECT fullName, email, isPrime FROM users WHERE email = ?";
+    db.query(getUserQuery, [email], (err, results) => {
+      if (err) {
+        console.error("DB Get User Error:", err);
+        return res.status(500).json({ error: "Failed to retrieve user data" });
+      }
+
+      if (results.length === 0) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      const userProfile = results[0];
+
+      // Query portfolio details
+      const getPortfolioQuery = "SELECT * FROM portfolios WHERE email = ?";
+      db.query(getPortfolioQuery, [email], (err, portfolioEntries) => {
+        if (err) {
+          console.error("DB Get Portfolio Error:", err);
+          return res
+            .status(500)
+            .json({ error: "Failed to retrieve portfolio" });
+        }
+
+        if (portfolioEntries.length === 0) {
+          return res.status(200).json({
+            user: userProfile,
+            portfolio: null,
+            message:
+              "No portfolio found. Please complete the questionnaire and invest",
+          });
+        }
+
+        const getStockPricesQuery =
+          "SELECT symbol, latest_price FROM stocks WHERE symbol IN (?)";
+        const symbols = portfolioEntries.map((entry) => entry.symbol);
+
+        db.query(getStockPricesQuery, [symbols], (err, stockPrices) => {
+          if (err) {
+            console.error("DB Get Stock Prices Error:", err);
+            return res
+              .status(500)
+              .json({ error: "Failed to retrieve stock prices" });
+          }
+
+          const prices = {};
+          stockPrices.forEach((stock) => {
+            prices[stock.symbol] = parseFloat(stock.latest_price);
+          });
+
+          const detailedPortfolio = portfolioEntries.map((entry) => {
+            const currentPrice = prices[entry.symbol] || entry.entryPrice;
+            const totalValue = entry.qnty * currentPrice;
+            const pnlDollar = totalValue - entry.qnty * entry.entryPrice;
+            const pnlPercentage =
+              ((currentPrice - entry.entryPrice) / entry.entryPrice) * 100;
+
+            return {
+              ...entry,
+              markPrice: currentPrice,
+              totalValue,
+              pnlDollar,
+              pnlPercentage,
+            };
+          });
+
+          return res
+            .status(200)
+            .json({ user: userProfile, portfolio: detailedPortfolio });
+        });
+      });
+    });
+  });
+};
+
+export const getUserAnswers = (req, res) => {
+  const email = req.query.email;
+
+  if (!email) {
+    return res.status(400).json({
+      error: "Email is required to fetch user answers",
+    });
+  }
+
+  const query = `
+    SELECT Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10
+    FROM QUESTIONNAIRE
+    WHERE Email = ?
+  `;
+
+  db.query(query, [email], (err, results) => {
+    if (err) {
+      console.error("DB Query Error:", err); // Log the error for debugging
+      return res.status(500).json({ error: "Failed to retrieve user answers" });
+    }
+
+    if (results.length > 0) {
+      // Return the user answers as an object
+      return res.status(200).json({ answers: results[0] });
+    } else {
+      return res.status(200).json({
+        answers: null,
+        message:
+          "No answers found for this user. Please complete the questionnaire.",
+      });
+    }
+  });
+};
+
+export const getUserPrimeStatus = (req, res) => {
+  const email = req.query.email;
+
+  if (!email) {
+    return res.status(400).json({
+      error: "Email is required to fetch Prime status",
+    });
+  }
+
+  const query = "SELECT isPrime FROM users WHERE email = ?";
+  db.query(query, [email], (err, results) => {
+    if (err) {
+      console.error("DB Query Error:", err);
+      return res.status(500).json({ error: "Failed to retrieve Prime status" });
+    }
+
+    if (results.length > 0) {
+      return res.status(200).json({ isPrime: results[0].isPrime });
+    } else {
+      return res.status(404).json({
+        message: "No user found with this email",
+      });
+    }
   });
 };

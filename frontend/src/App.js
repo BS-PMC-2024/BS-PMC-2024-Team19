@@ -17,6 +17,7 @@ import Questionnaire from "./common/components/Users/formQuestionnaire/Questionn
 import UserStatByAdmin from "./features/Admin/UserStatByAdmin";
 import UserNavbar from "./common/components/Navbar/UserNavbar";
 import { AuthProvider, useAuth } from "./utils/AuthContext";
+import Portfolio from "./common/components/Users/Protfolio/Portfolio";
 import axios from "axios";
 import "./App.css";
 
@@ -75,6 +76,8 @@ function AppContent() {
         <Route path="/deleteByAdmin" element={<DeleteByAdmin />} />
         <Route path="/questionnaire" element={<Questionnaire />} />
         <Route path="/userStatByAdmin" element={<UserStatByAdmin />} />
+        <Route path="/portfolio" element={<Portfolio />} />
+
         <Route path="/" element={<HomePage />} />
       </Routes>
       <Footer />

@@ -1,0 +1,151 @@
+/* Ensure the table and label are in separate containers if not already */
+.portfolio-container {
+  display: flex;
+  flex-direction: column; /* Ensure the container stacks its children vertically */
+  align-items: center; /* Center content horizontally */
+  min-height: 80vh; /* Adjust as needed */
+  padding: 20px;
+  background-color: #f9f9f9;
+  margin-bottom: 50px; /* Added margin to push content up */
+}
+
+.portfolio-message {
+  text-align: center;
+  background: white;
+  padding: 60px; /* Increased padding */
+  border-radius: 16px; /* Increased border radius */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Increased shadow */
+  max-width: 700px; /* Increased max width */
+  width: 100%;
+}
+
+.portfolio-message h1 {
+  font-size: 3rem; /* Increased font size */
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.portfolio-message p {
+  font-size: 1.5rem; /* Increased font size */
+  color: #555;
+  margin-bottom: 40px; /* Increased margin */
+}
+
+.portfolio-button {
+  display: inline-block;
+  padding: 16px 32px; /* Increased padding */
+  font-size: 1.5rem; /* Increased font size */
+  font-weight: bold; /* Added bold font weight */
+  color: #fff;
+  background-color: var(--clr-robin-blue);
+  border-radius: 12px; /* Increased border radius */
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.portfolio-button:hover {
+  background-color: var(--clr-black);
+}
+
+.investment-form {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+.investment-form h2 {
+  margin-top: 5px;
+  margin-bottom: 40px; /* Space below the heading */
+}
+
+.investment-form label {
+  display: block;
+  font-size: 1.5rem; /* Increased font size */
+  margin-bottom: 15px;
+  color: #555;
+  font-weight: bold; /* Added bold font weight */
+}
+
+.investment-form input {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.5rem; /* Increased font size */
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  text-align: center; /* Centered the text inside the input */
+  box-sizing: border-box;
+}
+
+.investment-form button {
+  display: inline-block;
+  padding: 15px 30px; /* Increased padding */
+  font-size: 1.5rem; /* Increased font size */
+  font-weight: bold; /* Added bold font weight */
+  color: #fff;
+  background-color: var(--clr-robin-blue);
+  border-radius: 12px; /* Increased border radius */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.investment-form button:hover {
+  background-color: var(--clr-black);
+}
+
+.portfolio-table-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column; /* Ensure the table and label are stacked vertically */
+  align-items: center; /* Center the table horizontally */
+  margin-top: 20px; /* Adjusted margin for spacing */
+}
+
+.portfolio-table-container .MuiTable-root {
+  width: 100% !important; /* Ensure table width is 100% */
+}
+
+.portfolio-table-container .MuiTableCell-root {
+  font-size: 1.25rem !important; /* Larger font size */
+  font-weight: bold !important; /* Bold text */
+  text-align: center !important;
+  padding: 12px 16px !important; /* Increased padding */
+}
+
+.portfolio-table-container .MuiTableHead-root .MuiTableCell-root {
+  background-color: var(
+    --clr-robin-blue
+  ) !important; /* Blue background for headers */
+  color: #fff !important; /* White text color for headers */
+}
+
+.portfolio-table-container .MuiTableBody-root .MuiTableCell-root {
+  background-color: #f2f2f2 !important; /* Light grey background for table cells */
+  border-bottom: 1px solid #ddd !important; /* Light grey border for cell separation */
+}
+
+.portfolio-table-container
+  .MuiTableBody-root
+  tr:nth-child(even)
+  .MuiTableCell-root {
+  background-color: #e9ecef !important; /* Alternating row background color */
+}
+
+.portfolio-table-container .MuiTableBody-root tr:hover .MuiTableCell-root {
+  background-color: #d1e7fd !important; /* Light blue background on hover */
+}
+
+.pie-chart-container {
+  margin-top: 10px;
+}
+
+.pnl-info {
+  font-size: 1.5rem; /* Adjust font size as needed */
+  color: var(--clr-robin-blue); /* Adjust text color as needed */
+  text-align: center; /* Center the text */
+}

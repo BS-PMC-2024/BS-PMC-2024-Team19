@@ -4,7 +4,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import sections from "../../../../constants/data";
-import NeedHelp from "../../needHelp/needHelp";
 import Swal from "sweetalert2";
 import "./Questionnaire.css";
 
@@ -111,7 +110,7 @@ const Questionnaire = () => {
             confirmButton: "swal2-confirm-custom", // Add a custom class to the confirm button
           },
         }).then(() => {
-          navigate("/profile");
+          navigate("/portfolio");
         });
       } catch (error) {
         console.error("Error submitting questionnaire:", error);
@@ -267,7 +266,6 @@ const Questionnaire = () => {
           </Button>
         </Grid>
       </Grid>
-      <NeedHelp />
     </Container>
   );
 };

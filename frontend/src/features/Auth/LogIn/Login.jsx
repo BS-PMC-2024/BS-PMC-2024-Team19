@@ -77,7 +77,7 @@ const Login = ({ onLogin }) => {
         if (responseData.isAdmin) {
           navigate("/UserStatByAdmin");
         } else {
-          navigate("/premium");
+          navigate("/portfolio");
         }
 
         setLoginFormData({ email: "", password: "" });
