@@ -7,7 +7,7 @@ const JWT_SECRET =
 
 // register function
 export const register = (req, res) => {
-  const { fullName, email, password, isPrime } = req.body;
+  const { fullName, email, password, isPrime ,creditCard} = req.body;
 
   console.log("Received user data:", req.body);
 
@@ -53,6 +53,26 @@ export const register = (req, res) => {
           return res.status(500).json({ error: "Failed to register user" });
         }
         console.log("User registered successfully");
+        // Insert into the payments table if the user is premium
+        if (isPrimeValue) {
+          const paymentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
+          const paymentInsertQuery =
+            "INSERT INTO payments (email, creditCard, paymentDate) VALUES (?, ?, ?)";
+          console.log("number is:",creditCard);  
+          db.query(
+            paymentInsertQuery,
+            [email, creditCard, paymentDate],
+            (paymentErr, paymentResult) => {
+              if (paymentErr) {
+                console.error("DB Payment Insert Error:", paymentErr);
+                return res
+                  .status(500)
+                  .json({ error: "Failed to record payment details" });
+              }
+              console.log("Payment details recorded successfully");
+            }
+          );
+        }
         return res
           .status(200)
           .json({ message: "User registered successfully" });
