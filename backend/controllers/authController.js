@@ -450,3 +450,45 @@ export const getUserProfile = (req, res) => {
     });
   });
 };
+
+export const getAllQuestions = (req, res) => {
+  const getQuestionsQuery = "SELECT * FROM questions"; // הנח שאתה מחפש את כל השאלות
+
+  db.query(getQuestionsQuery, (err, results) => {
+    if (err) {
+      console.error("DB Get Questions Error:", err);
+      return res.status(500).json({ error: "Failed to retrieve questions" });
+    }
+
+    return res.status(200).json({ questions: results });
+  });
+};
+
+export const updateQuestions = (req, res) => {
+  const { id, question_text } = req.body;
+
+  console.log("Received ID:", id);
+  console.log("Received Question Text:", question_text);
+
+  if (!id || !question_text) {
+    return res.status(400).json({ error: "ID and question_text are required" });
+  }
+
+  const updateQuestionQuery =
+    "UPDATE questions SET question_text = ? WHERE id = ?";
+
+  db.query(updateQuestionQuery, [question_text, id], (err, result) => {
+    if (err) {
+      console.error("DB Update Question Error:", err);
+      return res.status(500).json({ error: "Failed to update question" });
+    }
+
+    if (result.affectedRows === 0) {
+      console.log("Question not found for update:", id);
+      return res.status(404).json({ error: "Question not found" });
+    }
+
+    console.log("Question updated successfully:", id);
+    return res.status(200).json({ message: "Question updated successfully" });
+  });
+};

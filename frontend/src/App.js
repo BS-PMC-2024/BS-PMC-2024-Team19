@@ -19,6 +19,7 @@ import UserNavbar from "./common/components/Navbar/UserNavbar";
 import { AuthProvider, useAuth } from "./utils/AuthContext";
 import axios from "axios";
 import "./App.css";
+import UpdateQ from "./features/Admin/UpdateQ ";
 
 function AppContent() {
   const { user, setUser, logout } = useAuth();
@@ -75,6 +76,8 @@ function AppContent() {
         <Route path="/deleteByAdmin" element={<DeleteByAdmin />} />
         <Route path="/questionnaire" element={<Questionnaire />} />
         <Route path="/userStatByAdmin" element={<UserStatByAdmin />} />
+        {<Route path="/UpdateQ" element={<UpdateQ />} />}
+
         <Route path="/" element={<HomePage />} />
       </Routes>
       <Footer />
