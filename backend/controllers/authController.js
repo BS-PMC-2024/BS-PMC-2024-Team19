@@ -7,7 +7,7 @@ const JWT_SECRET =
 
 // register function
 export const register = (req, res) => {
-  const { fullName, email, password, isPrime ,creditCard} = req.body;
+  const { fullName, email, password, isPrime, creditCard } = req.body;
 
   console.log("Received user data:", req.body);
 
@@ -55,10 +55,13 @@ export const register = (req, res) => {
         console.log("User registered successfully");
         // Insert into the payments table if the user is premium
         if (isPrimeValue) {
-          const paymentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
+          const paymentDate = new Date()
+            .toISOString()
+            .slice(0, 19)
+            .replace("T", " ");
           const paymentInsertQuery =
             "INSERT INTO payments (email, creditCard, paymentDate) VALUES (?, ?, ?)";
-          console.log("number is:",creditCard);  
+          console.log("number is:", creditCard);
           db.query(
             paymentInsertQuery,
             [email, creditCard, paymentDate],
@@ -469,6 +472,48 @@ export const getUserProfile = (req, res) => {
 
       return res.status(200).json({ user: results[0] });
     });
+  });
+};
+
+export const getAllQuestions = (req, res) => {
+  const getQuestionsQuery = "SELECT * FROM questions"; // הנח שאתה מחפש את כל השאלות
+
+  db.query(getQuestionsQuery, (err, results) => {
+    if (err) {
+      console.error("DB Get Questions Error:", err);
+      return res.status(500).json({ error: "Failed to retrieve questions" });
+    }
+
+    return res.status(200).json({ questions: results });
+  });
+};
+
+export const updateQuestions = (req, res) => {
+  const { id, question_text } = req.body;
+
+  console.log("Received ID:", id);
+  console.log("Received Question Text:", question_text);
+
+  if (!id || !question_text) {
+    return res.status(400).json({ error: "ID and question_text are required" });
+  }
+
+  const updateQuestionQuery =
+    "UPDATE questions SET question_text = ? WHERE id = ?";
+
+  db.query(updateQuestionQuery, [question_text, id], (err, result) => {
+    if (err) {
+      console.error("DB Update Question Error:", err);
+      return res.status(500).json({ error: "Failed to update question" });
+    }
+
+    if (result.affectedRows === 0) {
+      console.log("Question not found for update:", id);
+      return res.status(404).json({ error: "Question not found" });
+    }
+
+    console.log("Question updated successfully:", id);
+    return res.status(200).json({ message: "Question updated successfully" });
   });
 };
 

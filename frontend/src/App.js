@@ -20,6 +20,7 @@ import { AuthProvider, useAuth } from "./utils/AuthContext";
 import Portfolio from "./common/components/Users/Protfolio/Portfolio";
 import axios from "axios";
 import "./App.css";
+import UpdateQ from "./features/Admin/UpdateQ ";
 
 function AppContent() {
   const { user, setUser, logout } = useAuth();
@@ -76,9 +77,9 @@ function AppContent() {
         <Route path="/deleteByAdmin" element={<DeleteByAdmin />} />
         <Route path="/questionnaire" element={<Questionnaire />} />
         <Route path="/userStatByAdmin" element={<UserStatByAdmin />} />
-        <Route path="/portfolio" element={<Portfolio />} />
-
         <Route path="/" element={<HomePage />} />
+        <Route path="/UpdateQ" element={<UpdateQ />} />
+        <Route path="/portfolio" element={<Portfolio />} />
       </Routes>
       <Footer />
     </>

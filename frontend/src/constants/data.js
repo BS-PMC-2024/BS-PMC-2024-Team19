@@ -16,7 +16,7 @@ import { AiOutlineReload } from "react-icons/ai";
 
 const gradient = "url(#blue-gradient)";
 
-const questions = [
+const initialQuestions = [
   {
     question: "1. How do you typically react to market volatility?",
     options: [
@@ -31,7 +31,7 @@ const questions = [
   },
   {
     question:
-      "3. How much time do you spend researching and \n    monitoring your investments?",
+      "3. How much time do you spend researching and monitoring your investments?",
     options: [
       "Several hours a week",
       "A few hours a month",
@@ -43,8 +43,7 @@ const questions = [
     options: ["Rapid growth", "Steady income", "Preservation of capital"],
   },
   {
-    question:
-      "5. How do you feel about high-risk, high-reward \n    investments?",
+    question: "5. How do you feel about high-risk, high-reward investments?",
     options: [
       "Excited and willing to take the chance",
       "Cautious but open to a small percentage in my portfolio",
@@ -52,7 +51,7 @@ const questions = [
     ],
   },
   {
-    question: "6. How diversified is your current investment \n    portfolio?",
+    question: "6. How diversified is your current investment portfolio?",
     options: [
       "Heavily diversified across sectors and asset classes",
       "Somewhat diversified",
@@ -61,7 +60,7 @@ const questions = [
   },
   {
     question:
-      "7. Which of the following best describes your \n    knowledge of financial markets?",
+      "7. Which of the following best describes your knowledge of financial markets?",
     options: [
       "Advanced, I follow market news and trends closely",
       "Intermediate, I have a good understanding of the basics",
@@ -69,7 +68,7 @@ const questions = [
     ],
   },
   {
-    question: "8. How do you typically make investment\n    decisions?",
+    question: "8. How do you typically make investment decisions?",
     options: [
       "Based on in-depth research and analysis",
       "Following advice from financial advisors or trusted sources",
@@ -77,7 +76,7 @@ const questions = [
     ],
   },
   {
-    question: "9. How important is liquidity to you in your \n    investments?",
+    question: "9. How important is liquidity to you in your investments?",
     options: [
       "Very important, I need to be able to sell quickly if needed",
       "Somewhat important, but I can wait if necessary",
@@ -85,8 +84,7 @@ const questions = [
     ],
   },
   {
-    question:
-      "10. What is your response to a significant market\n      downturn?",
+    question: "10. What is your response to a significant market downturn?",
     options: [
       "I buy more shares to take advantage of lower prices",
       "I hold my current investments and wait for recovery",
@@ -94,6 +92,20 @@ const questions = [
     ],
   },
 ];
+
+// Try to get questions from localStorage, or use initialQuestions
+const savedQuestions = JSON.parse(localStorage.getItem("questions"));
+const questions = savedQuestions || initialQuestions;
+
+// Save questions to localStorage whenever they are updated
+const saveQuestions = (updatedQuestions) => {
+  localStorage.setItem("questions", JSON.stringify(updatedQuestions));
+};
+
+const updateQuestionArray = (index, newQuestion) => {
+  questions[index].question = newQuestion;
+  saveQuestions(questions);
+};
 
 const services = [
   {
@@ -123,7 +135,7 @@ const services = [
   {
     id: 5,
     icon: <ImMagicWand style={{ fill: gradient }} />,
-    title: "Grpahic Design",
+    title: "Graphic Design",
     text: "Lorem ipsum dolor sit mattis amet consectetur adipiscing",
   },
   {
@@ -194,85 +206,64 @@ const portfolio = [
     id: 16,
     title: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
     text: "Lorem ipsum dolor sit amet, consectetur adipisicing elits",
-    image: images.portfolio_img_1,
+    image: images.portfolio1,
   },
   {
     id: 17,
     title: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
     text: "Lorem ipsum dolor sit amet, consectetur adipisicing elits",
-    image: images.portfolio_img_2,
+    image: images.portfolio2,
   },
   {
     id: 18,
     title: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
     text: "Lorem ipsum dolor sit amet, consectetur adipisicing elits",
-    image: images.portfolio_img_3,
+    image: images.portfolio3,
   },
 ];
 
 const testimonials = [
   {
     id: 19,
-    name: "Marie Jordan",
-    text: "BestInvest's AI-powered tools have transformed how I manage my portfolio. Their insights are invaluable!",
-    image: images.customer_img_1,
-    rating: 5,
+    image: images.testimonial1,
+    text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda magni quos, natus facilis rem deleniti, vero doloribus aliquam ab iure dolorum reprehenderit aliquam. Maxime et consequatur consectetur pariatur. Aspernatur, beatae sequi?",
+    name: "John Doe",
+    position: "CEO, Example Inc.",
   },
   {
     id: 20,
-    name: "Jason Stawer",
-    text: "I'm impressed by BestInvest's real-time analytics. It helps me make informed decisions quickly.",
-    image: images.customer_img_2,
-    rating: 4,
+    image: images.testimonial2,
+    text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda magni quos, natus facilis rem deleniti, vero doloribus aliquam ab iure dolorum reprehenderit aliquam. Maxime et consequatur consectetur pariatur. Aspernatur, beatae sequi?",
+    name: "Jane Smith",
+    position: "Marketing Director, Sample Corp.",
   },
   {
     id: 21,
-    name: "Michael Brown",
-    text: "BestInvest has simplified risk assessment for me. It's a game-changer in financial planning.",
-    image: images.customer_img_3,
-    rating: 5,
-  },
-  {
-    id: 22,
-    name: "Sarah Davis",
-    text: "Using BestInvest, I've seen significant improvements in my trading strategies. Highly recommended!",
-    image: images.customer_img_4,
-    rating: 4,
-  },
-  {
-    id: 23,
-    name: "Emma Johnson",
-    text: "BestInvest's platform is intuitive and powerful. It's helped me optimize my investments effectively.",
-    image: images.customer_img_5,
-    rating: 5,
-  },
-  {
-    id: 24,
-    name: "Jessica Lee",
-    text: "I appreciate BestInvest's commitment to innovation. Their support is exceptional!",
-    image: images.customer_img_6,
-    rating: 4,
+    image: images.testimonial3,
+    text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda magni quos, natus facilis rem deleniti, vero doloribus aliquam ab iure dolorum reprehenderit aliquam. Maxime et consequatur consectetur pariatur. Aspernatur, beatae sequi?",
+    name: "Bob Johnson",
+    position: "Product Manager, Demo Ltd.",
   },
 ];
 
 const contact = [
   {
-    id: 25,
-    icon: <FaPhoneAlt style={{ fill: gradient }} />,
-    info: "+425 235 712",
-    text: "Lorem ipsum dolor sit mattis amet consectetur adipiscing",
+    id: 22,
+    icon: <FaPhoneAlt />,
+    title: "Phone",
+    text: "+1 123 456 7890",
   },
   {
-    id: 26,
-    icon: <FaEnvelopeOpen style={{ fill: gradient }} />,
-    info: "solnhub@info.com",
-    text: "Lorem ipsum dolor sit mattis amet consectetur adipiscing",
+    id: 23,
+    icon: <FaEnvelopeOpen />,
+    title: "Email",
+    text: "info@example.com",
   },
   {
-    id: 27,
-    icon: <FaMapMarkerAlt style={{ fill: gradient }} />,
-    info: "United Kingdom, New Street",
-    text: "Lorem ipsum dolor sit mattis amet consectetur adipiscing",
+    id: 24,
+    icon: <FaMapMarkerAlt />,
+    title: "Address",
+    text: "123 Main Street, Anytown, USA",
   },
 ];
 
@@ -285,6 +276,7 @@ const sections = {
   testimonials,
   contact,
   questions,
+  updateQuestionArray, // Add this to the export
 };
 
 export default sections;

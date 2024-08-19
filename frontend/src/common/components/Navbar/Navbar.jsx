@@ -91,6 +91,11 @@ const Navbar = () => {
     handleMenuClose();
   };
 
+  const handleUpdateQClick = () => {
+    navigate("/UpdateQ");
+    handleMenuClose();
+  };
+
   return (
     <nav className="navbar w-100 flex">
       <div className="container w-100">
@@ -152,6 +157,12 @@ const Navbar = () => {
                               Change Password
                             </Typography>
                           </MenuItem>
+                          <MenuItem onClick={handleUpdateQClick}>
+                            <Typography fontSize="1.4rem">
+                              Update Question
+                            </Typography>
+                          </MenuItem>
+
                           <MenuItem onClick={handleLogoutClick}>
                             <Typography fontSize="1.4rem">Logout</Typography>
                           </MenuItem>
