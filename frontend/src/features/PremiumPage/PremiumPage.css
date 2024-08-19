@@ -1,47 +1,30 @@
 .premium-page {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  padding: 80px;
+  align-items: center;
+  padding: 20px;
+  gap: 20px; /* Space between components */
 }
 
-.main-content {
-  flex: 1;
-  display: flex;
-  overflow-y: auto;
-  overflow: hidden;
-  margin-bottom: 20px;
+.youtube-links-container,
+.stock-indicators-container,
+.news-feed-container {
+  width: 100%;
+  max-width: 1200px; /* Adjust as needed */
 }
 
 .youtube-links-container {
-  flex: 1;
-  overflow-y: auto;
-  margin-right: 20px;
+  margin-bottom: 20px; /* Space between components */
 }
 
 .stock-indicators-container {
-  flex: 1;
-  overflow-y: auto;
+  margin-bottom: 20px; /* Space between components */
 }
 
 .news-feed-container {
-  flex: 0 0 200px;
-  height: 200px; /* Adjust height as needed */
-  overflow-x: auto;
-  white-space: nowrap;
-  border-top: 1px solid #ccc;
-  padding-top: 20px;
-}
-
-.news-feed-container > * {
-  display: inline-block;
-  width: 200px; /* Adjust width as needed */
-  vertical-align: top;
-}
-
-.separator {
-  border: none;
-  height: 2px;
-  background-color: #ccc;
-  margin: 20px 0;
+  /* Optional: Customize the size as needed */
+  height: 500px; /* Adjust height to ensure all cards are visible */
+  overflow: auto; /* Enable scrolling if content overflows */
+  border: 1px solid #ccc;
+  padding: 20px;
 }
