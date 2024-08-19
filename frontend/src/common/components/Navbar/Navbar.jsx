@@ -73,7 +73,7 @@ const Navbar = () => {
         setUserInitial(""); // Clear the user initial
         localStorage.clear(); // Clear local storage if used
         sessionStorage.clear(); // Clear session storage if used
-        window.location.href = "/"; // Set the URL to the homepage
+        navigate("/"); // Use navigate instead of window.location.href
       }
     } catch (err) {
       console.error("Failed to logout:", err);
@@ -138,9 +138,10 @@ const Navbar = () => {
                       anchorEl={anchorEl}
                       open={Boolean(anchorEl)}
                       onClose={handleMenuClose}
+                      MenuListProps={{ "aria-labelledby": "basic-button" }}
                     >
-                      {user.isAdmin ? (
-                        <>
+                      {user && user.isAdmin ? (
+                        <div>
                           <MenuItem onClick={handleStatisticsClick}>
                             <Typography fontSize="1.4rem">
                               Statistics
@@ -148,15 +149,15 @@ const Navbar = () => {
                           </MenuItem>
                           <MenuItem onClick={handleChangePasswordClick}>
                             <Typography fontSize="1.4rem">
-                              Change_Password
+                              Change Password
                             </Typography>
                           </MenuItem>
                           <MenuItem onClick={handleLogoutClick}>
                             <Typography fontSize="1.4rem">Logout</Typography>
                           </MenuItem>
-                        </>
+                        </div>
                       ) : (
-                        <>
+                        <div>
                           <MenuItem onClick={() => navigate("/profile")}>
                             <Typography fontSize="1.4rem">Account</Typography>
                           </MenuItem>
@@ -171,7 +172,7 @@ const Navbar = () => {
                           <MenuItem onClick={handleLogoutClick}>
                             <Typography fontSize="1.4rem">Logout</Typography>
                           </MenuItem>
-                        </>
+                        </div>
                       )}
                     </Menu>
                   </>
