@@ -1,18 +1,90 @@
 .stock-indicators {
   padding: 20px;
   width: 100%;
+  background-color: #f5f6f8;
+  border-radius: 8px;
 }
 
 .stock-indicators h1 {
-  text-align: center;
+  text-align: left;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
 }
 
-.stock-indicators ul {
-  list-style-type: none;
-  padding: 0;
+.indicators-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
-.stock-indicators li {
-  margin: 10px 0;
-  text-align: center;
+.indicator-item {
+  width: 45%;
+  display: flex;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.indicator-info {
+  display: flex;
+  align-items: center;
+}
+
+.indicator-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.indicator-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.indicator-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.indicator-symbol {
+  font-size: 14px;
+  color: #888;
+}
+
+.indicator-prices {
+  text-align: right;
+}
+
+.indicator-price {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.indicator-change {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.indicator-change.positive {
+  color: #4caf50;
+}
+
+.indicator-change.negative {
+  color: #f44336;
+}
+
+.see-all-link {
+  display: block;
+  text-align: right;
+  font-size: 14px;
+  color: #1a73e8;
+  margin-top: 20px;
+  text-decoration: none;
 }

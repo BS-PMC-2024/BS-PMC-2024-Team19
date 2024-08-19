@@ -44,12 +44,12 @@ const NewsFeed = () => {
       <div className="articles-container">
         {displayedArticles.map((article, index) => (
           <Card key={index} className="article-card">
-            <CardMedia
+            {/* <CardMedia
               component="img"
               height="140"
               image={article.imageUrl || 'default-image-url.jpg'}
               alt={article.title}
-            />
+            /> */}
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
                 <a href={article.url} target="_blank" rel="noopener noreferrer">

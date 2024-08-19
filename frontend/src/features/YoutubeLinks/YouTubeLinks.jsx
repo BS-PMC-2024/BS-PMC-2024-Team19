@@ -19,21 +19,11 @@ const YouTubeLinks = () => {
     fetchVideos();
   }, []);
 
-  const scroll = (direction) => {
-    const { current } = videoListRef;
-    if (current) {
-      const scrollAmount = current.offsetWidth / 4; // Adjust scroll amount based on the number of items visible
-      current.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
-    }
-  };
 
   return (
     <div className="youtube-links">
       <h1>YouTube Videos</h1>
-      {/* <div className="controls">
-        <button onClick={() => scroll(-1)}>&lt;</button>
-        <button onClick={() => scroll(1)}>&gt;</button>
-      </div> */}
+
       <div className="video-list" ref={videoListRef}>
         {videos.map((video) => (
           <div key={video.id.videoId} className="video-item">
