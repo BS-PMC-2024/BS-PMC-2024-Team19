@@ -14,6 +14,7 @@ import {
   submitHelpRequest,
   getUserProfile,
   checkEmailExists,
+  getPopularStocks,
   getAllQuestions,
   updateQuestions,
   generatePortfolio,
@@ -38,6 +39,8 @@ router.post("/submit-questionnaire", submitQuestionnaire);
 router.get("/getUserEmail", getUserEmail);
 router.post("/helpRequest", submitHelpRequest);
 router.get("/getUserProfile", getUserProfile);
+router.get("/getPopularStocks", getPopularStocks);
+
 router.get("/getAllQuestions", getAllQuestions);
 router.post("/updateQuestions", updateQuestions);
 router.post("/generatePortfolio", generatePortfolio);
