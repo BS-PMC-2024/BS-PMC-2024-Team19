@@ -14,9 +14,16 @@ import {
   submitHelpRequest,
   getUserProfile,
   checkEmailExists,
+  getAllQuestions,
+  updateQuestions,
+  generatePortfolio,
+  getPortfolioDetails,
+  getUserAnswers,
+  getUserPrimeStatus,
 } from "../controllers/authController.js";
 
 const router = express.Router();
+
 router.post("/register", register);
 router.post("/login", login);
 router.post("/logout", logout);
@@ -31,5 +38,11 @@ router.post("/submit-questionnaire", submitQuestionnaire);
 router.get("/getUserEmail", getUserEmail);
 router.post("/helpRequest", submitHelpRequest);
 router.get("/getUserProfile", getUserProfile);
-
+router.get("/getAllQuestions", getAllQuestions);
+router.post("/updateQuestions", updateQuestions);
+router.post("/generatePortfolio", generatePortfolio);
+router.get("/getPortfolioDetails", getPortfolioDetails);
+router.get("/getUserAnswers", getUserAnswers);
+router.get("/getUserPrimeStatus", getUserPrimeStatus);
+router.get("/getPortfolioDetails", getPortfolioDetails);
 export default router;

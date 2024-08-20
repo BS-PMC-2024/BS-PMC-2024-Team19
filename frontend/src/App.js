@@ -18,8 +18,10 @@ import UserStatByAdmin from "./features/Admin/UserStatByAdmin";
 import UserNavbar from "./common/components/Navbar/UserNavbar";
 import PremiumPage from "./features/PremiumPage/PremiumPage";
 import { AuthProvider, useAuth } from "./utils/AuthContext";
+import Portfolio from "./common/components/Users/Protfolio/Portfolio";
 import axios from "axios";
 import "./App.css";
+import UpdateQ from "./features/Admin/UpdateQ ";
 
 function AppContent() {
   const { user, setUser, logout } = useAuth();
@@ -79,6 +81,8 @@ function AppContent() {
         <Route path="/PremiumPage" element={<PremiumPage />} />
         
         <Route path="/" element={<HomePage />} />
+        <Route path="/UpdateQ" element={<UpdateQ />} />
+        <Route path="/portfolio" element={<Portfolio />} />
       </Routes>
       <Footer />
     </>
