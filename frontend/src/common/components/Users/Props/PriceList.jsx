@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from "react";
 import {
   Dialog,
   DialogActions,
@@ -11,46 +11,97 @@ import {
   CardContent,
   CardActions,
   TextField,
-} from '@mui/material';
-import './PriceList.css';
+} from "@mui/material";
+import "./PriceList.css";
 
 const PriceList = ({ open, onClose, onConfirm }) => {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [creditCard, setCreditCard] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [cvv, setCvv] = useState("");
+  const [errors, setErrors] = useState({
+    creditCard: "",
+    expiryDate: "",
+    cvv: "",
+  });
 
-  const handlePlanSelect = (plan) => {
+  const handlePlanSelect = useCallback((plan) => {
     setSelectedPlan(plan);
+  }, []);
+
+  const handleInputChange = useCallback((e, setter, formatter) => {
+    const value = formatter ? formatter(e.target.value) : e.target.value;
+    setter(value);
+  }, []);
+
+  const formatCreditCard = (value) => {
+    return value
+      .replace(/\D/g, "")
+      .slice(0, 16)
+      .replace(/(.{4})/g, "$1 ")
+      .trim();
   };
 
-  const handleCreditCardChange = (e) => {
-    setCreditCard(e.target.value);
+  const formatExpiryDate = (value) => {
+    return value
+      .replace(/\D/g, "")
+      .slice(0, 4)
+      .replace(/(.{2})/, "$1/")
+      .trim();
   };
 
-  const handleExpiryDateChange = (e) => {
-    setExpiryDate(e.target.value);
+  const formatCvv = (value) => {
+    return value.replace(/\D/g, "").slice(0, 3);
   };
 
-  const handleCvvChange = (e) => {
-    setCvv(e.target.value);
-  };
+  const validateInputs = useCallback(() => {
+    const newErrors = { creditCard: "", expiryDate: "", cvv: "" };
+    let isValid = true;
 
-  const isFormValid = () => {
-    return (
-      creditCard.length === 16 &&
-      expiryDate.match(/^(0[1-9]|1[0-2])\/\d{2}$/) &&
-      cvv.length === 3
-    );
-  };
+    if (selectedPlan === "premium") {
+      if (creditCard.replace(/\s+/g, "").length !== 16) {
+        newErrors.creditCard = "Credit card number must be 16 digits.";
+        isValid = false;
+      }
 
-  const handleConfirm = () => {
-    if (selectedPlan === "premium" && !isFormValid()) {
-      alert("Please enter valid credit card details.");
+      const [month, year] = expiryDate.split("/");
+      const currentYear = new Date().getFullYear() % 100;
+      const currentMonth = new Date().getMonth() + 1;
+
+      if (!/^\d{2}\/\d{2}$/.test(expiryDate)) {
+        newErrors.expiryDate = "Expiry date must be in MM/YY format.";
+        isValid = false;
+      } else if (parseInt(month, 10) < 1 || parseInt(month, 10) > 12) {
+        newErrors.expiryDate = "Month must be between 01 and 12.";
+        isValid = false;
+      } else if (
+        parseInt(year, 10) < currentYear ||
+        (parseInt(year, 10) === currentYear &&
+          parseInt(month, 10) < currentMonth)
+      ) {
+        newErrors.expiryDate = "Expiry date must be in the future.";
+        isValid = false;
+      }
+
+      if (cvv.length !== 3) {
+        newErrors.cvv = "CVV must be 3 digits.";
+        isValid = false;
+      } else if (!/^\d{3}$/.test(cvv)) {
+        newErrors.cvv = "CVV must be exactly 3 digits.";
+        isValid = false;
+      }
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  }, [selectedPlan, creditCard, expiryDate, cvv]);
+
+  const handleConfirm = useCallback(() => {
+    if (selectedPlan === "premium" && !validateInputs()) {
       return;
     }
     onConfirm(selectedPlan, { creditCard, expiryDate, cvv });
-  };
+  }, [selectedPlan, validateInputs, creditCard, expiryDate, cvv, onConfirm]);
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
@@ -126,7 +177,9 @@ const PriceList = ({ open, onClose, onConfirm }) => {
                     </Typography>
                   </li>
                   <li>
-                    <Typography variant="body2">Extended data history</Typography>
+                    <Typography variant="body2">
+                      Extended data history
+                    </Typography>
                   </li>
                   <li>
                     <Typography variant="body2">Priority support</Typography>
@@ -166,7 +219,11 @@ const PriceList = ({ open, onClose, onConfirm }) => {
               variant="outlined"
               fullWidth
               value={creditCard}
-              onChange={handleCreditCardChange}
+              onChange={(e) =>
+                handleInputChange(e, setCreditCard, formatCreditCard)
+              }
+              error={!!errors.creditCard}
+              helperText={errors.creditCard}
               className="payment-field"
             />
             <TextField
@@ -174,16 +231,21 @@ const PriceList = ({ open, onClose, onConfirm }) => {
               variant="outlined"
               fullWidth
               value={expiryDate}
-              onChange={handleExpiryDateChange}
+              onChange={(e) =>
+                handleInputChange(e, setExpiryDate, formatExpiryDate)
+              }
+              error={!!errors.expiryDate}
+              helperText={errors.expiryDate}
               className="payment-field"
             />
             <TextField
               label="CVV"
               variant="outlined"
               fullWidth
-              type="password"
               value={cvv}
-              onChange={handleCvvChange}
+              onChange={(e) => handleInputChange(e, setCvv, formatCvv)}
+              error={!!errors.cvv}
+              helperText={errors.cvv}
               className="payment-field"
             />
           </div>
@@ -197,7 +259,7 @@ const PriceList = ({ open, onClose, onConfirm }) => {
           onClick={handleConfirm}
           color="primary"
           variant="contained"
-          disabled={selectedPlan === "premium" && !isFormValid()}
+          disabled={selectedPlan === null}
         >
           Confirm
         </Button>

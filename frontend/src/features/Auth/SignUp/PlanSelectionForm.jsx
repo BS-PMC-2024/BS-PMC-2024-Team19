@@ -23,20 +23,11 @@ const PlanSelectionForm = ({
   const [cvv, setCvv] = useState(signUpFormData.cvv || "");
   const [pressedCard, setPressedCard] = useState(null);
 
-  const isCreditCardValid = (cardNumber) => /^[0-9]{16}$/.test(cardNumber);
-  const isExpiryDateValid = (date) => /^(0[1-9]|1[0-2])\/\d{2}$/.test(date);
-  const isCvvValid = (cvv) => /^[0-9]{3}$/.test(cvv);
-
-  const isFormValid = () => {
-    if (selectedPlan === "premium") {
-      return (
-        isCreditCardValid(creditCard) &&
-        isExpiryDateValid(expiryDate) &&
-        isCvvValid(cvv)
-      );
-    }
-    return true;
-  };
+  const [errors, setErrors] = useState({
+    creditCard: "",
+    expiryDate: "",
+    cvv: "",
+  });
 
   const handlePlanChange = (plan) => {
     setSelectedPlan(plan);
@@ -56,27 +47,79 @@ const PlanSelectionForm = ({
     }
   };
 
-  const handleCreditCardChange = (e) => {
-    setCreditCard(e.target.value);
-    setSignUpFormData({ ...signUpFormData, creditCard: e.target.value });
+  const formatCreditCard = (value) => {
+    return value
+      .replace(/\D/g, "")
+      .slice(0, 16)
+      .replace(/(.{4})/g, "$1 ")
+      .trim();
   };
 
-  const handleExpiryDateChange = (e) => {
-    setExpiryDate(e.target.value);
-    setSignUpFormData({ ...signUpFormData, expiryDate: e.target.value });
+  const formatExpiryDate = (value) => {
+    return value
+      .replace(/\D/g, "")
+      .slice(0, 4)
+      .replace(/(.{2})/, "$1/")
+      .trim();
   };
 
-  const handleCvvChange = (e) => {
-    setCvv(e.target.value);
-    setSignUpFormData({ ...signUpFormData, cvv: e.target.value });
+  const formatCvv = (value) => {
+    return value.replace(/\D/g, "").slice(0, 3);
+  };
+
+  const validateInputs = () => {
+    const newErrors = { creditCard: "", expiryDate: "", cvv: "" };
+    let isValid = true;
+
+    if (selectedPlan === "premium") {
+      if (creditCard.replace(/\s+/g, "").length !== 16) {
+        newErrors.creditCard = "Credit card number must be 16 digits.";
+        isValid = false;
+      }
+
+      const [month, year] = expiryDate.split("/");
+      const currentYear = new Date().getFullYear() % 100;
+      const currentMonth = new Date().getMonth() + 1;
+
+      if (!/^\d{2}\/\d{2}$/.test(expiryDate)) {
+        newErrors.expiryDate = "Expiry date must be in MM/YY format.";
+        isValid = false;
+      } else if (parseInt(month, 10) < 1 || parseInt(month, 10) > 12) {
+        newErrors.expiryDate = "Month must be between 01 and 12.";
+        isValid = false;
+      } else if (
+        parseInt(year, 10) < currentYear ||
+        (parseInt(year, 10) === currentYear &&
+          parseInt(month, 10) < currentMonth)
+      ) {
+        newErrors.expiryDate = "Expiry date must be in the future.";
+        isValid = false;
+      }
+
+      if (cvv.length !== 3) {
+        newErrors.cvv = "CVV must be 3 digits.";
+        isValid = false;
+      } else if (!/^\d{3}$/.test(cvv)) {
+        newErrors.cvv = "CVV must be exactly 3 digits.";
+        isValid = false;
+      }
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleInputChange = (e, setter, formatter) => {
+    const formattedValue = formatter
+      ? formatter(e.target.value)
+      : e.target.value;
+    setter(formattedValue);
+    setSignUpFormData({ ...signUpFormData, [e.target.name]: formattedValue });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!isFormValid()) {
-      alert("Please provide valid credit card details for the premium plan.");
-      return;
-    }
+    if (!validateInputs()) return;
 
     const { fullName, email, password, isPrime } = signUpFormData;
     onSubmit({ fullName, email, password, isPrime });
@@ -237,7 +280,7 @@ const PlanSelectionForm = ({
                     className="benefit"
                     style={{ fontFamily: "Jost, sans-serif", fontSize: "12px" }}
                   >
-                    Personalized portfolio management
+                    Advanced portfolio management tools
                   </Typography>
                 </li>
                 <li>
@@ -246,22 +289,18 @@ const PlanSelectionForm = ({
                     className="benefit"
                     style={{ fontFamily: "Jost, sans-serif", fontSize: "12px" }}
                   >
-                    Priority customer support
+                    Priority support and consultation
                   </Typography>
                 </li>
               </ul>
             </CardContent>
+
             <CardActions>
               <Button
                 fullWidth
-                variant="contained"
+                variant="outlined"
                 onClick={() => handlePlanChange("premium")}
                 className="plan-button"
-                style={{
-                  backgroundColor: "#1E90FF",
-                  color: "#fff",
-                  fontWeight: "bold",
-                }}
               >
                 Start Premium
               </Button>
@@ -270,79 +309,63 @@ const PlanSelectionForm = ({
         </div>
 
         {selectedPlan === "premium" && (
-          <div className="payment-details">
+          <div className="payment-info">
             <TextField
               label="Credit Card Number"
               variant="outlined"
               fullWidth
+              margin="normal"
+              name="creditCard"
               value={creditCard}
-              onChange={handleCreditCardChange}
-              className="payment-field"
-              error={!isCreditCardValid(creditCard) && creditCard !== ""}
-              helperText={
-                !isCreditCardValid(creditCard) && creditCard !== ""
-                  ? "Credit card number must be 16 digits."
-                  : ""
+              onChange={(e) =>
+                handleInputChange(e, setCreditCard, formatCreditCard)
               }
+              error={!!errors.creditCard}
+              helperText={errors.creditCard}
             />
             <TextField
               label="Expiry Date (MM/YY)"
               variant="outlined"
               fullWidth
+              margin="normal"
+              name="expiryDate"
               value={expiryDate}
-              onChange={handleExpiryDateChange}
-              className="payment-field"
-              error={!isExpiryDateValid(expiryDate) && expiryDate !== ""}
-              helperText={
-                !isExpiryDateValid(expiryDate) && expiryDate !== ""
-                  ? "Expiry date must be in MM/YY format."
-                  : ""
+              onChange={(e) =>
+                handleInputChange(e, setExpiryDate, formatExpiryDate)
               }
+              error={!!errors.expiryDate}
+              helperText={errors.expiryDate}
             />
             <TextField
               label="CVV"
               variant="outlined"
               fullWidth
+              margin="normal"
+              name="cvv"
               value={cvv}
-              onChange={handleCvvChange}
-              className="payment-field"
-              error={!isCvvValid(cvv) && cvv !== ""}
-              helperText={
-                !isCvvValid(cvv) && cvv !== ""
-                  ? "CVV must be 3 digits."
-                  : ""
-              }
+              onChange={(e) => handleInputChange(e, setCvv, formatCvv)}
+              error={!!errors.cvv}
+              helperText={errors.cvv}
             />
           </div>
         )}
 
         <div className="form-actions">
           <Button
-            variant="outlined"
-            onClick={onBack}
-            className="back-button"
-            style={{
-              borderColor: "#1E90FF",
-              color: "#1E90FF",
-              fontWeight: "bold",
-              fontFamily: "Jost, sans-serif",
-            }}
-          >
-            Back
-          </Button>
-          <Button
-            type="submit"
             variant="contained"
+            color="primary"
+            type="submit"
             className="submit-button"
-            disabled={!isFormValid()}
-            style={{
-              backgroundColor: isFormValid() ? "#1E90FF" : "#d3d3d3",
-              color: isFormValid() ? "#fff" : "#888",
-              fontWeight: "bold",
-              fontFamily: "Jost, sans-serif",
-            }}
           >
             Submit
+          </Button>
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={onBack}
+            className="back-button"
+          >
+            Back
           </Button>
         </div>
       </form>
