@@ -21,6 +21,8 @@ import PopularStockReport from "./common/components/Users/PopularStockReport/Pop
 import PremiumPage from "./features/PremiumPage/PremiumPage";
 import { AuthProvider, useAuth } from "./utils/AuthContext";
 import Portfolio from "./common/components/Users/Protfolio/Portfolio";
+import AllStocks from "./common/components/Users/Protfolio/AllStocks";
+
 import NonPremiumInfo from "./common/components/Users/NonPremiumInfo";
 import axios from "axios";
 import "./App.css";
@@ -83,6 +85,7 @@ function AppContent() {
         <Route path="/" element={<HomePage />} />
         <Route path="/UpdateQ" element={<UpdateQ />} />
         <Route path="/portfolio" element={<Portfolio />} />
+        <Route path="/AllStocks" element={<AllStocks />} />
       </Routes>
       {user && !isHomePage && !user.isAdmin && <NeedHelp />}
 

@@ -474,26 +474,7 @@ export const getUserProfile = (req, res) => {
     });
   });
 };
-// export const getPopularStocks = async (req, res) => {
-//   try {
-//     const getStocksQuery =
-//       "SELECT * FROM stocks ORDER BY latest_price DESC LIMIT 5";
-//     db.query(getStocksQuery, (err, results) => {
-//       if (err) {
-//         console.error("DB Get Popular Stocks Error:", err);
-//         return res.status(500).send("Server Error");
-//       }
 
-//       // Log the results to the console
-//       console.log("Popular Stocks Results:", results);
-
-//       // Send the results as JSON response
-//       res.json(results);
-//     });
-//   } catch (err) {
-//     console.error("Unexpected Error:", err);
-//     res.status(500).send("Server Error");
-//   }
 export const getPopularStocks = async (req, res) => {
   try {
     const getStocksQuery =
@@ -881,4 +862,22 @@ export const getUserPrimeStatus = (req, res) => {
       });
     }
   });
+};
+
+export const getAllStocks = (req, res) => {
+  console.log('Get All Stocks function called');
+  try {
+    const getStocksQuery = "SELECT id, symbol, latest_price, change_percent, risk_label FROM stocks";
+    db.query(getStocksQuery, (err, results) => {
+      if (err) {
+        console.error("DB Get All Stocks Error:", err);
+        return res.status(500).send("Server Error");
+      }
+      console.log("Sending response:", results);
+      res.json(results);
+    });
+  } catch (err) {
+    console.error("Unexpected Error:", err);
+    res.status(500).send("Server Error");
+  }
 };

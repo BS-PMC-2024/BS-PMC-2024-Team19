@@ -21,6 +21,7 @@ import {
   getPortfolioDetails,
   getUserAnswers,
   getUserPrimeStatus,
+  getAllStocks,
 } from "../controllers/authController.js";
 
 const router = express.Router();
@@ -40,7 +41,6 @@ router.get("/getUserEmail", getUserEmail);
 router.post("/helpRequest", submitHelpRequest);
 router.get("/getUserProfile", getUserProfile);
 router.get("/getPopularStocks", getPopularStocks);
-
 router.get("/getAllQuestions", getAllQuestions);
 router.post("/updateQuestions", updateQuestions);
 router.post("/generatePortfolio", generatePortfolio);
@@ -48,4 +48,6 @@ router.get("/getPortfolioDetails", getPortfolioDetails);
 router.get("/getUserAnswers", getUserAnswers);
 router.get("/getUserPrimeStatus", getUserPrimeStatus);
 router.get("/getPortfolioDetails", getPortfolioDetails);
+router.get("/getAllStocks", getAllStocks);
+
 export default router;

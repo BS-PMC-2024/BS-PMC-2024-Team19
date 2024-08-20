@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "./UserNavbar.css";
 
 function UserNavbar() {
-
   const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname;
@@ -18,7 +17,7 @@ function UserNavbar() {
           headers: {
             'Content-Type': 'application/json',
           },
-          credentials: 'include', // This ensures that cookies (like accessToken) are sent with the request
+          credentials: 'include',
         });
   
         if (!response.ok) {
@@ -35,8 +34,9 @@ function UserNavbar() {
         }
       } catch (error) {
         console.error("Error checking user status:", error);
-        // Handle the error or redirect to a default page
       }
+    } else if (path === '/AllStocks') {
+      navigate(path);
     }
   };
 
@@ -61,6 +61,16 @@ function UserNavbar() {
             onClick={() => handleClick("/PremiumPage")}
           >
             <span>Invest Info</span>
+          </button>
+        </li>
+        <li>
+          <button
+            className={`user-navbar-btn ${
+              path === "/AllStocks" ? "active" : ""
+            }`}
+            onClick={() => handleClick("/AllStocks")}
+          >
+            <span>All Stocks</span>
           </button>
         </li>
       </ul>

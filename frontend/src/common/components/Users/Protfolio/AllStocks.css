@@ -1,0 +1,89 @@
+/* Main container for the AllStocks component */
+.portfolio-container {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center content horizontally */
+  min-height: 80vh; /* Adjust as needed */
+  padding: 20px;
+  background-color: #f9f9f9;
+  margin-bottom: 50px; /* Space below the container */
+}
+
+/* Styling for the filter container */
+.filter-container {
+  display: flex;
+  flex-direction: column; /* Stack filters vertically */
+  width: 100%; /* Full width */
+  max-width: 1200px; /* Max width for the filters */
+  margin-bottom: 20px; /* Space below the filters */
+}
+
+/* Styling for each filter */
+.filter-container .MuiFormControl-root {
+  margin-bottom: 16px; /* Space between filters */
+}
+
+/* Styling for the table container */
+.portfolio-table-container {
+  width: 100%; /* Full width */
+  max-width: 1200px; /* Max width for the table */
+  margin-top: 20px; /* Space above the table */
+  margin-bottom: 20px; /* Space below the table */
+  overflow-x: auto; /* Allow horizontal scrolling */
+}
+
+/* Table styling */
+.portfolio-table-container .MuiTable-root {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%; /* Full width */
+}
+
+/* Styling for table header cells */
+.table-header {
+  background-color: var(--clr-robin-blue); /* Blue background for headers */
+  color: #fff; /* White text color */
+  font-size: 1.25rem; /* Larger font size for headers */
+  font-weight: bold; /* Bold text */
+  text-align: center; /* Center text */
+  padding: 12px; /* Padding around text */
+}
+
+/* Styling for table cells */
+.portfolio-table-container .MuiTableCell-root {
+  font-size: 1rem; /* Normal font size */
+  text-align: center; /* Center text */
+  padding: 12px; /* Padding around text */
+}
+
+/* Header cell styling */
+.portfolio-table-container .MuiTableHead-root .MuiTableCell-root {
+  border-bottom: 2px solid #ddd; /* Light grey border for headers */
+}
+
+/* Body cell styling */
+.portfolio-table-container .MuiTableBody-root .MuiTableCell-root {
+  background-color: #fff; /* White background for body cells */
+  border-bottom: 1px solid #ddd; /* Light grey border */
+}
+
+/* Alternating row background color */
+.portfolio-table-container .MuiTableBody-root tr:nth-child(even) .MuiTableCell-root {
+  background-color: #f9f9f9; /* Slightly grey background for even rows */
+}
+
+/* Hover effect for table rows */
+.portfolio-table-container .MuiTableBody-root tr:hover .MuiTableCell-root {
+  background-color: #e0f7fa; /* Light blue background on hover */
+}
+
+/* Styling for positive and negative change percentages */
+.positive-change {
+  color: green; /* Green for positive change */
+  font-weight: bold; /* Bold text */
+}
+
+.negative-change {
+  color: red; /* Red for negative change */
+  font-weight: bold; /* Bold text */
+}
