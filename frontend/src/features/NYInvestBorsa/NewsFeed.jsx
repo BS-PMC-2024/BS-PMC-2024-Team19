@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './NewsFeed.css';
+import { Card, CardContent, CardMedia, Typography } from '@mui/material';
 
 const NewsFeed = () => {
   const [articles, setArticles] = useState([]);
@@ -20,12 +21,18 @@ const NewsFeed = () => {
   }, []);
 
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? articles.length - 1 : prevIndex - 1));
+    setCurrentIndex((prevIndex) =>
+      prevIndex <= 0 ? Math.max(0, articles.length - 4) : prevIndex - 4
+    );
   };
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === articles.length - 1 ? 0 : prevIndex + 1));
+    setCurrentIndex((prevIndex) =>
+      Math.min(prevIndex + 4, articles.length - 4)
+    );
   };
+
+  const displayedArticles = articles.slice(currentIndex, currentIndex + 4);
 
   return (
     <div className="news-feed">
@@ -35,16 +42,25 @@ const NewsFeed = () => {
         <button onClick={handleNext}>&gt;</button>
       </div>
       <div className="articles-container">
-        {articles.map((article, index) => (
-          <div
-            key={index}
-            className={`article-item ${index === currentIndex ? 'visible' : 'hidden'}`}
-          >
-            <a href={article.url} target="_blank" rel="noopener noreferrer">
-              <h2>{article.title}</h2>
-            </a>
-            <p>{article.description?.split(' ').slice(0, 20).join(' ')}...</p>
-          </div>
+        {displayedArticles.map((article, index) => (
+          <Card key={index} className="article-card">
+            {/* <CardMedia
+              component="img"
+              height="140"
+              image={article.imageUrl || 'default-image-url.jpg'}
+              alt={article.title}
+            /> */}
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                <a href={article.url} target="_blank" rel="noopener noreferrer">
+                  {article.title}
+                </a>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {article.description?.split(' ').slice(0, 20).join(' ')}...
+              </Typography>
+            </CardContent>
+          </Card>
         ))}
       </div>
     </div>

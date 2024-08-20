@@ -1,47 +1,18 @@
 .premium-page {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  padding: 80px;
+  align-items: center;
+  width: 100%;
 }
 
-.main-content {
-  flex: 1;
-  display: flex;
-  overflow-y: auto;
-  overflow: hidden;
-  margin-bottom: 20px;
-}
-
-.youtube-links-container {
-  flex: 1;
-  overflow-y: auto;
-  margin-right: 20px;
-}
-
-.stock-indicators-container {
-  flex: 1;
-  overflow-y: auto;
+.youtube-links-container,
+.stock-indicators-container,
+.news-feed-container {
+  width: 100%;
+  max-width: 1200px;
 }
 
 .news-feed-container {
-  flex: 0 0 200px;
-  height: 200px; /* Adjust height as needed */
-  overflow-x: auto;
-  white-space: nowrap;
-  border-top: 1px solid #ccc;
-  padding-top: 20px;
-}
-
-.news-feed-container > * {
-  display: inline-block;
-  width: 200px; /* Adjust width as needed */
-  vertical-align: top;
-}
-
-.separator {
-  border: none;
-  height: 2px;
-  background-color: #ccc;
-  margin: 20px 0;
+  height: auto;
+  overflow: hidden;
 }

@@ -29,7 +29,7 @@ function UserNavbar() {
             className={`user-navbar-btn ${
               path === "/invest-info" ? "active" : ""
             }`}
-            onClick={() => handleClick("/invest-info")}
+            onClick={() => handleClick("/PremiumPage")}
           >
             <span>Invest Info</span>
           </button>
