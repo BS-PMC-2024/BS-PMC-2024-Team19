@@ -69,14 +69,6 @@ const StockIndicators = () => {
           </Grid>
         ))}
       </Grid>
-      <Button
-        variant="contained"
-        color="primary"
-        sx={{ marginTop: 2 }}
-        href="/most-actively-traded-stocks"
-      >
-        See all most actively traded stocks
-      </Button>
     </Box>
   );
 };

@@ -15,7 +15,6 @@ const PremiumPage = () => {
       <Box className="stock-indicators-container" sx={{ marginBottom: 3 }}>
         <StockIndicators />
       </Box>
-
       <Box className="news-feed-container">
         <NewsFeed />
       </Box>
