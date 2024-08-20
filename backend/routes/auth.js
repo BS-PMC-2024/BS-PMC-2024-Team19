@@ -14,6 +14,7 @@ import {
   submitHelpRequest,
   getUserProfile,
   checkEmailExists,
+  getPopularStocks,
 } from "../controllers/authController.js";
 
 const router = express.Router();
@@ -31,5 +32,6 @@ router.post("/submit-questionnaire", submitQuestionnaire);
 router.get("/getUserEmail", getUserEmail);
 router.post("/helpRequest", submitHelpRequest);
 router.get("/getUserProfile", getUserProfile);
+router.get("/getPopularStocks", getPopularStocks);
 
 export default router;

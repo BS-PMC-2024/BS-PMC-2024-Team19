@@ -267,7 +267,6 @@ const Questionnaire = () => {
           </Button>
         </Grid>
       </Grid>
-      <NeedHelp />
     </Container>
   );
 };

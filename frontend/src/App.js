@@ -16,6 +16,8 @@ import DeleteByAdmin from "./features/Admin/DeleteByAdmin";
 import Questionnaire from "./common/components/Users/formQuestionnaire/Questionnaire";
 import UserStatByAdmin from "./features/Admin/UserStatByAdmin";
 import UserNavbar from "./common/components/Navbar/UserNavbar";
+import NeedHelp from "./common/components/needHelp/needHelp";
+import PopularStockReport from "./common/components/Users/PopularStockReport/PopularStockReport";
 import { AuthProvider, useAuth } from "./utils/AuthContext";
 import axios from "axios";
 import "./App.css";
@@ -32,20 +34,14 @@ function AppContent() {
         { withCredentials: true }
       );
 
-      // Log the full response to see what data we're getting
-      console.log("Login status response:", response.data);
-
       if (response.data.loggedIn) {
-        // Set the user state with the retrieved data and log it
         const userInfo = {
           name: response.data.name,
           isAdmin: response.data.isAdmin,
           isPrime: response.data.isPrime,
         };
-        console.log("Setting user info:", userInfo);
         setUser(userInfo);
       } else {
-        console.log("User not logged in, setting user to null");
         setUser(null);
       }
     } catch (err) {
@@ -55,18 +51,21 @@ function AppContent() {
   }, [setUser]);
 
   const handleLogin = async () => {
-    await checkLoginStatus(); // Ensure status is updated after login
+    await checkLoginStatus();
   };
 
   useEffect(() => {
-    checkLoginStatus(); // Check login status on component mount
+    checkLoginStatus();
   }, [checkLoginStatus]);
 
   return (
     <>
       <Navbar onLogout={logout} />
-      {/* Show UserNavbar only if the user is logged in, not on the home page, and is not an admin */}
-      {user && !isHomePage && !user.isAdmin && <UserNavbar />}
+      {/* Show PopularStockReport between Navbar and UserNavbar */}
+      <div className="main-content">
+        {user && !isHomePage && !user.isAdmin && <PopularStockReport />}
+        {user && !isHomePage && !user.isAdmin && <UserNavbar />}
+      </div>
       <Routes>
         <Route path="/signup" element={<SignUp onLogin={handleLogin} />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
@@ -77,6 +76,8 @@ function AppContent() {
         <Route path="/userStatByAdmin" element={<UserStatByAdmin />} />
         <Route path="/" element={<HomePage />} />
       </Routes>
+      {user && !isHomePage && !user.isAdmin && <NeedHelp />}
+
       <Footer />
     </>
   );

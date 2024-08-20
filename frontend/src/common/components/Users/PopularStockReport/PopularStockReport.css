@@ -1,0 +1,72 @@
+/* General container settings */
+.stock-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin-top: 70px;
+  gap: 10px; /* Decreased space between stock items */
+  flex-wrap: wrap; /* Allows items to wrap onto multiple lines if needed */
+}
+
+/* Stock item styling */
+.stock-item {
+  display: flex;
+  align-items: center;
+  padding: 20px; /* Increased padding for more space inside the box */
+  border: 1px solid #ddd; /* Softer border color */
+  border-radius: 10px; /* Slightly more rounded corners */
+  background: #f8f9fa; /* Light background to contrast with the text */
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1); /* Enhanced shadow for depth */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smooth hover effect */
+  width: 250px; /* Set a fixed width for the items to spread them horizontally */
+}
+
+.stock-item:hover {
+  transform: translateY(-5px); /* Slight lift on hover */
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+/* Stock symbol styling */
+.stock-symbol {
+  font-weight: bold;
+  margin-right: 20px; /* Increased margin for better spacing */
+  font-size: 18px; /* Larger font for emphasis */
+  color: #333; /* Darker text for readability */
+}
+
+/* Stock price styling */
+.stock-price {
+  margin-right: 15px; /* Increased margin for better spacing */
+  font-size: 16px; /* Consistent font size */
+  color: #555; /* Medium gray for contrast */
+}
+
+/* Stock change styling */
+.stock-change {
+  font-size: 15px; /* Consistent with the stock price */
+}
+
+.stock-change.negative {
+  color: red; /* Color for negative change */
+}
+
+.stock-change.positive {
+  color: green; /* Color for positive change */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .stock-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stock-item {
+    width: 100%; /* Full width when stacked */
+    margin-bottom: 15px; /* Increased space between items when stacked */
+  }
+}
+
+.main-content {
+  padding: 10px;
+}
