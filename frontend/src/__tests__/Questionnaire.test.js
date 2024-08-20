@@ -35,7 +35,7 @@ describe("Questionnaire", () => {
       </MemoryRouter>
     );
     expect(
-      screen.getByText(sections.questions[0].question)
+      screen.getByText(sections.questions[0].question) //INTEGRTAION CHECK (IF THE FIRST Q SHOW GOOD ON THE PAGE)
     ).toBeInTheDocument();
   });
 
@@ -50,6 +50,6 @@ describe("Questionnaire", () => {
     fireEvent.click(screen.getByText(sections.questions[0].options[0]));
 
     // Click the Next button
-    fireEvent.click(screen.getByText("Next"));
+    fireEvent.click(screen.getByText("Next")); // //INTEGRTAION CHECK  CHECK IF AFTER INSERST A Q WE MOVE TO THE NEXT Q
   });
 });
