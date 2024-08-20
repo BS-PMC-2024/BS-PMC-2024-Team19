@@ -67,7 +67,7 @@ describe("UserStatByAdmin", () => {
     });
 
     fireEvent.change(screen.getByDisplayValue("Prime"), {
-      target: { value: "Not Prime" },
+      target: { value: "Not Prime" }, //INTEFRATION TEST ' CHECK IF AFTER THE USER CHANGE FROM PRIME TO NOT PRIME THE STATUS CHANGE IN THE WEB
     });
 
     await waitFor(() => {
@@ -82,7 +82,7 @@ describe("UserStatByAdmin", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText("Error: Network response was not ok")
+        screen.getByText("Error: Network response was not ok") //INTEGRATION TEST CHECK IF SOMTHING WRONG WO GO TO ERROR APGE.
       ).toBeInTheDocument();
     });
   });
