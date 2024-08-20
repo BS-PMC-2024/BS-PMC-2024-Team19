@@ -33,7 +33,8 @@ describe("UserNavbar Component", () => {
       </MemoryRouter>
     );
 
-    fireEvent.click(screen.getByText("Portfolio"));
+    fireEvent.click(screen.getByText("Portfolio")); //INTEGRATION TESTS CHECK IF AFTER WE CLICK ON PROTFOLIO BUTTON WE MOVE TO THE TRUE NAVIGATE.
+
     expect(navigateMock).toHaveBeenCalledWith("/questionnaire");
   });
 
@@ -50,6 +51,6 @@ describe("UserNavbar Component", () => {
     );
 
     fireEvent.click(screen.getByText("Invest Info"));
-    expect(navigateMock).toHaveBeenCalledWith("/invest-info");
+    expect(navigateMock).toHaveBeenCalledWith("/invest-info"); //INTEGRATION TESTS CHECK IF AFTER WE CLICK ON INVEST_INFO BUTTON WE MOVE TO THE TRUE NAVIGATE.
   });
 });

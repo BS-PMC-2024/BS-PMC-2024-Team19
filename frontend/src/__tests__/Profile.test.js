@@ -9,6 +9,7 @@ jest.mock("axios");
 
 test("renders Profile component", async () => {
   axios.get.mockResolvedValueOnce({
+    //AXIOS INTEGRATION TEST.
     data: {
       user: {
         fullName: "Test User",
