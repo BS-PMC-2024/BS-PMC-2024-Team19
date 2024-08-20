@@ -133,3 +133,40 @@ export const updateEmail = (req, res) => {
     }
   };
 
+  export const checkIfUserIsPremium = (req, res) => {
+    const token = req.cookies.accessToken;
+
+    // Check if the token is present
+    if (!token) {
+        console.error("No token found in cookies");
+        return res.status(401).json({ message: "Not authenticated" });
+    }
+
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err) {
+            console.error("Token verification failed:", err.message);
+            return res.status(401).json({ message: "Invalid token" });
+        }
+
+        const email = user.email;
+        const query = "SELECT isPrime FROM users WHERE email = ?";
+
+        db.query(query, [email], (dbErr, results) => {
+            if (dbErr) {
+                console.error("Database query error:", dbErr);
+                return res.status(500).json({ message: "Database error" });
+            }
+
+            if (results.length === 0) {
+                console.error("No user found with the provided email");
+                return res.status(404).json({ message: "User not found" });
+            }
+
+            const isPrime = results[0].isPrime;
+            console.log(`User ${email} is ${isPrime ? "a premium" : "a regular"} user.`);
+            return res.status(200).json({ isPrime });
+        });
+    });
+};
+
+
