@@ -95,6 +95,35 @@ const Navbar = () => {
     navigate("/UpdateQ");
     handleMenuClose();
   };
+  const handleClick = async () => {
+    try {
+      const response = await fetch('http://localhost:6500/backend/user/statusIsPrime', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // This ensures that cookies (like accessToken) are sent with the request
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const { isPrime } = data;
+
+      if (isPrime) {
+        navigate("/PremiumPage");
+      } else {
+        navigate("/NonPremiumInfo");
+      }
+    } catch (error) {
+      console.error("Error checking user status:", error);
+      // Handle the error or redirect to a default page
+    }
+      
+    
+  };
 
   return (
     <nav className="navbar w-100 flex">
@@ -175,7 +204,7 @@ const Navbar = () => {
                           <MenuItem onClick={() => navigate("/portfolio")}>
                             <Typography fontSize="1.4rem">Portfolio</Typography>
                           </MenuItem>
-                          <MenuItem onClick={() => navigate("/invest-info")}>
+                          <MenuItem onClick={() => handleClick()}>
                             <Typography fontSize="1.4rem">
                               Invest Info
                             </Typography>

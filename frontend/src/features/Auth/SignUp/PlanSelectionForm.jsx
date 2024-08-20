@@ -23,6 +23,21 @@ const PlanSelectionForm = ({
   const [cvv, setCvv] = useState(signUpFormData.cvv || "");
   const [pressedCard, setPressedCard] = useState(null);
 
+  const isCreditCardValid = (cardNumber) => /^[0-9]{16}$/.test(cardNumber);
+  const isExpiryDateValid = (date) => /^(0[1-9]|1[0-2])\/\d{2}$/.test(date);
+  const isCvvValid = (cvv) => /^[0-9]{3}$/.test(cvv);
+
+  const isFormValid = () => {
+    if (selectedPlan === "premium") {
+      return (
+        isCreditCardValid(creditCard) &&
+        isExpiryDateValid(expiryDate) &&
+        isCvvValid(cvv)
+      );
+    }
+    return true;
+  };
+
   const handlePlanChange = (plan) => {
     setSelectedPlan(plan);
     if (plan === "premium") {
@@ -58,13 +73,8 @@ const PlanSelectionForm = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (
-      selectedPlan === "premium" &&
-      (!creditCard.trim() || !expiryDate.trim() || !cvv.trim())
-    ) {
-      alert(
-        "Please provide complete credit card details for the premium plan."
-      );
+    if (!isFormValid()) {
+      alert("Please provide valid credit card details for the premium plan.");
       return;
     }
 
@@ -244,13 +254,13 @@ const PlanSelectionForm = ({
             <CardActions>
               <Button
                 fullWidth
-                variant="contained" // For a solid background
+                variant="contained"
                 onClick={() => handlePlanChange("premium")}
                 className="plan-button"
                 style={{
-                  backgroundColor: "#1E90FF", // Your specific blue color
-                  color: "#fff", // White text color
-                  fontWeight: "bold", // Bold text
+                  backgroundColor: "#1E90FF",
+                  color: "#fff",
+                  fontWeight: "bold",
                 }}
               >
                 Start Premium
@@ -268,6 +278,12 @@ const PlanSelectionForm = ({
               value={creditCard}
               onChange={handleCreditCardChange}
               className="payment-field"
+              error={!isCreditCardValid(creditCard) && creditCard !== ""}
+              helperText={
+                !isCreditCardValid(creditCard) && creditCard !== ""
+                  ? "Credit card number must be 16 digits."
+                  : ""
+              }
             />
             <TextField
               label="Expiry Date (MM/YY)"
@@ -276,34 +292,55 @@ const PlanSelectionForm = ({
               value={expiryDate}
               onChange={handleExpiryDateChange}
               className="payment-field"
+              error={!isExpiryDateValid(expiryDate) && expiryDate !== ""}
+              helperText={
+                !isExpiryDateValid(expiryDate) && expiryDate !== ""
+                  ? "Expiry date must be in MM/YY format."
+                  : ""
+              }
             />
             <TextField
               label="CVV"
               variant="outlined"
               fullWidth
-              type="password"
               value={cvv}
               onChange={handleCvvChange}
               className="payment-field"
+              error={!isCvvValid(cvv) && cvv !== ""}
+              helperText={
+                !isCvvValid(cvv) && cvv !== ""
+                  ? "CVV must be 3 digits."
+                  : ""
+              }
             />
           </div>
         )}
 
-        <div className="form-buttons">
+        <div className="form-actions">
           <Button
             variant="outlined"
             onClick={onBack}
             className="back-button"
-            style={{ fontWeight: "bold" }}
+            style={{
+              borderColor: "#1E90FF",
+              color: "#1E90FF",
+              fontWeight: "bold",
+              fontFamily: "Jost, sans-serif",
+            }}
           >
             Back
           </Button>
           <Button
             type="submit"
             variant="contained"
-            color="primary"
             className="submit-button"
-            style={{ fontWeight: "bold" }}
+            disabled={!isFormValid()}
+            style={{
+              backgroundColor: isFormValid() ? "#1E90FF" : "#d3d3d3",
+              color: isFormValid() ? "#fff" : "#888",
+              fontWeight: "bold",
+              fontFamily: "Jost, sans-serif",
+            }}
           >
             Submit
           </Button>
