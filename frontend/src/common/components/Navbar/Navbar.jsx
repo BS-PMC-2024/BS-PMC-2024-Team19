@@ -175,7 +175,7 @@ const Navbar = () => {
                           <MenuItem onClick={() => navigate("/portfolio")}>
                             <Typography fontSize="1.4rem">Portfolio</Typography>
                           </MenuItem>
-                          <MenuItem onClick={() => navigate("/invest-info")}>
+                          <MenuItem onClick={() => navigate("/PremiumPage")}>
                             <Typography fontSize="1.4rem">
                               Invest Info
                             </Typography>

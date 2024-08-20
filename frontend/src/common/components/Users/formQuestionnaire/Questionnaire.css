@@ -10,3 +10,20 @@
 .swal2-confirm-custom:hover {
   background-color: #2a6eb3 !important; /* Adjust hover background color if needed */
 }
+
+.MuiButton-outlined {
+  background-color: #fff; /* Ensure default background color */
+}
+
+.MuiButton-contained {
+  background-color: #007bff; /* Default color for selected option */
+  color: #fff; /* Text color for selected option */
+}
+
+.MuiButton-outlined:hover {
+  background-color: rgba(0, 0, 0, 0.08); /* Light hover effect */
+}
+
+.MuiButton-contained:hover {
+  background-color: #0056b3; /* Darker color on hover for selected option */
+}

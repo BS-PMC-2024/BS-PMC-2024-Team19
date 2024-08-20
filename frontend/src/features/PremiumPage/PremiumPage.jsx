@@ -1,10 +1,9 @@
-import React from 'react';
-import NewsFeed from '../NYInvestBorsa/NewsFeed.jsx';
-import YouTubeLinks from '../YoutubeLinks/YouTubeLinks.jsx';
-import StockIndicators from '../NYInvestBorsa/StockIndicators.jsx';
-import TopRankedStocks from '../NYInvestBorsa/TopRankedStocks.jsx'; // Import the new component
-import { Box } from '@mui/material';
-import './PremiumPage.css';
+import React from "react";
+import NewsFeed from "../NYInvestBorsa/NewsFeed.jsx";
+import YouTubeLinks from "../YoutubeLinks/YouTubeLinks.jsx";
+import StockIndicators from "../NYInvestBorsa/StockIndicators.jsx";
+import { Box } from "@mui/material";
+import "./PremiumPage.css";
 
 const PremiumPage = () => {
   return (

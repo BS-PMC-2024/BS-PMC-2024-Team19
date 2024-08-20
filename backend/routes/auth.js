@@ -21,6 +21,7 @@ import {
   getPortfolioDetails,
   getUserAnswers,
   getUserPrimeStatus,
+  getQuestions,
 } from "../controllers/authController.js";
 
 const router = express.Router();
@@ -41,6 +42,7 @@ router.post("/helpRequest", submitHelpRequest);
 router.get("/getUserProfile", getUserProfile);
 router.get("/getPopularStocks", getPopularStocks);
 
+router.get("/getQuestions", getQuestions);
 router.get("/getAllQuestions", getAllQuestions);
 router.post("/updateQuestions", updateQuestions);
 router.post("/generatePortfolio", generatePortfolio);

@@ -504,9 +504,6 @@ export const getPopularStocks = async (req, res) => {
         return res.status(500).send("Server Error");
       }
 
-      // Log the results to the console
-      console.log("Sending response:", results);
-
       // Send the results as JSON response
       res.json(results);
     });
@@ -517,7 +514,7 @@ export const getPopularStocks = async (req, res) => {
 };
 
 export const getAllQuestions = (req, res) => {
-  const getQuestionsQuery = "SELECT * FROM questions"; // הנח שאתה מחפש את כל השאלות
+  const getQuestionsQuery = "SELECT * FROM questions";
 
   db.query(getQuestionsQuery, (err, results) => {
     if (err) {
@@ -607,6 +604,36 @@ const chooseStocksBasedOnAnswers = (answers) => {
   return stocks.sort(() => 0.5 - Math.random()).slice(0, 5); // Shuffle and pick 5 stocks
 };
 
+export const getQuestions = (req, res) => {
+  // Updated SQL query to select specific columns
+  const query =
+    "SELECT id, question_text, option1, option2, option3 FROM questions";
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("DB Get Questions Error:", err);
+      return res.status(500).json({ error: "Failed to retrieve questions" });
+    }
+
+    try {
+      console.log("Raw DB Results:", results);
+      // Map the results to the desired format
+      const formattedResults = results.map((question) => ({
+        id: question.id,
+        questionText: question.question_text, // Updated to match field name
+        options: [question.option1, question.option2, question.option3], // Collect options into an array
+      }));
+
+      return res.status(200).json({ questions: formattedResults });
+    } catch (parseError) {
+      console.error("JSON Parse Error:", parseError);
+      return res
+        .status(500)
+        .json({ error: "Failed to parse question options" });
+    }
+  });
+};
+
 const fetchStockPrices = async (stocks) => {
   try {
     // Construct the query with correct formatting
@@ -638,8 +665,6 @@ const fetchStockPrices = async (stocks) => {
 };
 
 export const generatePortfolio = async (req, res) => {
-  console.log("generatePortfolio function called");
-
   const { email, investmentAmount, questionnaireAnswers } = req.body;
 
   if (!email || !investmentAmount || !questionnaireAnswers) {

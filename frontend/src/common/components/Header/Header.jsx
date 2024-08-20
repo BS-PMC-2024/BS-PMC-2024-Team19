@@ -1,7 +1,6 @@
 import React from "react";
 import Navbar from "../Navbar/Navbar";
 import "./Header.css";
-import PopularStockReport from "../Users/PopularStockReport/PopularStockReport"
 const Header = () => {
   return (
     <header className="header flex flex-center flex-column">

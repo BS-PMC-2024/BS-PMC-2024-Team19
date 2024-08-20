@@ -1,13 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Typography, Button, Paper, Box, Grid } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import sections from "../../../../constants/data";
 import Swal from "sweetalert2";
 import "./Questionnaire.css";
-
-const { questions } = sections;
 
 function CircularProgressWithLabel(props) {
   return (
@@ -43,12 +40,46 @@ CircularProgressWithLabel.propTypes = {
 };
 
 const Questionnaire = () => {
+  const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Calculate progress as a percentage
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:6500/backend/auth/getQuestions"
+        );
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Error: ${response.status} - ${errorText}`);
+        }
+        const data = await response.json();
+        setQuestions(data.questions); // Ensure `questions` array structure
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching questions:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "An error occurred while fetching the questions. Please try again.",
+        });
+      }
+    };
+
+    fetchQuestions();
+  }, []);
+
   const progress = ((currentQuestion + 1) / questions.length) * 100;
+
+  const handleSelect = (option) => {
+    setAnswers((prev) => ({
+      ...prev,
+      [currentQuestion]: getAnswerLetter(currentQuestion, option),
+    }));
+  };
 
   const getAnswerLetter = (questionIndex, answer) => {
     const answerMapping = ["A", "B", "C"];
@@ -56,30 +87,15 @@ const Questionnaire = () => {
     return answerMapping[answerIndex];
   };
 
-  const handleSelect = (answer) => {
-    setAnswers((prev) => ({
-      ...prev,
-      [currentQuestion]: getAnswerLetter(currentQuestion, answer),
-    }));
-  };
-
   const handleNext = async () => {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion((prev) => prev + 1);
     } else {
       try {
-        const mappedAnswers = {
-          Q1: answers[0],
-          Q2: answers[1],
-          Q3: answers[2],
-          Q4: answers[3],
-          Q5: answers[4],
-          Q6: answers[5],
-          Q7: answers[6],
-          Q8: answers[7],
-          Q9: answers[8],
-          Q10: answers[9],
-        };
+        const mappedAnswers = questions.reduce((acc, _, index) => {
+          acc[`Q${index + 1}`] = answers[index];
+          return acc;
+        }, {});
 
         const response = await fetch(
           "http://localhost:6500/backend/auth/submit-questionnaire",
@@ -128,6 +144,52 @@ const Questionnaire = () => {
       setCurrentQuestion((prev) => prev - 1);
     }
   };
+
+  if (loading) {
+    return (
+      <Container
+        maxWidth="sm"
+        component={Paper}
+        className="questionnaire-container"
+        sx={{
+          padding: "10rem 2rem",
+          marginTop: "2rem",
+          marginBottom: "4rem",
+          minHeight: "calc(100vh - 100px)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgressWithLabel value={100} />
+      </Container>
+    );
+  }
+
+  if (questions.length === 0) {
+    return (
+      <Container
+        maxWidth="sm"
+        component={Paper}
+        className="questionnaire-container"
+        sx={{
+          padding: "10rem 2rem",
+          marginTop: "2rem",
+          marginBottom: "4rem",
+          minHeight: "calc(100vh - 100px)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h5" color="textSecondary">
+          No questions available.
+        </Typography>
+      </Container>
+    );
+  }
+
+  const current = questions[currentQuestion];
 
   return (
     <Container
@@ -191,15 +253,18 @@ const Questionnaire = () => {
             display: "flex",
             justifyContent: "center",
             marginBottom: "2rem",
-            fontSize: "4rm",
+            fontSize: "4rem",
           }}
         >
           <CircularProgressWithLabel value={progress} />
         </Box>
-        {questions[currentQuestion].question}
+        {current.questionText
+          ? current.questionText
+          : "Question text not available."}
       </Typography>
+
       <Box sx={{ marginBottom: "2rem" }}>
-        {questions[currentQuestion].options.map((option, index) => (
+        {current.options.map((option, index) => (
           <Button
             key={index}
             variant={
@@ -241,28 +306,16 @@ const Questionnaire = () => {
         <Grid item>
           <Button
             variant="outlined"
+            color="primary"
             onClick={handleBack}
             disabled={currentQuestion === 0}
-            sx={{
-              fontWeight: "bold",
-              fontSize: "1.3rem",
-            }}
           >
             Back
           </Button>
         </Grid>
         <Grid item>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleNext}
-            disabled={!answers[currentQuestion]}
-            sx={{
-              fontWeight: "bold",
-              fontSize: "1.3rem",
-            }}
-          >
-            {currentQuestion === questions.length - 1 ? "Submit" : "Next"}
+          <Button variant="contained" color="primary" onClick={handleNext}>
+            {currentQuestion < questions.length - 1 ? "Next" : "Submit"}
           </Button>
         </Grid>
       </Grid>
