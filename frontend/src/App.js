@@ -19,6 +19,7 @@ import UserNavbar from "./common/components/Navbar/UserNavbar";
 import PremiumPage from "./features/PremiumPage/PremiumPage";
 import { AuthProvider, useAuth } from "./utils/AuthContext";
 import Portfolio from "./common/components/Users/Protfolio/Portfolio";
+import NonPremiumInfo from "./common/components/Users/NonPremiumInfo";
 import axios from "axios";
 import "./App.css";
 import UpdateQ from "./features/Admin/UpdateQ ";
@@ -79,6 +80,7 @@ function AppContent() {
         <Route path="/questionnaire" element={<Questionnaire />} />
         <Route path="/userStatByAdmin" element={<UserStatByAdmin />} />
         <Route path="/PremiumPage" element={<PremiumPage />} />
+        <Route path="/NonPremiumInfo" element={<NonPremiumInfo />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/UpdateQ" element={<UpdateQ />} />
         <Route path="/portfolio" element={<Portfolio />} />
