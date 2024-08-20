@@ -1,33 +1,41 @@
 .news-feed {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
   padding: 20px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  position: relative;
 }
 
 .articles-container {
   display: flex;
   overflow-x: auto;
   scroll-behavior: smooth;
-  gap: 20px; /* Space between cards */
-  padding-bottom: 20px; /* Space at the bottom */
+  gap: 10px; /* Space between articles */
 }
 
 .article-card {
-  flex: 0 0 auto; /* Allow cards to be their natural width */
-  width: 300px; /* Adjust card width */
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background: #fff;
-  padding: 10px;
-  box-sizing: border-box;
-  text-align: center;
+  flex: 0 0 auto;
+  width: 300px; /* Adjust width based on your design */
 }
 
-.article-card img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
+.nav-button {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.nav-button.prev {
+  position: absolute;
+  left: 0;
+}
+
+.nav-button.next {
+  position: absolute;
+  right: 0;
 }

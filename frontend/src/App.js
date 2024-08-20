@@ -79,7 +79,6 @@ function AppContent() {
         <Route path="/questionnaire" element={<Questionnaire />} />
         <Route path="/userStatByAdmin" element={<UserStatByAdmin />} />
         <Route path="/PremiumPage" element={<PremiumPage />} />
-        
         <Route path="/" element={<HomePage />} />
         <Route path="/UpdateQ" element={<UpdateQ />} />
         <Route path="/portfolio" element={<Portfolio />} />
