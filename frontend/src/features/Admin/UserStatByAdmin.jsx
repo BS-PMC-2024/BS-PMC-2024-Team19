@@ -46,12 +46,23 @@ const UserStatByAdmin = () => {
         cancelButton: "custom-cancel-button",
       },
       didOpen: () => {
-        // Increase font size dynamically using JavaScript
-        document.querySelector(".custom-title").style.fontSize = "24px";
-        document.querySelector(".custom-content").style.fontSize = "18px";
-        document.querySelector(".custom-confirm-button").style.fontSize =
-          "16px";
-        document.querySelector(".custom-cancel-button").style.fontSize = "16px";
+        // Use setTimeout to ensure the elements are loaded
+        setTimeout(() => {
+          const titleElement = document.querySelector(".custom-title");
+          const contentElement = document.querySelector(".custom-content");
+          const confirmButtonElement = document.querySelector(
+            ".custom-confirm-button"
+          );
+          const cancelButtonElement = document.querySelector(
+            ".custom-cancel-button"
+          );
+
+          if (titleElement) titleElement.style.fontSize = "24px";
+          if (contentElement) contentElement.style.fontSize = "18px";
+          if (confirmButtonElement)
+            confirmButtonElement.style.fontSize = "16px";
+          if (cancelButtonElement) cancelButtonElement.style.fontSize = "16px";
+        }, 100); // Adjust the delay as needed
       },
     });
 
