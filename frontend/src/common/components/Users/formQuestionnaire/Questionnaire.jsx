@@ -57,7 +57,7 @@ const Questionnaire = () => {
           throw new Error(`Error: ${response.status} - ${errorText}`);
         }
         const data = await response.json();
-        setQuestions(data.questions); // Ensure `questions` array structure
+        setQuestions(data.questions);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching questions:", error);
@@ -123,7 +123,7 @@ const Questionnaire = () => {
           html: `<span style="font-size: 15px;">The form has been sent!</span>`,
           confirmButtonText: "OK",
           customClass: {
-            confirmButton: "swal2-confirm-custom", // Add a custom class to the confirm button
+            confirmButton: "swal2-confirm-custom",
           },
         }).then(() => {
           navigate("/portfolio");
@@ -144,6 +144,11 @@ const Questionnaire = () => {
       setCurrentQuestion((prev) => prev - 1);
     }
   };
+
+  const isCurrentQuestionAnswered = () =>
+    answers.hasOwnProperty(currentQuestion);
+  const isAllQuestionsAnswered = () =>
+    questions.length === Object.keys(answers).length;
 
   if (loading) {
     return (
@@ -247,7 +252,6 @@ const Questionnaire = () => {
           overflowWrap: "break-word",
         }}
       >
-        {/* Progress Indicator */}
         <Box
           sx={{
             display: "flex",
@@ -258,9 +262,7 @@ const Questionnaire = () => {
         >
           <CircularProgressWithLabel value={progress} />
         </Box>
-        {current.questionText
-          ? current.questionText
-          : "Question text not available."}
+        {current.questionText || "Question text not available."}
       </Typography>
 
       <Box sx={{ marginBottom: "2rem" }}>
@@ -314,7 +316,12 @@ const Questionnaire = () => {
           </Button>
         </Grid>
         <Grid item>
-          <Button variant="contained" color="primary" onClick={handleNext}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleNext}
+            disabled={!isCurrentQuestionAnswered()}
+          >
             {currentQuestion < questions.length - 1 ? "Next" : "Submit"}
           </Button>
         </Grid>
