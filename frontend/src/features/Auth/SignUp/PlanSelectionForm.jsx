@@ -352,20 +352,20 @@ const PlanSelectionForm = ({
 
         <div className="form-actions">
           <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            className="submit-button"
-          >
-            Submit
-          </Button>
-          <Button
             variant="outlined"
             color="secondary"
             onClick={onBack}
             className="back-button"
           >
             Back
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            className="submit-button"
+          >
+            Submit
           </Button>
         </div>
       </form>
