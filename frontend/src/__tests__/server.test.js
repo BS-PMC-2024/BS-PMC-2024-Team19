@@ -24,6 +24,7 @@ describe("Test the root path", () => {
     const res = await request(app).get("/");
     expect(res.statusCode).toBe(200);
     expect(res.body).toBe("from server side");
+    // INTEGRATION TEST: This test verifies that the root path of the server responds correctly with status code 200 and the expected message.
   });
 });
 

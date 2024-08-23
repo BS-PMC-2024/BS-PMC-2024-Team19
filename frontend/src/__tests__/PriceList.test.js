@@ -22,5 +22,6 @@ describe("PriceList Component", () => {
 
     fireEvent.click(screen.getByText(/Cancel/i));
     expect(onClose).toHaveBeenCalledTimes(1);
+    // UNIT TEST: This test verifies that clicking the "Cancel" button triggers the `onClose` function.
   });
 });

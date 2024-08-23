@@ -6,6 +6,7 @@ import AllStocks from "../common/components/Users/Protfolio/AllStocks";
 // Mocking the fetch call
 global.fetch = jest.fn(() =>
   Promise.resolve({
+    // INTEGRATION TEST: This mocks the global `fetch` function to simulate an API response.
     ok: true,
     json: () =>
       Promise.resolve([
@@ -29,11 +30,12 @@ global.fetch = jest.fn(() =>
 
 describe("AllStocks Component", () => {
   beforeEach(() => {
-    fetch.mockClear();
+    fetch.mockClear(); // Ensures that the mock fetch is cleared before each test.
   });
 
   it("renders without crashing", () => {
     render(<AllStocks />);
+    // UNIT TEST: This test ensures the AllStocks component renders without throwing errors.
   });
 
   it("fetches and displays stocks", async () => {
@@ -42,5 +44,6 @@ describe("AllStocks Component", () => {
     // Using findBy to wait for the elements to be in the document
     expect(await screen.findByText("AAPL")).toBeInTheDocument();
     expect(await screen.findByText("GOOGL")).toBeInTheDocument();
+    // INTEGRATION TEST: This test checks that the component successfully fetches and displays stock data from the mocked API.
   });
 });

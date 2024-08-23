@@ -19,6 +19,7 @@ describe("UserStatByAdmin", () => {
 
     render(<UserStatByAdmin />);
     expect(screen.getByText("Loading...")).toBeInTheDocument();
+    // UNIT TEST: Verifies that the component shows a loading message while fetching data.
   });
 
   test("renders user table correctly", async () => {
@@ -36,13 +37,21 @@ describe("UserStatByAdmin", () => {
 
     await waitFor(() => {
       expect(screen.getByText("John Doe")).toBeInTheDocument();
+      expect(screen.getByText("Jane Doe")).toBeInTheDocument();
     });
+    // INTEGRATION TEST: Ensures that the user table is rendered with the correct data after fetching.
   });
 
   test("handles user removal correctly", async () => {
     const users = [
       { fullName: "John Doe", email: "john@example.com", isPrime: true },
     ];
+
+    // Add implementation details for user removal handling
+    // Example code might include simulating a button click to remove a user and then asserting the updated state.
+
+    // For now, the test needs to be completed
+    // TODO: Implement the user removal test logic.
   });
 
   test("handles status change correctly", async () => {
@@ -67,12 +76,13 @@ describe("UserStatByAdmin", () => {
     });
 
     fireEvent.change(screen.getByDisplayValue("Prime"), {
-      target: { value: "Not Prime" }, //INTEFRATION TEST ' CHECK IF AFTER THE USER CHANGE FROM PRIME TO NOT PRIME THE STATUS CHANGE IN THE WEB
+      target: { value: "Not Prime" },
     });
 
     await waitFor(() => {
       expect(screen.getByDisplayValue("Not Prime")).toBeInTheDocument();
     });
+    // INTEGRATION TEST: Verifies that changing the user status from "Prime" to "Not Prime" updates the UI correctly.
   });
 
   test("displays error message on fetch failure", async () => {
@@ -82,8 +92,9 @@ describe("UserStatByAdmin", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText("Error: Network response was not ok") //INTEGRATION TEST CHECK IF SOMTHING WRONG WO GO TO ERROR APGE.
+        screen.getByText("Error: Network response was not ok")
       ).toBeInTheDocument();
     });
+    // INTEGRATION TEST: Ensures that an error message is displayed when the fetch operation fails.
   });
 });

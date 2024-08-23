@@ -11,6 +11,7 @@ describe("UpdateD Component", () => {
   test("renders the Navbar component", () => {
     render(<UpdateD />);
     expect(screen.getByText("Mock Navbar")).toBeInTheDocument();
+    // UNIT TEST: This test ensures that the mocked Navbar component is rendered within the UpdateD component.
   });
 
   test("renders form inputs and labels", () => {
@@ -18,5 +19,6 @@ describe("UpdateD Component", () => {
     expect(screen.getByLabelText(/Old Password/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/New Password/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Confirm Password/i)).toBeInTheDocument();
+    // UNIT TEST: This test verifies that the UpdateD component renders the form inputs and labels as expected.
   });
 });

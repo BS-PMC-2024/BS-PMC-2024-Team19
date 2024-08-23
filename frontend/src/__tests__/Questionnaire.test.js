@@ -39,6 +39,7 @@ describe("Questionnaire", () => {
     await waitFor(() =>
       expect(screen.getByText("Questionnaire")).toBeInTheDocument()
     );
+    // UNIT TEST: This test verifies that the Questionnaire component correctly renders the title "Questionnaire."
   });
 
   test("renders the first question correctly", async () => {
@@ -53,6 +54,7 @@ describe("Questionnaire", () => {
         screen.getByText("What is your investment goal?")
       ).toBeInTheDocument()
     );
+    // UNIT TEST: This test checks that the first question is rendered correctly from the fetched data.
   });
 
   test("can select an answer and move to the next question", async () => {
@@ -80,6 +82,7 @@ describe("Questionnaire", () => {
         screen.getByText("How long is your investment horizon?")
       ).toBeInTheDocument()
     );
+    // UNIT TEST: This test ensures that the user can select an answer and navigate to the next question, verifying state changes in the component.
   });
 
   test("displays the 'No questions available' message if questions array is empty", async () => {
@@ -99,5 +102,6 @@ describe("Questionnaire", () => {
     await waitFor(() =>
       expect(screen.getByText("No questions available.")).toBeInTheDocument()
     );
+    // UNIT TEST: This test verifies that the component handles an empty questions array by displaying an appropriate message.
   });
 });

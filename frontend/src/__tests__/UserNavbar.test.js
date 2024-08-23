@@ -32,6 +32,7 @@ describe("UserNavbar Component", () => {
     expect(screen.getByText("Portfolio")).toBeInTheDocument();
     expect(screen.getByText("Invest Info")).toBeInTheDocument();
     expect(screen.getByText("All Stocks")).toBeInTheDocument();
+    // UNIT TEST: Verifies that the UserNavbar component correctly renders the three navigation buttons: "Portfolio", "Invest Info", and "All Stocks".
   });
 
   test("navigates to /portfolio when Portfolio button is clicked", () => {
@@ -44,6 +45,7 @@ describe("UserNavbar Component", () => {
     fireEvent.click(screen.getByText("Portfolio"));
 
     expect(navigateMock).toHaveBeenCalledWith("/portfolio");
+    // INTEGRATION TEST: Ensures that clicking the "Portfolio" button navigates to the "/portfolio" route.
   });
 
   test("navigates to /PremiumPage or /NonPremiumInfo when Invest Info button is clicked", async () => {
@@ -87,6 +89,7 @@ describe("UserNavbar Component", () => {
       expect(fetch).toHaveBeenCalledTimes(2);
       expect(navigateMock).toHaveBeenCalledWith("/NonPremiumInfo");
     });
+    // INTEGRATION TEST: Verifies that clicking the "Invest Info" button navigates to either "/PremiumPage" or "/NonPremiumInfo" based on the user's subscription status.
   });
 
   test("navigates to /AllStocks when All Stocks button is clicked", () => {
@@ -99,5 +102,6 @@ describe("UserNavbar Component", () => {
     fireEvent.click(screen.getByText("All Stocks"));
 
     expect(navigateMock).toHaveBeenCalledWith("/AllStocks");
+    // INTEGRATION TEST: Ensures that clicking the "All Stocks" button navigates to the "/AllStocks" route.
   });
 });

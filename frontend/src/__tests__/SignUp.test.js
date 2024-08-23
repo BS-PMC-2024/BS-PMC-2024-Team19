@@ -13,6 +13,7 @@ test("renders Sign Up form", () => {
   // Check if the form elements are present
   expect(screen.getByPlaceholderText(/Full Name/i)).toBeInTheDocument();
   expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
+  // UNIT TEST: This test ensures that the Sign Up form correctly renders with the expected input fields.
 });
 
 test("initial state of form fields", () => {
@@ -25,6 +26,7 @@ test("initial state of form fields", () => {
   // Check that fields are initially empty
   expect(screen.getByPlaceholderText(/Full Name/i).value).toBe("");
   expect(screen.getByPlaceholderText(/email/i).value).toBe("");
+  // UNIT TEST: This test verifies that the form fields are empty when the component is first rendered.
 });
 
 test("input change updates field values", () => {
@@ -45,4 +47,5 @@ test("input change updates field values", () => {
   // Check that input values are updated
   expect(screen.getByPlaceholderText(/Full Name/i).value).toBe("John Doe");
   expect(screen.getByPlaceholderText(/email/i).value).toBe("john@example.com");
+  // UNIT TEST: This test ensures that user input correctly updates the state of the form fields.
 });

@@ -24,7 +24,7 @@ describe("Navbar Component", () => {
       </Router>
     );
 
-    fireEvent.click(screen.getByText(/Log In/i)); //INTEGRATION TESTS
+    fireEvent.click(screen.getByText(/Log In/i)); //INTEGRATION TEST: Verifies that clicking "Log In" in the Navbar navigates to the login page.
 
     // Confirm the navigation by checking the URL
     expect(window.location.pathname).toBe("/login");
@@ -39,6 +39,6 @@ describe("Navbar Component", () => {
 
     fireEvent.click(screen.getByText(/Sign Up/i));
 
-    expect(window.location.pathname).toBe("/signup"); //INTEGRATION TESTS
+    expect(window.location.pathname).toBe("/signup"); //INTEGRATION TEST: Ensures that clicking "Sign Up" in the Navbar navigates to the signup page.
   });
 });
