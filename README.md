@@ -99,16 +99,15 @@ npm start
 Backend API
 Ensure the backend server is accessible and running at http://localhost:6500 for the frontend application to function correctly. The API handles user data, authentication, financial information retrieval, and questionnaire responses.
 
-##Dependencies
-React: Frontend framework for building the user interface.
-React Router: For client-side routing.
-Material-UI: UI components for a consistent and responsive design.
-SweetAlert2: For elegant, customizable alerts.
-Axios: HTTP client for backend communication.
-Recharts: Data visualization library used for portfolio insights.
-PropTypes: For type-checking React props.
-Developer Notes
-Ensure robust error handling and provide user-friendly feedback across components.
+### Dependencies
+
+- **React**: Frontend framework for building the user interface.
+- **React Router**: For client-side routing.
+- **Material-UI**: UI components for a consistent and responsive design.
+- **SweetAlert2**: For elegant, customizable alerts.
+- **Axios**: HTTP client for backend communication.
+- **Recharts**: Data visualization library used for portfolio insights.
+- **PropTypes**: For type-checking React props.
 Maintain consistent styling throughout the application.
 Implement role-based access control to prevent unauthorized access.
 Update API endpoint URLs if they change in the backend.
