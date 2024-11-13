@@ -1,175 +1,85 @@
-# Admin Dashboard Project
+BestInvest Project
+BestInvest is an AI-driven software solution aimed at assisting users in managing their investments effectively. The platform offers user profiling, portfolio tracking, financial insights, and personalized recommendations. Built with React on the frontend and a Node.js/MySQL backend, BestInvest serves both regular users and administrators, with tailored dashboards and features.
 
-This project is an admin dashboard application built with React. It provides functionality for user management, question management, authentication, financial information display, and user profiling through a questionnaire.
+Features
+General User Features
+SignUp: A two-step registration allowing users to select between regular and premium plans, with validation and backend integration.
+Profile: Displays user information, upgrade options, and account management functions.
+Portfolio: A personalized investment portfolio section with detailed visualization and options to manage investments.
+Questionnaire: A profiling questionnaire that customizes investment recommendations based on user responses.
+PremiumPage: Exclusive content for premium users, including news feeds, YouTube links, and stock indicators.
+TopRankedStocks: Dynamic display of top-ranked stocks with real-time updates on price and performance.
+NonPremiumInfo: Provides details on the benefits of premium membership, with prompts to upgrade.
+Admin-Specific Features
+DeleteByAdmin: Allows administrators to delete users by email.
+UpdateQ: Provides functionality for administrators to update user questionnaire questions.
+UserStatByAdmin: Displays user statistics, allowing for user status updates (e.g., Premium/Not Premium) and account management.
+Project Components
+Authentication Components
+Login: User login form with validation, error handling, and role-based redirection.
+SignUp: Registration component with a two-step form, plan selection, and backend integration.
+Profile & Dashboard Components
+Profile: Displays and manages user details, including the option to upgrade to premium, update passwords, and delete the account.
+Portfolio: Provides portfolio insights with a form for entering investments and a pie chart visualization.
+Questionnaire: Dynamic questionnaire for user profiling, with multiple-choice questions and a progress indicator.
+Financial Information Components
+PremiumPage: Premium-exclusive section showcasing a financial news feed, stock indicators, and relevant video content.
+TopRankedStocks: A listing of top-ranked stocks with logos, names, prices, and color-coded performance indicators.
+NonPremiumInfo: Displayed for non-premium users to encourage upgrades to premium membership.
+Admin Dashboard Components
+DeleteByAdmin: Admin-only component to delete users based on email input.
+UpdateQ: Allows admins to update the questionnaire with a selection dropdown and confirmation dialog.
+UserStatByAdmin: Displays a user statistics table and enables admins to manage user accounts and statuses.
+Installation and Setup
+Clone the Repository
 
-## Components
+bash
+Copy code
+git clone https://github.com/your-username/bestinvest.git
+cd bestinvest
+Install Dependencies
 
-### DeleteByAdmin
+Backend:
 
-Located in `DeleteByAdmin.jsx`, this component allows administrators to delete users from the system.
+bash
+Copy code
+cd backend
+npm install
+Frontend:
 
-- Features:
-  - Input field for user email
-  - Delete button to remove the user
-  - Displays success or error messages using Material-UI Alert component
+bash
+Copy code
+cd ../frontend
+npm install
+Running the Application
 
-### UpdateQ
+Backend: Start the backend server (runs on http://localhost:6500 by default).
 
-Found in `UpdateQ.jsx`, this component enables administrators to update questions in the system.
+bash
+Copy code
+cd backend
+npm start
+Frontend: Start the frontend client (runs on http://localhost:3000).
 
-- Features:
-  - Dropdown to select a question
-  - Text area to edit the question
-  - Update button to save changes
-  - Confirmation dialog using SweetAlert2
+bash
+Copy code
+cd frontend
+npm start
+Backend API
+Ensure the backend server is accessible and running at http://localhost:6500 for the frontend application to function correctly. The API is responsible for handling user data, authentication, financial information retrieval, and questionnaire responses.
 
-### UserStatByAdmin
-
-Defined in `UserStatByAdmin.jsx`, this component displays user statistics and allows for user management.
-
-- Features:
-  - Table view of all users
-  - Ability to change user status (Premium/Not Premium)
-  - Option to remove users
-  - Confirmation dialog for user removal using SweetAlert2
-
-### Login
-
-The `Login.jsx` file contains the login component for user authentication.
-
-- Features:
-  - Email and password input fields
-  - Password visibility toggle
-  - Form validation
-  - Error display
-  - Success/Error alerts using Material-UI Alert component
-  - Redirection based on user role (admin/regular user)
-
-### PremiumPage
-
-Located in `PremiumPage.jsx`, this component displays premium content for users with premium accounts.
-
-- Features:
-  - Displays NewsFeed
-  - Shows YouTube links
-  - Presents stock indicators
-
-### TopRankedStocks
-
-Found in `TopRankedStocks.jsx`, this component displays the top-ranked stocks.
-
-- Features:
-  - Shows a list of the top 15 stocks
-  - Displays logo, name, current price, and change percentage for each stock
-  - Dynamic colors based on stock performance
-
-### Portfolio
-
-Located in `Portfolio.jsx`, this component manages the user's investment portfolio.
-
-- Features:
-  - Displays portfolio details
-  - Form for entering investment amount
-  - Creates a personalized portfolio based on the user's risk level
-  - Pie chart visualization of the portfolio
-
-### Profile
-
-Found in `Profile.jsx`, this component displays and manages the user's profile.
-
-- Features:
-  - Displays user information
-  - Option to upgrade to premium account
-  - Password update
-  - Account deletion
-
-### Questionnaire
-
-Located in `Questionnaire.jsx`, this component handles a dynamic questionnaire for user profiling.
-
-- Features:
-  - Fetches questions dynamically from the backend
-  - Displays questions one at a time with multiple-choice answers
-  - Progress indicator showing completion percentage
-  - Navigation between questions (Next and Back buttons)
-  - Submits answers to the backend upon completion
-  - Redirects to the portfolio page after successful submission
-  - Error handling with user-friendly messages using SweetAlert2
-  - Responsive design with Material-UI components
-
-### NonPremiumInfo
-
-Located in `NonPremiumInfo.jsx`, this component provides information for non-premium users.
-
-- Features:
-  - Displays a message encouraging users to upgrade to premium
-  - Directs users to the personal area for package details
-
-### SignUp
-
-Found in `SignUp.jsx`, this component handles the user registration process.
-
-- Features:
-  - Two-step registration process
-  - Form for basic user information (name, email, password)
-  - Plan selection form for choosing between regular and premium plans
-  - Credit card information input for premium users
-  - Email availability check
-  - Form validation and error display
-  - Integration with backend for user registration
-
-## Installation and Setup
-
-1. Clone the repository
-
-2. Install and update dependencies:
-
-   ```
-   # Update all dependencies from the root directory
-   npm update
-
-   # Install backend dependencies
-   cd backend
-   npm install
-
-   # Install frontend dependencies
-   cd ../frontend
-   npm install
-   ```
-
-3. Run the backend server:
-
-   ```
-   cd backend
-   npm start
-   ```
-
-4. Run the frontend application:
-   ```
-   cd frontend
-   npm run start
-   ```
-
-## Backend API
-
-The application communicates with a backend API running on `http://localhost:6500`. Ensure the backend server is running and accessible before starting the frontend application.
-
-## Dependencies
-
-- React
-- React Router
-- Material-UI
-- SweetAlert2
-- react-icons
-- axios
-- recharts
-- PropTypes
-
-## Notes for Developers
-
-- Ensure proper error handling and user feedback in all components
-- Maintain consistent styling across components
-- Implement proper authentication and authorization checks
-- Keep the API endpoint URLs updated if they change
-- Make sure the backend server is running before starting the frontend application
-- The Questionnaire component relies on backend endpoints for fetching questions and submitting answers. Ensure these endpoints are properly configured and maintained.
+Dependencies
+React: Frontend framework for building the user interface.
+React Router: For client-side routing.
+Material-UI: UI components for a consistent and responsive design.
+SweetAlert2: For elegant, customizable alerts.
+Axios: HTTP client for backend communication.
+Recharts: Data visualization library used for portfolio insights.
+PropTypes: For type-checking React props.
+Developer Notes
+Ensure robust error handling and provide user-friendly feedback across components.
+Maintain consistent styling throughout the application.
+Implement role-based access control to prevent unauthorized access.
+Update API endpoint URLs if they change in the backend.
+Confirm that backend endpoints are functioning as expected, especially for dynamic data like questionnaire questions.
+Enjoy using BestInvest! Let us know if you encounter any issues or have feature requests to improve the platform.
