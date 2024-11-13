@@ -54,7 +54,64 @@
 ## Installation and Setup
 
 1. **Clone the Repository**
-
-   ```bash
    git clone https://github.com/your-username/bestinvest.git
    cd bestinvest
+
+## Install Dependencies
+
+### Backend:
+
+cd backend
+npm install
+
+#### Frontend:
+cd ../frontend
+npm install
+Running the Application
+Backend: Start the backend server (runs on http://localhost:6500 by default).
+cd backend
+npm start
+Frontend: Start the frontend client (runs on http://localhost:3000).
+cd frontend
+npm start
+
+## Install Dependencies
+### Backend:
+
+cd backend
+npm install
+Frontend:
+bash
+Copy code
+cd ../frontend
+npm install
+Running the Application
+Backend: Start the backend server (runs on http://localhost:6500 by default).
+bash
+Copy code
+cd backend
+npm start
+Frontend: Start the frontend client (runs on http://localhost:3000).
+bash
+Copy code
+cd frontend
+npm start
+Backend API
+Ensure the backend server is accessible and running at http://localhost:6500 for the frontend application to function correctly. The API handles user data, authentication, financial information retrieval, and questionnaire responses.
+
+##Dependencies
+React: Frontend framework for building the user interface.
+React Router: For client-side routing.
+Material-UI: UI components for a consistent and responsive design.
+SweetAlert2: For elegant, customizable alerts.
+Axios: HTTP client for backend communication.
+Recharts: Data visualization library used for portfolio insights.
+PropTypes: For type-checking React props.
+Developer Notes
+Ensure robust error handling and provide user-friendly feedback across components.
+Maintain consistent styling throughout the application.
+Implement role-based access control to prevent unauthorized access.
+Update API endpoint URLs if they change in the backend.
+Confirm that backend endpoints are functioning as expected, especially for dynamic data like questionnaire questions.
+Enjoy using BestInvest! Let us know if you encounter any issues or have feature requests to improve the platform.
+
